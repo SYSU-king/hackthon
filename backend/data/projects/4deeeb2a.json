@@ -1,0 +1,603 @@
+{
+  "id": "4deeeb2a",
+  "title": "New Simulation",
+  "status": "completed",
+  "created_at": "2026-04-11T08:37:31.763763",
+  "updated_at": "2026-04-11T08:39:24.078791",
+  "profile": {
+    "personality_type": "INTJ",
+    "education_stage": "undergraduate",
+    "school": "Sun Yat-sen University",
+    "major": "Computer Science",
+    "gpa_range": "3.0-3.5",
+    "family_economy": "中等",
+    "family_expectation": "自由选择",
+    "city_preference": "一线城市",
+    "career_preference": "大厂",
+    "risk_preference": "balanced",
+    "current_concern": "Postgraduate vs Employment"
+  },
+  "parameters": [
+    {
+      "id": "38174bea",
+      "name": "Postgrad vs Job",
+      "description": "",
+      "priority": "primary",
+      "weight": 1.0
+    }
+  ],
+  "paths": [
+    {
+      "id": "30cd8e75",
+      "name": "Path Alpha: 最优路径",
+      "path_type": "optimal",
+      "summary": "围绕「Postgraduate vs Employment」的Path Alpha: 最优路径：通过 8 个关键节点推演未来 3 年的发展路径。",
+      "risk_level": "low",
+      "satisfaction_score": 0.82,
+      "final_state": {
+        "education": 0.95,
+        "career": 0.85,
+        "finance": 0.8,
+        "health": 0.65,
+        "mental": 0.8,
+        "relationship": 0.7,
+        "family_support": 0.7999999999999999,
+        "social_capital": 0.8,
+        "optionality": 0.7000000000000001,
+        "goal_alignment": 0.9
+      },
+      "nodes": [
+        {
+          "node_id": "6e83c03f",
+          "node_type": "decision",
+          "title": "选择保研",
+          "description": "基于成绩排名和导师推荐，决定接受保研名额",
+          "time_label": "2025-Q1",
+          "trigger_reason": "学术能力与机会匹配",
+          "state_snapshot": {
+            "education": 0.5,
+            "career": 0.0,
+            "finance": 0.3,
+            "health": 0.8,
+            "mental": 0.6,
+            "relationship": 0.5,
+            "family_support": 0.7,
+            "social_capital": 0.4,
+            "optionality": 0.8,
+            "goal_alignment": 0.5
+          }
+        },
+        {
+          "node_id": "7be21e59",
+          "node_type": "opportunity",
+          "title": "导师提供课题",
+          "description": "研究方向与行业热点高度契合，获得核心课题",
+          "time_label": "2025-Q2",
+          "trigger_reason": "导师资源支持",
+          "state_snapshot": {
+            "education": 0.5642857142857143,
+            "career": 0.12142857142857141,
+            "finance": 0.37142857142857144,
+            "health": 0.7785714285714286,
+            "mental": 0.6285714285714286,
+            "relationship": 0.5285714285714286,
+            "family_support": 0.7142857142857142,
+            "social_capital": 0.4571428571428572,
+            "optionality": 0.7857142857142858,
+            "goal_alignment": 0.5571428571428572
+          }
+        },
+        {
+          "node_id": "80473ff2",
+          "node_type": "result",
+          "title": "发表核心论文",
+          "description": "在顶会/顶刊发表一作论文，学术竞争力显著提升",
+          "time_label": "2025-Q3",
+          "trigger_reason": "持续投入研究",
+          "state_snapshot": {
+            "education": 0.6285714285714286,
+            "career": 0.24285714285714283,
+            "finance": 0.44285714285714284,
+            "health": 0.7571428571428572,
+            "mental": 0.6571428571428571,
+            "relationship": 0.5571428571428572,
+            "family_support": 0.7285714285714285,
+            "social_capital": 0.5142857142857143,
+            "optionality": 0.7714285714285715,
+            "goal_alignment": 0.6142857142857143
+          }
+        },
+        {
+          "node_id": "4185ca68",
+          "node_type": "cascade",
+          "title": "获得企业实习邀请",
+          "description": "论文成果吸引头部企业关注，获得研究型实习",
+          "time_label": "2025-Q4",
+          "trigger_reason": "学术影响力扩散",
+          "state_snapshot": {
+            "education": 0.6928571428571428,
+            "career": 0.36428571428571427,
+            "finance": 0.5142857142857142,
+            "health": 0.7357142857142858,
+            "mental": 0.5357142857142857,
+            "relationship": 0.5857142857142857,
+            "family_support": 0.7428571428571428,
+            "social_capital": 0.5714285714285714,
+            "optionality": 0.7571428571428572,
+            "goal_alignment": 0.6714285714285715
+          }
+        },
+        {
+          "node_id": "86982201",
+          "node_type": "opportunity",
+          "title": "收到多个 offer",
+          "description": "凭借学术+实习双背景，获得多个高质量 offer",
+          "time_label": "2026-Q1",
+          "trigger_reason": "复合优势积累",
+          "state_snapshot": {
+            "education": 0.7571428571428571,
+            "career": 0.48571428571428565,
+            "finance": 0.5857142857142856,
+            "health": 0.7142857142857143,
+            "mental": 0.5642857142857143,
+            "relationship": 0.6142857142857143,
+            "family_support": 0.7571428571428571,
+            "social_capital": 0.6285714285714286,
+            "optionality": 0.7428571428571429,
+            "goal_alignment": 0.7285714285714285
+          }
+        },
+        {
+          "node_id": "56b5e854",
+          "node_type": "decision",
+          "title": "选择一线城市核心岗位",
+          "description": "综合考虑发展空间和薪资，选择一线城市",
+          "time_label": "2026-Q2",
+          "trigger_reason": "职业目标明确",
+          "state_snapshot": {
+            "education": 0.8214285714285714,
+            "career": 0.6071428571428571,
+            "finance": 0.6571428571428571,
+            "health": 0.692857142857143,
+            "mental": 0.7428571428571429,
+            "relationship": 0.6428571428571429,
+            "family_support": 0.7714285714285714,
+            "social_capital": 0.6857142857142857,
+            "optionality": 0.7285714285714286,
+            "goal_alignment": 0.7857142857142858
+          }
+        },
+        {
+          "node_id": "5e67a0ed",
+          "node_type": "result",
+          "title": "职业起步顺利",
+          "description": "入职后快速上手，获得团队认可",
+          "time_label": "2026-Q3",
+          "trigger_reason": "能力与岗位匹配",
+          "state_snapshot": {
+            "education": 0.8857142857142857,
+            "career": 0.7285714285714285,
+            "finance": 0.7285714285714285,
+            "health": 0.6714285714285715,
+            "mental": 0.7714285714285714,
+            "relationship": 0.6714285714285715,
+            "family_support": 0.7857142857142857,
+            "social_capital": 0.7428571428571429,
+            "optionality": 0.7142857142857143,
+            "goal_alignment": 0.8428571428571429
+          }
+        },
+        {
+          "node_id": "e4842806",
+          "node_type": "reflection",
+          "title": "阶段复盘",
+          "description": "回顾选择路径，保研决策与后续发展高度一致",
+          "time_label": "2026-Q4",
+          "trigger_reason": "路径连贯性验证",
+          "state_snapshot": {
+            "education": 0.95,
+            "career": 0.85,
+            "finance": 0.8,
+            "health": 0.65,
+            "mental": 0.8,
+            "relationship": 0.7,
+            "family_support": 0.7999999999999999,
+            "social_capital": 0.8,
+            "optionality": 0.7000000000000001,
+            "goal_alignment": 0.9
+          }
+        }
+      ],
+      "advice": {
+        "mode": "satisfied",
+        "title": "落地「Path Alpha: 最优路径」的行动方案",
+        "immediate_actions": [
+          "梳理当前成绩和排名，确认保研/考研资格",
+          "与导师沟通研究方向偏好，争取科研机会",
+          "开始准备核心技能的学习和实践"
+        ],
+        "mid_term_plan": [
+          "3 个月内完成至少一段有含金量的实习",
+          "建立行业人脉网络，参与相关社群",
+          "深化专业领域的知识储备"
+        ],
+        "risk_mitigation": [
+          "保留 Plan B 选项，不过早关闭其他可能性",
+          "维护身心健康，避免过度透支",
+          "与家人保持沟通，获取支持"
+        ],
+        "key_nodes": [
+          "大三下学期是关键决策窗口",
+          "实习选择将显著影响后续走向",
+          "论文/项目产出是核心竞争力"
+        ]
+      }
+    },
+    {
+      "id": "f6e7df38",
+      "name": "Path Beta: 稳健路径",
+      "path_type": "conservative",
+      "summary": "围绕「Postgraduate vs Employment」的Path Beta: 稳健路径：通过 8 个关键节点推演未来 3 年的发展路径。",
+      "risk_level": "low",
+      "satisfaction_score": 0.65,
+      "final_state": {
+        "education": 0.85,
+        "career": 0.6,
+        "finance": 0.6499999999999999,
+        "health": 0.7000000000000001,
+        "mental": 0.75,
+        "relationship": 0.65,
+        "family_support": 0.85,
+        "social_capital": 0.6000000000000001,
+        "optionality": 0.55,
+        "goal_alignment": 0.7
+      },
+      "nodes": [
+        {
+          "node_id": "c6d01244",
+          "node_type": "decision",
+          "title": "选择稳妥考研",
+          "description": "综合评估后选择考研，虽有风险但求稳",
+          "time_label": "2025-Q1",
+          "trigger_reason": "风险规避偏好",
+          "state_snapshot": {
+            "education": 0.5,
+            "career": 0.0,
+            "finance": 0.3,
+            "health": 0.8,
+            "mental": 0.6,
+            "relationship": 0.5,
+            "family_support": 0.7,
+            "social_capital": 0.4,
+            "optionality": 0.8,
+            "goal_alignment": 0.5
+          }
+        },
+        {
+          "node_id": "771a4609",
+          "node_type": "risk",
+          "title": "备考期间压力增大",
+          "description": "同时准备考研和课程，身心压力持续上升",
+          "time_label": "2025-Q2",
+          "trigger_reason": "时间资源冲突",
+          "state_snapshot": {
+            "education": 0.55,
+            "career": 0.0857142857142857,
+            "finance": 0.35,
+            "health": 0.7857142857142858,
+            "mental": 0.6214285714285714,
+            "relationship": 0.5214285714285715,
+            "family_support": 0.7214285714285714,
+            "social_capital": 0.4285714285714286,
+            "optionality": 0.7642857142857143,
+            "goal_alignment": 0.5285714285714286
+          }
+        },
+        {
+          "node_id": "029916d9",
+          "node_type": "result",
+          "title": "考研成功上岸",
+          "description": "经历高强度备考后顺利通过考试",
+          "time_label": "2025-Q3",
+          "trigger_reason": "坚持与努力",
+          "state_snapshot": {
+            "education": 0.6,
+            "career": 0.1714285714285714,
+            "finance": 0.39999999999999997,
+            "health": 0.7714285714285715,
+            "mental": 0.44285714285714284,
+            "relationship": 0.5428571428571428,
+            "family_support": 0.7428571428571428,
+            "social_capital": 0.4571428571428572,
+            "optionality": 0.7285714285714286,
+            "goal_alignment": 0.5571428571428572
+          }
+        },
+        {
+          "node_id": "2cb4f89d",
+          "node_type": "cascade",
+          "title": "家庭经济压力缓解",
+          "description": "获得学校奖学金和助学金",
+          "time_label": "2025-Q4",
+          "trigger_reason": "经济支持改善",
+          "state_snapshot": {
+            "education": 0.65,
+            "career": 0.2571428571428571,
+            "finance": 0.44999999999999996,
+            "health": 0.7571428571428572,
+            "mental": 0.46428571428571425,
+            "relationship": 0.5642857142857143,
+            "family_support": 0.7642857142857142,
+            "social_capital": 0.48571428571428577,
+            "optionality": 0.692857142857143,
+            "goal_alignment": 0.5857142857142857
+          }
+        },
+        {
+          "node_id": "5c4e605f",
+          "node_type": "opportunity",
+          "title": "参与横向课题",
+          "description": "虽非顶级研究但获得项目实践经验",
+          "time_label": "2026-Q1",
+          "trigger_reason": "渐进式积累",
+          "state_snapshot": {
+            "education": 0.7,
+            "career": 0.3428571428571428,
+            "finance": 0.5,
+            "health": 0.7428571428571429,
+            "mental": 0.6857142857142857,
+            "relationship": 0.5857142857142857,
+            "family_support": 0.7857142857142857,
+            "social_capital": 0.5142857142857143,
+            "optionality": 0.6571428571428573,
+            "goal_alignment": 0.6142857142857143
+          }
+        },
+        {
+          "node_id": "683c3aaf",
+          "node_type": "decision",
+          "title": "选择二线城市央企",
+          "description": "看重稳定性和生活质量，选择体制内",
+          "time_label": "2026-Q2",
+          "trigger_reason": "安全感优先",
+          "state_snapshot": {
+            "education": 0.75,
+            "career": 0.42857142857142855,
+            "finance": 0.55,
+            "health": 0.7285714285714286,
+            "mental": 0.7071428571428571,
+            "relationship": 0.6071428571428571,
+            "family_support": 0.807142857142857,
+            "social_capital": 0.5428571428571429,
+            "optionality": 0.6214285714285714,
+            "goal_alignment": 0.6428571428571429
+          }
+        },
+        {
+          "node_id": "1401e55d",
+          "node_type": "result",
+          "title": "工作生活平衡",
+          "description": "相对平稳的职业起步，没有极端风险",
+          "time_label": "2026-Q3",
+          "trigger_reason": "平衡策略生效",
+          "state_snapshot": {
+            "education": 0.8,
+            "career": 0.5142857142857142,
+            "finance": 0.6,
+            "health": 0.7142857142857143,
+            "mental": 0.7285714285714285,
+            "relationship": 0.6285714285714286,
+            "family_support": 0.8285714285714285,
+            "social_capital": 0.5714285714285714,
+            "optionality": 0.5857142857142857,
+            "goal_alignment": 0.6714285714285715
+          }
+        },
+        {
+          "node_id": "fe34f14a",
+          "node_type": "reflection",
+          "title": "阶段复盘",
+          "description": "路径安全但发展空间有限，需要后续突破",
+          "time_label": "2026-Q4",
+          "trigger_reason": "机会成本分析",
+          "state_snapshot": {
+            "education": 0.85,
+            "career": 0.6,
+            "finance": 0.6499999999999999,
+            "health": 0.7000000000000001,
+            "mental": 0.75,
+            "relationship": 0.65,
+            "family_support": 0.85,
+            "social_capital": 0.6000000000000001,
+            "optionality": 0.55,
+            "goal_alignment": 0.7
+          }
+        }
+      ],
+      "advice": {}
+    },
+    {
+      "id": "78dbfd85",
+      "name": "Path Gamma: 冒险路径",
+      "path_type": "risk",
+      "summary": "围绕「Postgraduate vs Employment」的Path Gamma: 冒险路径：通过 8 个关键节点推演未来 3 年的发展路径。",
+      "risk_level": "high",
+      "satisfaction_score": 0.48,
+      "final_state": {
+        "education": 0.6,
+        "career": 0.6788085401399818,
+        "finance": 0.5576170802799638,
+        "health": 0.6000000000000001,
+        "mental": 0.6499999999999999,
+        "relationship": 0.35,
+        "family_support": 0.49999999999999994,
+        "social_capital": 0.7,
+        "optionality": 0.9,
+        "goal_alignment": 0.6288085401399819
+      },
+      "nodes": [
+        {
+          "node_id": "3434285d",
+          "node_type": "decision",
+          "title": "直接就业进入创业公司",
+          "description": "放弃升学机会，选择高风险高回报的创业公司",
+          "time_label": "2025-Q1",
+          "trigger_reason": "冒险倾向驱动",
+          "state_snapshot": {
+            "education": 0.5,
+            "career": -0.033327514872977505,
+            "finance": 0.233344970254045,
+            "health": 0.8,
+            "mental": 0.6,
+            "relationship": 0.5,
+            "family_support": 0.7,
+            "social_capital": 0.4,
+            "optionality": 0.8,
+            "goal_alignment": 0.4666724851270225
+          }
+        },
+        {
+          "node_id": "0231a0d0",
+          "node_type": "opportunity",
+          "title": "早期员工期权",
+          "description": "作为早期员工获得股权激励",
+          "time_label": "2025-Q2",
+          "trigger_reason": "高风险高回报",
+          "state_snapshot": {
+            "education": 0.5142857142857142,
+            "career": 0.12811615187240438,
+            "finance": 0.39908944660195167,
+            "health": 0.7714285714285715,
+            "mental": 0.5642857142857143,
+            "relationship": 0.4785714285714286,
+            "family_support": 0.6714285714285714,
+            "social_capital": 0.4428571428571429,
+            "optionality": 0.8142857142857143,
+            "goal_alignment": 0.5495447233009758
+          }
+        },
+        {
+          "node_id": "7ccccfe3",
+          "node_type": "risk",
+          "title": "公司资金链紧张",
+          "description": "创业公司融资困难，面临裁员风险",
+          "time_label": "2025-Q3",
+          "trigger_reason": "行业周期波动",
+          "state_snapshot": {
+            "education": 0.5285714285714286,
+            "career": 0.19880914953973733,
+            "finance": 0.3833325847937604,
+            "health": 0.7428571428571429,
+            "mental": 0.5285714285714286,
+            "relationship": 0.45714285714285713,
+            "family_support": 0.6428571428571428,
+            "social_capital": 0.4857142857142857,
+            "optionality": 0.8285714285714286,
+            "goal_alignment": 0.5416662923968801
+          }
+        },
+        {
+          "node_id": "9dbad6cf",
+          "node_type": "cascade",
+          "title": "被迫跳槽",
+          "description": "公司缩减规模，需要在短期内找到新工作",
+          "time_label": "2025-Q4",
+          "trigger_reason": "风险事件连锁反应",
+          "state_snapshot": {
+            "education": 0.5428571428571428,
+            "career": 0.2946482126128816,
+            "finance": 0.4178678537971917,
+            "health": 0.7142857142857143,
+            "mental": 0.4928571428571428,
+            "relationship": 0.4357142857142857,
+            "family_support": 0.6142857142857142,
+            "social_capital": 0.5285714285714286,
+            "optionality": 0.8428571428571429,
+            "goal_alignment": 0.5589339268985959
+          }
+        },
+        {
+          "node_id": "11fa5cfa",
+          "node_type": "decision",
+          "title": "转投大厂",
+          "description": "利用创业经验包装简历，进入大厂",
+          "time_label": "2026-Q1",
+          "trigger_reason": "路径修正",
+          "state_snapshot": {
+            "education": 0.5571428571428572,
+            "career": 0.4334121983862546,
+            "finance": 0.5382529682010807,
+            "health": 0.6857142857142857,
+            "mental": 0.45714285714285713,
+            "relationship": 0.4142857142857143,
+            "family_support": 0.5857142857142856,
+            "social_capital": 0.5714285714285714,
+            "optionality": 0.8571428571428572,
+            "goal_alignment": 0.6191264841005404
+          }
+        },
+        {
+          "node_id": "3d5c2ff1",
+          "node_type": "risk",
+          "title": "行业寒冬裁员",
+          "description": "大厂业务线调整，面临优化风险",
+          "time_label": "2026-Q2",
+          "trigger_reason": "外部环境恶化",
+          "state_snapshot": {
+            "education": 0.5714285714285714,
+            "career": 0.47314752036330243,
+            "finance": 0.4605807550123191,
+            "health": 0.6571428571428571,
+            "mental": 0.7214285714285713,
+            "relationship": 0.39285714285714285,
+            "family_support": 0.557142857142857,
+            "social_capital": 0.6142857142857143,
+            "optionality": 0.8714285714285714,
+            "goal_alignment": 0.5802903775061595
+          }
+        },
+        {
+          "node_id": "686f57e5",
+          "node_type": "result",
+          "title": "独立开发副业",
+          "description": "利用技术积累开始做独立开发产品",
+          "time_label": "2026-Q3",
+          "trigger_reason": "被动转主动",
+          "state_snapshot": {
+            "education": 0.5857142857142857,
+            "career": 0.6460567341703283,
+            "finance": 0.6492563254835136,
+            "health": 0.6285714285714286,
+            "mental": 0.6857142857142857,
+            "relationship": 0.37142857142857144,
+            "family_support": 0.5285714285714285,
+            "social_capital": 0.6571428571428571,
+            "optionality": 0.8857142857142858,
+            "goal_alignment": 0.6746281627417569
+          }
+        },
+        {
+          "node_id": "7d69f6a7",
+          "node_type": "reflection",
+          "title": "阶段复盘",
+          "description": "经历波折但技术和心智成长远超同龄人",
+          "time_label": "2026-Q4",
+          "trigger_reason": "逆境中的成长",
+          "state_snapshot": {
+            "education": 0.6,
+            "career": 0.7,
+            "finance": 0.6114164236752246,
+            "health": 0.6000000000000001,
+            "mental": 0.6499999999999999,
+            "relationship": 0.35,
+            "family_support": 0.49999999999999994,
+            "social_capital": 0.7,
+            "optionality": 0.9,
+            "goal_alignment": 0.6557082118376123
+          }
+        }
+      ],
+      "advice": {}
+    }
+  ]
+}

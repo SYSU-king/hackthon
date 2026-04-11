@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LIFEPATH-ENGINE [v1.0.4] | Life is a Variable</title>
+  <meta name="description" content="人生路径推演引擎 — 调一下参数，你的人生会走向哪里？通过多智能体仿真，推演你的未来。" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400;0,700;0,800;1,400;1,700;1,800&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/css/style.css" />
+</head>
+<body>
+  <!-- Top Navigation Bar -->
+  <nav id="topnav" class="topnav">
+    <div class="topnav-left">
+      <span class="logo" onclick="navigateTo('landing')">LIFEPATH-ENGINE <span class="logo-version">[v1.0.4]</span></span>
+    </div>
+    <div class="topnav-center" id="nav-links">
+      <a href="#" class="nav-link active" data-page="landing">SIMULATION</a>
+      <a href="#" class="nav-link" data-page="graph">GRAPH</a>
+      <a href="#" class="nav-link" data-page="results">REPORTS</a>
+      <a href="#" class="nav-link" data-page="simulation">SYSTEM</a>
+    </div>
+    <div class="topnav-right">
+      <button class="btn-lang" id="lang-toggle" title="切换语言 / Switch Language">EN</button>
+      <span class="material-symbols-outlined icon-sm">search</span>
+      <span class="mono-xs muted">SECURE_NODE: 882-X</span>
+    </div>
+  </nav>
+
+  <!-- Main App Container -->
+  <main id="app" class="app-main"></main>
+
+  <script type="module" src="/js/app.js"></script>
+</body>
+</html>
