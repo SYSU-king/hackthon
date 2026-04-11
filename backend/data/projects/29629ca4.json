@@ -1,0 +1,328 @@
+{
+  "id": "29629ca4",
+  "title": "New Simulation",
+  "status": "completed",
+  "created_at": "2026-04-11T13:19:21.792515",
+  "updated_at": "2026-04-11T13:19:53.159038",
+  "profile": {
+    "personality_type": "INTJ",
+    "education_stage": "undergraduate",
+    "school": "中山大学",
+    "major": "计算机",
+    "gpa_range": "3.5-3.8",
+    "family_economy": "中等",
+    "family_expectation": "留在本省",
+    "city_preference": "一线城市",
+    "career_preference": "体制内",
+    "risk_preference": "balanced",
+    "current_concern": "考研或者就业"
+  },
+  "parameters": [
+    {
+      "id": "fea6f3df",
+      "name": "就业",
+      "description": "",
+      "priority": "primary",
+      "weight": 1.0
+    }
+  ],
+  "agents": [
+    {
+      "agent_id": "5076b7ad",
+      "agent_type": "Self",
+      "name": "我",
+      "persona": "用户本人",
+      "stance": "neutral",
+      "resources": "个人能力与努力",
+      "influence": 1.0,
+      "active": true
+    },
+    {
+      "agent_id": "3fcdb83e",
+      "agent_type": "Family",
+      "name": "家人",
+      "persona": "关心用户发展的家庭成员",
+      "stance": "supportive",
+      "resources": "经济与情感支持",
+      "influence": 0.7,
+      "active": true
+    },
+    {
+      "agent_id": "e49b6b03",
+      "agent_type": "Mentor",
+      "name": "导师",
+      "persona": "学术导师，提供指导",
+      "stance": "neutral",
+      "resources": "学术资源与推荐",
+      "influence": 0.6,
+      "active": true
+    },
+    {
+      "agent_id": "42ef1cd5",
+      "agent_type": "Employer",
+      "name": "目标企业",
+      "persona": "潜在雇主",
+      "stance": "neutral",
+      "resources": "职业机会",
+      "influence": 0.5,
+      "active": true
+    }
+  ],
+  "graph_data": {
+    "nodes": [
+      {
+        "id": "self",
+        "name": "我",
+        "type": "Self",
+        "group": "self",
+        "size": 30
+      },
+      {
+        "id": "3fcdb83e",
+        "name": "家人",
+        "type": "Family",
+        "group": "agent",
+        "size": 20,
+        "persona": "关心用户发展的家庭成员"
+      },
+      {
+        "id": "e49b6b03",
+        "name": "导师",
+        "type": "Mentor",
+        "group": "agent",
+        "size": 20,
+        "persona": "学术导师，提供指导"
+      },
+      {
+        "id": "42ef1cd5",
+        "name": "目标企业",
+        "type": "Employer",
+        "group": "agent",
+        "size": 20,
+        "persona": "潜在雇主"
+      }
+    ],
+    "edges": [
+      {
+        "source": "3fcdb83e",
+        "target": "self",
+        "relation": "INFLUENCES",
+        "label": "supportive"
+      },
+      {
+        "source": "e49b6b03",
+        "target": "self",
+        "relation": "INFLUENCES",
+        "label": "neutral"
+      },
+      {
+        "source": "42ef1cd5",
+        "target": "self",
+        "relation": "INFLUENCES",
+        "label": "neutral"
+      }
+    ]
+  },
+  "expanded_factors": {
+    "influence_factors": [],
+    "causal_chains": [],
+    "recommended_agents": [
+      "Self",
+      "Family",
+      "Mentor",
+      "Employer"
+    ]
+  },
+  "paths": [
+    {
+      "id": "c307046e",
+      "name": "Path Beta: 稳健路径",
+      "path_type": "conservative",
+      "summary": "围绕「考研或者就业」的路径：通过 5 个关键节点推演，分支标签「BASE」。",
+      "risk_level": "low",
+      "satisfaction_score": 0.40950000000000003,
+      "final_state": {
+        "education": 0.5,
+        "career": 0.0,
+        "finance": 0.3,
+        "health": 0.8,
+        "mental": 0.6,
+        "relationship": 0.5,
+        "family_support": 0.7,
+        "social_capital": 0.4,
+        "optionality": 0.8,
+        "goal_alignment": 0.5
+      },
+      "nodes": [
+        {
+          "node_id": "8ce3c6d9",
+          "node_type": "result",
+          "title": "阶段进展 (2025-Q1)",
+          "description": "推演引擎在此轮遇到问题，使用默认进展",
+          "time_label": "2025-Q1",
+          "trigger_reason": "系统推演",
+          "state_snapshot": {
+            "education": 0.5,
+            "career": 0.0,
+            "finance": 0.3,
+            "health": 0.8,
+            "mental": 0.6,
+            "relationship": 0.5,
+            "family_support": 0.7,
+            "social_capital": 0.4,
+            "optionality": 0.8,
+            "goal_alignment": 0.5
+          },
+          "agent_actions": []
+        },
+        {
+          "node_id": "993ff387",
+          "node_type": "result",
+          "title": "阶段进展 (2025-Q2)",
+          "description": "推演引擎在此轮遇到问题，使用默认进展",
+          "time_label": "2025-Q2",
+          "trigger_reason": "系统推演",
+          "state_snapshot": {
+            "education": 0.5,
+            "career": 0.0,
+            "finance": 0.3,
+            "health": 0.8,
+            "mental": 0.6,
+            "relationship": 0.5,
+            "family_support": 0.7,
+            "social_capital": 0.4,
+            "optionality": 0.8,
+            "goal_alignment": 0.5
+          },
+          "agent_actions": []
+        },
+        {
+          "node_id": "6a4afd6c",
+          "node_type": "result",
+          "title": "阶段进展 (2025-Q3)",
+          "description": "推演引擎在此轮遇到问题，使用默认进展",
+          "time_label": "2025-Q3",
+          "trigger_reason": "系统推演",
+          "state_snapshot": {
+            "education": 0.5,
+            "career": 0.0,
+            "finance": 0.3,
+            "health": 0.8,
+            "mental": 0.6,
+            "relationship": 0.5,
+            "family_support": 0.7,
+            "social_capital": 0.4,
+            "optionality": 0.8,
+            "goal_alignment": 0.5
+          },
+          "agent_actions": []
+        },
+        {
+          "node_id": "e4a0cbd4",
+          "node_type": "result",
+          "title": "阶段进展 (2025-Q4)",
+          "description": "推演引擎在此轮遇到问题，使用默认进展",
+          "time_label": "2025-Q4",
+          "trigger_reason": "系统推演",
+          "state_snapshot": {
+            "education": 0.5,
+            "career": 0.0,
+            "finance": 0.3,
+            "health": 0.8,
+            "mental": 0.6,
+            "relationship": 0.5,
+            "family_support": 0.7,
+            "social_capital": 0.4,
+            "optionality": 0.8,
+            "goal_alignment": 0.5
+          },
+          "agent_actions": []
+        },
+        {
+          "node_id": "6f94d4b0",
+          "node_type": "result",
+          "title": "阶段进展 (2026-Q1)",
+          "description": "推演引擎在此轮遇到问题，使用默认进展",
+          "time_label": "2026-Q1",
+          "trigger_reason": "系统推演",
+          "state_snapshot": {
+            "education": 0.5,
+            "career": 0.0,
+            "finance": 0.3,
+            "health": 0.8,
+            "mental": 0.6,
+            "relationship": 0.5,
+            "family_support": 0.7,
+            "social_capital": 0.4,
+            "optionality": 0.8,
+            "goal_alignment": 0.5
+          },
+          "agent_actions": []
+        }
+      ],
+      "rounds": [],
+      "advice": {}
+    }
+  ],
+  "_tree_events": [
+    {
+      "type": "add_node",
+      "id": "root",
+      "parent": null,
+      "label": "BASE_INIT",
+      "round": 0,
+      "time_label": "起点",
+      "is_active": true
+    },
+    {
+      "type": "add_node",
+      "id": "root_r1",
+      "parent": "root",
+      "label": "阶段 1",
+      "round": 1,
+      "time_label": "2025-Q1",
+      "is_active": true,
+      "node_type": "result"
+    },
+    {
+      "type": "add_node",
+      "id": "root_r2",
+      "parent": "root_r1",
+      "label": "阶段 2",
+      "round": 2,
+      "time_label": "2025-Q2",
+      "is_active": true,
+      "node_type": "result"
+    },
+    {
+      "type": "add_node",
+      "id": "root_r3",
+      "parent": "root_r2",
+      "label": "阶段 3",
+      "round": 3,
+      "time_label": "2025-Q3",
+      "is_active": true,
+      "node_type": "result"
+    },
+    {
+      "type": "add_node",
+      "id": "root_r4",
+      "parent": "root_r3",
+      "label": "阶段 4",
+      "round": 4,
+      "time_label": "2025-Q4",
+      "is_active": true,
+      "node_type": "result"
+    },
+    {
+      "type": "add_node",
+      "id": "root_r5",
+      "parent": "root_r4",
+      "label": "阶段 5",
+      "round": 5,
+      "time_label": "2026-Q1",
+      "is_active": true,
+      "node_type": "result"
+    }
+  ]
+}

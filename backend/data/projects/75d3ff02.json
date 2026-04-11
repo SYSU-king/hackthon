@@ -1,0 +1,2797 @@
+{
+  "id": "75d3ff02",
+  "title": "New Simulation",
+  "status": "completed",
+  "created_at": "2026-04-11T13:23:47.151571",
+  "updated_at": "2026-04-11T13:37:28.444700",
+  "profile": {
+    "personality_type": "INFP",
+    "education_stage": "undergraduate",
+    "school": "",
+    "major": "",
+    "gpa_range": "",
+    "family_economy": "中等",
+    "family_expectation": "",
+    "city_preference": "",
+    "career_preference": "体制内",
+    "risk_preference": "balanced",
+    "current_concern": ""
+  },
+  "parameters": [
+    {
+      "id": "8d8b0058",
+      "name": "就业",
+      "description": "",
+      "priority": "primary",
+      "weight": 1.0
+    }
+  ],
+  "agents": [
+    {
+      "agent_type": "Self",
+      "name": "林思远",
+      "persona": "作为INFP性格的大学生，林思远理想主义且注重个人价值观，倾向于在体制内寻找稳定且有社会意义的工作。他平衡风险偏好，在职业规划中谨慎权衡，但有时会因完美主义而拖延决策。",
+      "stance": "neutral",
+      "resources": "个人能力（如沟通、分析）、教育背景、时间管理技能、风险承受力",
+      "influence": 0.8,
+      "agent_id": "28fa392d",
+      "active": true
+    },
+    {
+      "agent_type": "Family",
+      "name": "林父",
+      "persona": "林父是公务员，重视稳定和传统，强烈支持儿子进入体制内工作，认为这是最佳职业路径。他提供中等经济支持，但会施加压力要求尽快就业，有时忽视儿子的个人兴趣。",
+      "stance": "demanding",
+      "resources": "经济支持、家庭网络、职业建议、生活保障",
+      "influence": 0.7,
+      "agent_id": "81cbd9d5",
+      "active": true
+    },
+    {
+      "agent_type": "Mentor",
+      "name": "张教授",
+      "persona": "张教授是大学里的资深导师，了解体制内就业市场，提供务实指导。他鼓励林思远结合理想与现实，通过实习和技能提升增加竞争力，但强调政策法规和竞争压力的重要性。",
+      "stance": "supportive",
+      "resources": "学术指导、职业机会推荐、社交网络连接、行业洞察",
+      "influence": 0.6,
+      "agent_id": "fcc7e653",
+      "active": true
+    },
+    {
+      "agent_type": "School",
+      "name": "明德大学",
+      "persona": "明德大学是一所综合性高校，提供良好的学术环境和就业支持服务，但资源有限，竞争激烈。学校规则强调学业成绩和实习经历，对职业规划有直接影响，但可能不够个性化。",
+      "stance": "neutral",
+      "resources": "教育背景、就业指导、校友网络、学术证书",
+      "influence": 0.5,
+      "agent_id": "1f51bcfb",
+      "active": true
+    },
+    {
+      "agent_type": "Employer",
+      "name": "市人社局",
+      "persona": "市人社局是典型的体制内雇主，招聘过程严格，注重政策法规和技能匹配。它提供稳定职业机会，但竞争压力大，对地理位置和社交网络有较高要求，经济环境影响招聘规模。",
+      "stance": "demanding",
+      "resources": "职业机会、薪资福利、工作稳定性、职业发展路径",
+      "influence": 0.7,
+      "agent_id": "93d4af76",
+      "active": true
+    },
+    {
+      "agent_type": "City",
+      "name": "滨海市",
+      "persona": "滨海市是中等发达城市，提供较多体制内就业机会，但生活成本适中，竞争较激烈。地理位置影响通勤和社交网络，经济环境波动可能影响就业市场景气度。",
+      "stance": "neutral",
+      "resources": "地理位置优势、生活成本、就业市场、政策支持",
+      "influence": 0.4,
+      "agent_id": "9fc5395e",
+      "active": true
+    }
+  ],
+  "graph_data": {
+    "nodes": [
+      {
+        "id": "self",
+        "name": "我",
+        "type": "Self",
+        "group": "self",
+        "size": 30
+      },
+      {
+        "id": "81cbd9d5",
+        "name": "林父",
+        "type": "Family",
+        "group": "agent",
+        "size": 20,
+        "persona": "林父是公务员，重视稳定和传统，强烈支持儿子进入体制内工作，认为这是最佳职业路径。他提供中等经济支持，但会施加压力要求尽快就业，有时忽视儿子的个人兴趣。"
+      },
+      {
+        "id": "fcc7e653",
+        "name": "张教授",
+        "type": "Mentor",
+        "group": "agent",
+        "size": 20,
+        "persona": "张教授是大学里的资深导师，了解体制内就业市场，提供务实指导。他鼓励林思远结合理想与现实，通过实习和技能提升增加竞争力，但强调政策法规和竞争压力的重要性。"
+      },
+      {
+        "id": "1f51bcfb",
+        "name": "明德大学",
+        "type": "School",
+        "group": "agent",
+        "size": 20,
+        "persona": "明德大学是一所综合性高校，提供良好的学术环境和就业支持服务，但资源有限，竞争激烈。学校规则强调学业成绩和实习经历，对职业规划有直接影响，但可能不够个性化。"
+      },
+      {
+        "id": "93d4af76",
+        "name": "市人社局",
+        "type": "Employer",
+        "group": "agent",
+        "size": 20,
+        "persona": "市人社局是典型的体制内雇主，招聘过程严格，注重政策法规和技能匹配。它提供稳定职业机会，但竞争压力大，对地理位置和社交网络有较高要求，经济环境影响招聘规模。"
+      },
+      {
+        "id": "9fc5395e",
+        "name": "滨海市",
+        "type": "City",
+        "group": "agent",
+        "size": 20,
+        "persona": "滨海市是中等发达城市，提供较多体制内就业机会，但生活成本适中，竞争较激烈。地理位置影响通勤和社交网络，经济环境波动可能影响就业市场景气度。"
+      },
+      {
+        "id": "factor_0",
+        "name": "教育背景",
+        "type": "Factor",
+        "group": "education",
+        "size": 12,
+        "impact": "high"
+      },
+      {
+        "id": "factor_1",
+        "name": "职业规划",
+        "type": "Factor",
+        "group": "career",
+        "size": 12,
+        "impact": "high"
+      },
+      {
+        "id": "factor_2",
+        "name": "家庭支持",
+        "type": "Factor",
+        "group": "family",
+        "size": 12,
+        "impact": "medium"
+      },
+      {
+        "id": "factor_3",
+        "name": "个人健康",
+        "type": "Factor",
+        "group": "health",
+        "size": 12,
+        "impact": "low"
+      },
+      {
+        "id": "factor_4",
+        "name": "社交网络",
+        "type": "Factor",
+        "group": "social",
+        "size": 12,
+        "impact": "medium"
+      },
+      {
+        "id": "factor_5",
+        "name": "经济环境",
+        "type": "Factor",
+        "group": "finance",
+        "size": 12,
+        "impact": "medium"
+      },
+      {
+        "id": "factor_6",
+        "name": "政策法规",
+        "type": "Factor",
+        "group": "environment",
+        "size": 12,
+        "impact": "high"
+      },
+      {
+        "id": "factor_7",
+        "name": "技能匹配",
+        "type": "Factor",
+        "group": "career",
+        "size": 12,
+        "impact": "high"
+      },
+      {
+        "id": "factor_8",
+        "name": "地理位置",
+        "type": "Factor",
+        "group": "environment",
+        "size": 12,
+        "impact": "medium"
+      },
+      {
+        "id": "factor_9",
+        "name": "风险承受",
+        "type": "Factor",
+        "group": "finance",
+        "size": 12,
+        "impact": "low"
+      },
+      {
+        "id": "factor_10",
+        "name": "时间管理",
+        "type": "Factor",
+        "group": "education",
+        "size": 12,
+        "impact": "medium"
+      },
+      {
+        "id": "factor_11",
+        "name": "竞争压力",
+        "type": "Factor",
+        "group": "social",
+        "size": 12,
+        "impact": "medium"
+      }
+    ],
+    "edges": [
+      {
+        "source": "81cbd9d5",
+        "target": "self",
+        "relation": "INFLUENCES",
+        "label": "demanding"
+      },
+      {
+        "source": "fcc7e653",
+        "target": "self",
+        "relation": "INFLUENCES",
+        "label": "supportive"
+      },
+      {
+        "source": "1f51bcfb",
+        "target": "self",
+        "relation": "INFLUENCES",
+        "label": "neutral"
+      },
+      {
+        "source": "93d4af76",
+        "target": "self",
+        "relation": "INFLUENCES",
+        "label": "demanding"
+      },
+      {
+        "source": "9fc5395e",
+        "target": "self",
+        "relation": "INFLUENCES",
+        "label": "neutral"
+      },
+      {
+        "source": "factor_0",
+        "target": "self",
+        "relation": "INFLUENCES",
+        "label": "high"
+      },
+      {
+        "source": "factor_1",
+        "target": "self",
+        "relation": "INFLUENCES",
+        "label": "high"
+      },
+      {
+        "source": "factor_2",
+        "target": "self",
+        "relation": "INFLUENCES",
+        "label": "medium"
+      },
+      {
+        "source": "factor_3",
+        "target": "self",
+        "relation": "INFLUENCES",
+        "label": "low"
+      },
+      {
+        "source": "factor_4",
+        "target": "self",
+        "relation": "INFLUENCES",
+        "label": "medium"
+      },
+      {
+        "source": "factor_5",
+        "target": "self",
+        "relation": "INFLUENCES",
+        "label": "medium"
+      },
+      {
+        "source": "factor_6",
+        "target": "self",
+        "relation": "INFLUENCES",
+        "label": "high"
+      },
+      {
+        "source": "factor_7",
+        "target": "self",
+        "relation": "INFLUENCES",
+        "label": "high"
+      },
+      {
+        "source": "factor_8",
+        "target": "self",
+        "relation": "INFLUENCES",
+        "label": "medium"
+      },
+      {
+        "source": "factor_9",
+        "target": "self",
+        "relation": "INFLUENCES",
+        "label": "low"
+      },
+      {
+        "source": "factor_10",
+        "target": "self",
+        "relation": "INFLUENCES",
+        "label": "medium"
+      },
+      {
+        "source": "factor_11",
+        "target": "self",
+        "relation": "INFLUENCES",
+        "label": "medium"
+      },
+      {
+        "source": "factor_0",
+        "target": "factor_7",
+        "relation": "influences",
+        "label": "教育背景通过专业课程和培训影响个人技能的培养，从而决定与体制"
+      },
+      {
+        "source": "factor_1",
+        "target": "factor_10",
+        "relation": "influences",
+        "label": "明确的职业规划引导时间分配，优先安排与就业相关的学习和准备活"
+      },
+      {
+        "source": "factor_6",
+        "target": "factor_0",
+        "relation": "constrains",
+        "label": "政府招聘政策可能设定学历或专业要求，限制教育背景的选择范围"
+      },
+      {
+        "source": "factor_2",
+        "target": "factor_4",
+        "relation": "enables",
+        "label": "家庭人脉网络可以扩展社交联系，提供更多就业信息和推荐机会"
+      },
+      {
+        "source": "factor_5",
+        "target": "factor_11",
+        "relation": "influences",
+        "label": "宏观经济下滑可能增加就业市场饱和度，从而加剧同龄人之间的竞争"
+      },
+      {
+        "source": "factor_8",
+        "target": "factor_2",
+        "relation": "conflicts_with",
+        "label": "选择远离家乡的就业地点可能减少家庭直接支持，增加独立生活挑战"
+      },
+      {
+        "source": "factor_9",
+        "target": "factor_1",
+        "relation": "influences",
+        "label": "平衡的风险偏好影响职业规划，如倾向于稳定但可能限制高薪机会的"
+      },
+      {
+        "source": "factor_3",
+        "target": "factor_10",
+        "relation": "constrains",
+        "label": "健康问题可能限制有效学习时间，影响就业准备的进度和效率"
+      }
+    ]
+  },
+  "expanded_factors": {
+    "core_concern": "就业",
+    "influence_factors": [
+      {
+        "name": "教育背景",
+        "category": "education",
+        "impact": "high",
+        "description": "学历、专业和学校声誉直接影响体制内就业的竞争力和资格要求",
+        "sub_factors": [
+          "专业匹配度",
+          "GPA",
+          "学校排名"
+        ]
+      },
+      {
+        "name": "职业规划",
+        "category": "career",
+        "impact": "high",
+        "description": "明确的职业目标和路径有助于针对性地准备体制内就业",
+        "sub_factors": [
+          "目标岗位",
+          "长期发展计划",
+          "技能提升"
+        ]
+      },
+      {
+        "name": "家庭支持",
+        "category": "family",
+        "impact": "medium",
+        "description": "家庭经济状况和人际关系可能提供就业资源或影响决策",
+        "sub_factors": [
+          "经济援助",
+          "人脉网络",
+          "家庭期望"
+        ]
+      },
+      {
+        "name": "个人健康",
+        "category": "health",
+        "impact": "low",
+        "description": "身心健康影响学习效率和就业准备能力",
+        "sub_factors": [
+          "心理健康",
+          "体能状态"
+        ]
+      },
+      {
+        "name": "社交网络",
+        "category": "social",
+        "impact": "medium",
+        "description": "朋友、同学和导师的关系可能提供就业信息和推荐机会",
+        "sub_factors": [
+          "校友网络",
+          "导师指导",
+          "同行交流"
+        ]
+      },
+      {
+        "name": "经济环境",
+        "category": "finance",
+        "impact": "medium",
+        "description": "宏观经济状况影响体制内就业市场的稳定性和招聘规模",
+        "sub_factors": [
+          "政府预算",
+          "就业率",
+          "行业趋势"
+        ]
+      },
+      {
+        "name": "政策法规",
+        "category": "environment",
+        "impact": "high",
+        "description": "政府招聘政策和法规变化直接影响体制内就业的准入和流程",
+        "sub_factors": [
+          "招聘政策",
+          "考试要求",
+          "资格认证"
+        ]
+      },
+      {
+        "name": "技能匹配",
+        "category": "career",
+        "impact": "high",
+        "description": "个人技能与体制内岗位需求的匹配度决定就业成功率",
+        "sub_factors": [
+          "软技能",
+          "硬技能",
+          "证书"
+        ]
+      },
+      {
+        "name": "地理位置",
+        "category": "environment",
+        "impact": "medium",
+        "description": "就业地点影响机会获取和生活成本，体制内岗位分布不均",
+        "sub_factors": [
+          "城市发展",
+          "交通便利",
+          "生活成本"
+        ]
+      },
+      {
+        "name": "风险承受",
+        "category": "finance",
+        "impact": "low",
+        "description": "平衡的风险偏好影响就业选择，如是否接受稳定但低薪的体制内工作",
+        "sub_factors": [
+          "收入预期",
+          "稳定性偏好",
+          "职业风险"
+        ]
+      },
+      {
+        "name": "时间管理",
+        "category": "education",
+        "impact": "medium",
+        "description": "有效的时间分配影响学业和就业准备的平衡",
+        "sub_factors": [
+          "学习计划",
+          "实习安排",
+          "考试准备"
+        ]
+      },
+      {
+        "name": "竞争压力",
+        "category": "social",
+        "impact": "medium",
+        "description": "同龄人竞争和就业市场饱和度影响求职心态和策略",
+        "sub_factors": [
+          "竞争对手",
+          "岗位供需",
+          "心理压力"
+        ]
+      }
+    ],
+    "causal_chains": [
+      {
+        "from": "教育背景",
+        "to": "技能匹配",
+        "relation": "influences",
+        "description": "教育背景通过专业课程和培训影响个人技能的培养，从而决定与体制内岗位的匹配度"
+      },
+      {
+        "from": "职业规划",
+        "to": "时间管理",
+        "relation": "influences",
+        "description": "明确的职业规划引导时间分配，优先安排与就业相关的学习和准备活动"
+      },
+      {
+        "from": "政策法规",
+        "to": "教育背景",
+        "relation": "constrains",
+        "description": "政府招聘政策可能设定学历或专业要求，限制教育背景的选择范围"
+      },
+      {
+        "from": "家庭支持",
+        "to": "社交网络",
+        "relation": "enables",
+        "description": "家庭人脉网络可以扩展社交联系，提供更多就业信息和推荐机会"
+      },
+      {
+        "from": "经济环境",
+        "to": "竞争压力",
+        "relation": "influences",
+        "description": "宏观经济下滑可能增加就业市场饱和度，从而加剧同龄人之间的竞争压力"
+      },
+      {
+        "from": "技能匹配",
+        "to": "就业",
+        "relation": "influences",
+        "description": "个人技能与岗位需求的高度匹配直接提升体制内就业的成功率"
+      },
+      {
+        "from": "地理位置",
+        "to": "家庭支持",
+        "relation": "conflicts_with",
+        "description": "选择远离家乡的就业地点可能减少家庭直接支持，增加独立生活挑战"
+      },
+      {
+        "from": "风险承受",
+        "to": "职业规划",
+        "relation": "influences",
+        "description": "平衡的风险偏好影响职业规划，如倾向于稳定但可能限制高薪机会的体制内路径"
+      },
+      {
+        "from": "个人健康",
+        "to": "时间管理",
+        "relation": "constrains",
+        "description": "健康问题可能限制有效学习时间，影响就业准备的进度和效率"
+      },
+      {
+        "from": "社交网络",
+        "to": "就业",
+        "relation": "enables",
+        "description": "强大的社交网络通过推荐和信息共享，增加获取体制内就业机会的可能性"
+      }
+    ],
+    "recommended_agents": [
+      "Self",
+      "Family",
+      "Mentor",
+      "School",
+      "Employer",
+      "City",
+      "Industry",
+      "Risk"
+    ]
+  },
+  "paths": [
+    {
+      "id": "ed8fcbef",
+      "name": "Path Alpha: 最优路径 (选项B：探索其他体制内或社会意)",
+      "path_type": "optimal",
+      "summary": "围绕「」的路径：通过 5 个关键节点推演，分支标签「选项B：探索其他体制内或社会意义工作，如非营利组织，以降低风」。",
+      "risk_level": "low",
+      "satisfaction_score": 0.6807165797952026,
+      "final_state": {
+        "education": 1.0,
+        "career": 0.7818443573879862,
+        "finance": 0.0033299653648620753,
+        "health": 0.6000000000000001,
+        "mental": 0.13848213512876056,
+        "relationship": 0.5,
+        "family_support": 0.05,
+        "social_capital": 1.0,
+        "optionality": 1.0,
+        "goal_alignment": 1.0
+      },
+      "nodes": [
+        {
+          "node_id": "3e128f0c",
+          "node_type": "opportunity",
+          "title": "实习与讲座机会出现",
+          "description": "张教授推荐了市人社局的线上政策讲座，明德大学发布了公共部门实习项目，这为林思远提供了探索体制内工作的早期机会，帮助他积累知识和实践经验。",
+          "time_label": "2025-Q1",
+          "trigger_reason": "导师和学校的主动支持，结合林思远的反思和平衡路径倾向，促成了这些初步资源的提供。",
+          "state_snapshot": {
+            "education": 1.0,
+            "career": 0.12074752801028986,
+            "finance": 0.3980066231270631,
+            "health": 0.8,
+            "mental": 0.5007678706947503,
+            "relationship": 0.5,
+            "family_support": 0.4818407200429786,
+            "social_capital": 0.5756181767209426,
+            "optionality": 1.0,
+            "goal_alignment": 0.7284273388073045
+          },
+          "agent_actions": [
+            {
+              "agent_id": "Self",
+              "agent_type": "Self",
+              "action_type": "REFLECT",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "mental",
+                  "goal_alignment"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.2
+              },
+              "narrative": "林思远在学期初反思自己的职业规划，结合INFP的理想主义，他开始思考如何在体制内找到既能稳定又有社会意义的工作，这让他感到一丝方向感，但也因完美主义而有些焦虑。"
+            },
+            {
+              "agent_id": "Family",
+              "agent_type": "Family",
+              "action_type": "APPLY_PRESSURE",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "mental",
+                  "family_support"
+                ],
+                "delta_direction": "negative",
+                "intensity": 0.3
+              },
+              "narrative": "林父在家庭聚餐时再次强调体制内工作的优势，催促林思远尽快开始准备公务员考试，这增加了林思远的压力，让他感到家庭期望与个人兴趣的冲突。"
+            },
+            {
+              "agent_id": "Mentor",
+              "agent_type": "Mentor",
+              "action_type": "PROVIDE_OPPORTUNITY",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "education",
+                  "social_capital"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.4
+              },
+              "narrative": "张教授推荐林思远参加一个由市人社局举办的线上政策讲座，这提供了了解体制内就业市场的机会，帮助他积累实用知识和人脉。"
+            }
+          ]
+        },
+        {
+          "node_id": "3702486e",
+          "node_type": "opportunity",
+          "title": "实习申请与竞争加剧",
+          "description": "林思远开始准备市人社局的实习申请，但雇主缩减名额并提高标准，导师和学校提供了支持，家庭施加压力，城市经济波动带来挑战。",
+          "time_label": "2025-Q2",
+          "trigger_reason": "基于平衡路径倾向，Self Agent 做出决策以推进职业目标，外部条件变化触发关键机会和风险。",
+          "state_snapshot": {
+            "education": 1.0,
+            "career": 0.2631766633721434,
+            "finance": 0.257898971139088,
+            "health": 0.8,
+            "mental": 0.44169182812884517,
+            "relationship": 0.5,
+            "family_support": 0.1453423109198979,
+            "social_capital": 0.8645660063762592,
+            "optionality": 0.7028863368245828,
+            "goal_alignment": 0.9129573254890204
+          },
+          "agent_actions": [
+            {
+              "agent_id": "Self",
+              "agent_type": "Self",
+              "action_type": "MAKE_DECISION",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "mental",
+                  "goal_alignment"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.2
+              },
+              "narrative": "林思远决定开始准备市人社局的实习申请，他花时间研究政策法规，并调整简历以突出社会意义和稳定性的结合，这让他感到目标更清晰，但完美主义让他反复修改材料。"
+            },
+            {
+              "agent_id": "Family",
+              "agent_type": "Family",
+              "action_type": "APPLY_PRESSURE",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "mental",
+                  "family_support"
+                ],
+                "delta_direction": "negative",
+                "intensity": 0.3
+              },
+              "narrative": "林父得知儿子在准备实习，催促他尽快提交申请并强调体制内工作的稳定性，这增加了林思远的焦虑感，但父亲也承诺提供经济支持以减轻负担。"
+            },
+            {
+              "agent_id": "Mentor",
+              "agent_type": "Mentor",
+              "action_type": "PROVIDE_OPPORTUNITY",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "social_capital"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.4
+              },
+              "narrative": "张教授推荐林思远参加一个市人社局举办的线上政策研讨会，并介绍了一位在职校友，这为他提供了宝贵的网络资源和行业洞察。"
+            }
+          ]
+        },
+        {
+          "node_id": "eb36ca1f",
+          "node_type": "opportunity",
+          "title": "非营利组织实习机会出现",
+          "description": "张教授和明德大学为林思远提供了非营利组织的实习机会，这符合他的社会意义追求，但薪资低且竞争激烈，需要他做出选择。",
+          "time_label": "2025-Q3",
+          "trigger_reason": "林思远基于风险偏好选择探索其他路径，导师和学校响应提供了相关机会。",
+          "state_snapshot": {
+            "education": 1.0,
+            "career": 0.3670946123337637,
+            "finance": 0.0,
+            "health": 0.7000000000000001,
+            "mental": 0.3454425080824053,
+            "relationship": 0.5,
+            "family_support": 0.05,
+            "social_capital": 0.6233131362482727,
+            "optionality": 0.960622509449943,
+            "goal_alignment": 1.0
+          },
+          "agent_actions": [
+            {
+              "agent_id": "Self",
+              "agent_type": "Self",
+              "action_type": "MAKE_DECISION",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "goal_alignment",
+                  "mental"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.3
+              },
+              "narrative": "林思远在权衡风险后，决定继续探索其他体制内或社会意义工作，如非营利组织，以降低直接竞争压力，这让他感到更符合个人价值观，但增加了不确定性。"
+            },
+            {
+              "agent_id": "Family",
+              "agent_type": "Family",
+              "action_type": "APPLY_PRESSURE",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "family_support",
+                  "mental"
+                ],
+                "delta_direction": "negative",
+                "intensity": 0.4
+              },
+              "narrative": "林父得知儿子放弃市人社局实习后，强烈施压要求他尽快锁定稳定工作，认为探索非营利组织是浪费时间，并威胁减少经济支持。"
+            },
+            {
+              "agent_id": "Mentor",
+              "agent_type": "Mentor",
+              "action_type": "GIVE_SUPPORT",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "social_capital",
+                  "career"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.2
+              },
+              "narrative": "张教授理解林思远的理想主义，为他推荐了几个非营利组织的实习机会，并建议通过技能提升来增加竞争力，但提醒这些岗位薪资较低。"
+            }
+          ]
+        },
+        {
+          "node_id": "d5c1e66e",
+          "node_type": "decision",
+          "title": "申请社会福利机构实习",
+          "description": "林思远在探索非营利组织工作后，决定申请滨海市的社会福利机构实习，以追求社会意义工作，但面临家庭反对和经济压力。",
+          "time_label": "2025-Q4",
+          "trigger_reason": "基于INFP性格的理想主义和对稳定工作的谨慎权衡，结合历史探索非营利组织的分支选择。",
+          "state_snapshot": {
+            "education": 1.0,
+            "career": 0.4212079444931151,
+            "finance": 0.0,
+            "health": 0.6000000000000001,
+            "mental": 0.2,
+            "relationship": 0.5,
+            "family_support": 0.05,
+            "social_capital": 1.0,
+            "optionality": 0.7326724692396939,
+            "goal_alignment": 1.0
+          },
+          "agent_actions": [
+            {
+              "agent_id": "Self",
+              "agent_type": "Self",
+              "action_type": "MAKE_DECISION",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "goal_alignment",
+                  "mental"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.3
+              },
+              "narrative": "林思远在探索非营利组织工作后，决定申请一个滨海市的社会福利机构实习，以平衡理想主义和稳定需求，缓解完美主义带来的拖延。"
+            },
+            {
+              "agent_id": "Family",
+              "agent_type": "Family",
+              "action_type": "APPLY_PRESSURE",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "family_support",
+                  "mental"
+                ],
+                "delta_direction": "negative",
+                "intensity": 0.4
+              },
+              "narrative": "林父得知儿子转向非营利组织，强烈施压要求他放弃探索，立即准备市人社局的正式招聘考试，威胁减少经济支持。"
+            },
+            {
+              "agent_id": "Mentor",
+              "agent_type": "Mentor",
+              "action_type": "GIVE_SUPPORT",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "social_capital",
+                  "career"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.2
+              },
+              "narrative": "张教授提供务实建议，帮助林思远优化简历并联系社会福利机构的人脉，强调在体制外积累经验也能增强未来竞争力。"
+            }
+          ]
+        },
+        {
+          "node_id": "8297041c",
+          "node_type": "opportunity",
+          "title": "市人社局春季招聘机会",
+          "description": "市人社局发布了春季招聘公告，提供适合应届生的稳定职位，林思远符合申请条件，这成为他职业道路上的关键转折点。",
+          "time_label": "2026-Q1",
+          "trigger_reason": "雇主主动提供招聘机会，结合林思远的决策和学校招聘会促成。",
+          "state_snapshot": {
+            "education": 1.0,
+            "career": 0.7818443573879862,
+            "finance": 0.0033299653648620753,
+            "health": 0.6000000000000001,
+            "mental": 0.13848213512876056,
+            "relationship": 0.5,
+            "family_support": 0.05,
+            "social_capital": 1.0,
+            "optionality": 1.0,
+            "goal_alignment": 1.0
+          },
+          "agent_actions": [
+            {
+              "agent_id": "Self",
+              "agent_type": "Self",
+              "action_type": "MAKE_DECISION",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "goal_alignment",
+                  "mental"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.3
+              },
+              "narrative": "林思远在非营利组织实习中感受到社会意义，但经济压力让他焦虑，他决定同时申请市人社局的正式职位，以平衡理想与现实。"
+            },
+            {
+              "agent_id": "Family",
+              "agent_type": "Family",
+              "action_type": "APPLY_PRESSURE",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "family_support",
+                  "mental"
+                ],
+                "delta_direction": "negative",
+                "intensity": 0.4
+              },
+              "narrative": "林父得知儿子还在探索非营利组织，严厉批评他不务正业，要求他立即专注于体制内求职，否则可能减少经济支持。"
+            },
+            {
+              "agent_id": "Mentor",
+              "agent_type": "Mentor",
+              "action_type": "GIVE_SUPPORT",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "social_capital"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.2
+              },
+              "narrative": "张教授了解到林思远的双重申请计划，提供了一些市人社局的内部招聘信息和面试技巧，帮助他提升竞争力。"
+            }
+          ]
+        }
+      ],
+      "rounds": [],
+      "advice": {
+        "mode": "satisfied",
+        "title": "INFP大学生体制内职业路径落地计划",
+        "immediate_actions": [
+          "立即注册市人社局的线上政策讲座，并记录关键知识点，以积累体制内工作知识",
+          "开始准备明德大学公共部门实习项目的申请材料，包括简历、动机信和推荐信，确保突出INFP的社会意义追求",
+          "与张教授沟通，获取更多关于非营利组织实习机会的详细信息，并评估其与个人价值观的匹配度"
+        ],
+        "mid_term_plan": [
+          "在2025-Q2前完成市人社局实习申请，同时参加模拟面试和技能培训以应对竞争加剧",
+          "在2025-Q3探索非营利组织实习，通过志愿服务或兼职积累社会工作经验，平衡薪资低的问题",
+          "在2025-Q4申请滨海市社会福利机构实习，提前与家庭沟通以缓解反对，并制定预算管理经济压力"
+        ],
+        "risk_mitigation": [
+          "针对家庭反对，定期分享实习进展和社会意义成果，争取理解和支持",
+          "针对经济压力，申请奖学金或兼职工作，并优化个人开支，确保财务稳定",
+          "针对竞争激烈，建立导师网络和校友联系，获取内推机会和职业指导"
+        ],
+        "key_nodes": [
+          "2025-Q1: 抓住讲座和实习机会，建立早期体制内经验",
+          "2025-Q3: 评估非营利组织实习，做出符合社会意义的选择",
+          "2026-Q1: 申请市人社局春季招聘，利用应届生优势实现职业转折"
+        ]
+      }
+    },
+    {
+      "id": "e3b4331e",
+      "name": "Path Beta: 稳健路径 (调整策略，同时申请其他体制内实)",
+      "path_type": "conservative",
+      "summary": "围绕「」的路径：通过 5 个关键节点推演，分支标签「调整策略，同时申请其他体制内实习作为备选」。",
+      "risk_level": "low",
+      "satisfaction_score": 0.5484313452082162,
+      "final_state": {
+        "education": 1.0,
+        "career": 0.42602987161822886,
+        "finance": 0.0,
+        "health": 0.6000000000000001,
+        "mental": 0.35336607797027453,
+        "relationship": 0.5,
+        "family_support": 0.05,
+        "social_capital": 1.0,
+        "optionality": 0.8588371948119284,
+        "goal_alignment": 1.0
+      },
+      "nodes": [
+        {
+          "node_id": "3e128f0c",
+          "node_type": "opportunity",
+          "title": "实习与讲座机会出现",
+          "description": "张教授推荐了市人社局的线上政策讲座，明德大学发布了公共部门实习项目，这为林思远提供了探索体制内工作的早期机会，帮助他积累知识和实践经验。",
+          "time_label": "2025-Q1",
+          "trigger_reason": "导师和学校的主动支持，结合林思远的反思和平衡路径倾向，促成了这些初步资源的提供。",
+          "state_snapshot": {
+            "education": 1.0,
+            "career": 0.12074752801028986,
+            "finance": 0.3980066231270631,
+            "health": 0.8,
+            "mental": 0.5007678706947503,
+            "relationship": 0.5,
+            "family_support": 0.4818407200429786,
+            "social_capital": 0.5756181767209426,
+            "optionality": 1.0,
+            "goal_alignment": 0.7284273388073045
+          },
+          "agent_actions": [
+            {
+              "agent_id": "Self",
+              "agent_type": "Self",
+              "action_type": "REFLECT",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "mental",
+                  "goal_alignment"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.2
+              },
+              "narrative": "林思远在学期初反思自己的职业规划，结合INFP的理想主义，他开始思考如何在体制内找到既能稳定又有社会意义的工作，这让他感到一丝方向感，但也因完美主义而有些焦虑。"
+            },
+            {
+              "agent_id": "Family",
+              "agent_type": "Family",
+              "action_type": "APPLY_PRESSURE",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "mental",
+                  "family_support"
+                ],
+                "delta_direction": "negative",
+                "intensity": 0.3
+              },
+              "narrative": "林父在家庭聚餐时再次强调体制内工作的优势，催促林思远尽快开始准备公务员考试，这增加了林思远的压力，让他感到家庭期望与个人兴趣的冲突。"
+            },
+            {
+              "agent_id": "Mentor",
+              "agent_type": "Mentor",
+              "action_type": "PROVIDE_OPPORTUNITY",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "education",
+                  "social_capital"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.4
+              },
+              "narrative": "张教授推荐林思远参加一个由市人社局举办的线上政策讲座，这提供了了解体制内就业市场的机会，帮助他积累实用知识和人脉。"
+            }
+          ]
+        },
+        {
+          "node_id": "3702486e",
+          "node_type": "opportunity",
+          "title": "实习申请与竞争加剧",
+          "description": "林思远开始准备市人社局的实习申请，但雇主缩减名额并提高标准，导师和学校提供了支持，家庭施加压力，城市经济波动带来挑战。",
+          "time_label": "2025-Q2",
+          "trigger_reason": "基于平衡路径倾向，Self Agent 做出决策以推进职业目标，外部条件变化触发关键机会和风险。",
+          "state_snapshot": {
+            "education": 1.0,
+            "career": 0.2631766633721434,
+            "finance": 0.257898971139088,
+            "health": 0.8,
+            "mental": 0.44169182812884517,
+            "relationship": 0.5,
+            "family_support": 0.1453423109198979,
+            "social_capital": 0.8645660063762592,
+            "optionality": 0.7028863368245828,
+            "goal_alignment": 0.9129573254890204
+          },
+          "agent_actions": [
+            {
+              "agent_id": "Self",
+              "agent_type": "Self",
+              "action_type": "MAKE_DECISION",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "mental",
+                  "goal_alignment"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.2
+              },
+              "narrative": "林思远决定开始准备市人社局的实习申请，他花时间研究政策法规，并调整简历以突出社会意义和稳定性的结合，这让他感到目标更清晰，但完美主义让他反复修改材料。"
+            },
+            {
+              "agent_id": "Family",
+              "agent_type": "Family",
+              "action_type": "APPLY_PRESSURE",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "mental",
+                  "family_support"
+                ],
+                "delta_direction": "negative",
+                "intensity": 0.3
+              },
+              "narrative": "林父得知儿子在准备实习，催促他尽快提交申请并强调体制内工作的稳定性，这增加了林思远的焦虑感，但父亲也承诺提供经济支持以减轻负担。"
+            },
+            {
+              "agent_id": "Mentor",
+              "agent_type": "Mentor",
+              "action_type": "PROVIDE_OPPORTUNITY",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "social_capital"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.4
+              },
+              "narrative": "张教授推荐林思远参加一个市人社局举办的线上政策研讨会，并介绍了一位在职校友，这为他提供了宝贵的网络资源和行业洞察。"
+            }
+          ]
+        },
+        {
+          "node_id": "7a700a74",
+          "node_type": "opportunity",
+          "title": "实习申请关键节点",
+          "description": "林思远在准备市人社局实习申请时，收到学校提供的直接接触雇主机会，但雇主缩减招聘规模，使他面临接受挑战或调整策略的选择。",
+          "time_label": "2025-Q3",
+          "trigger_reason": "基于历史分支选择坚持申请，结合当前时间点和路径倾向，实习申请进入关键阶段，需要应对变化的外部条件。",
+          "state_snapshot": {
+            "education": 1.0,
+            "career": 0.22610409440731877,
+            "finance": 0.0,
+            "health": 0.7000000000000001,
+            "mental": 0.4014244065677841,
+            "relationship": 0.5,
+            "family_support": 0.05,
+            "social_capital": 0.7787145316559588,
+            "optionality": 1.0,
+            "goal_alignment": 1.0
+          },
+          "agent_actions": [
+            {
+              "agent_id": "Self",
+              "agent_type": "Self",
+              "action_type": "MAKE_DECISION",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "mental",
+                  "goal_alignment"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.3
+              },
+              "narrative": "林思远决定坚持申请市人社局实习，他投入更多时间准备笔试和面试，结合理想主义价值观，专注于提升政策法规知识以增加竞争力。"
+            },
+            {
+              "agent_id": "Family",
+              "agent_type": "Family",
+              "action_type": "APPLY_PRESSURE",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "family_support",
+                  "mental"
+                ],
+                "delta_direction": "negative",
+                "intensity": 0.2
+              },
+              "narrative": "林父得知儿子仍在准备实习申请，再次施加压力，强调体制内就业的紧迫性，并暗示如果失败应考虑其他稳定工作，让林思远感到焦虑。"
+            },
+            {
+              "agent_id": "Mentor",
+              "agent_type": "Mentor",
+              "action_type": "GIVE_SUPPORT",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "social_capital",
+                  "career"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.4
+              },
+              "narrative": "张教授提供了一对一辅导，帮助林思远优化简历和模拟面试，并分享内部招聘信息，鼓励他结合理想与现实，提升技能以应对竞争。"
+            }
+          ]
+        },
+        {
+          "node_id": "d0b0c078",
+          "node_type": "opportunity",
+          "title": "市人社局实习面试邀请",
+          "description": "市人社局向林思远发出了实习面试邀请，但由于经济影响名额有限，竞争异常激烈，这成为他职业路径的关键节点。",
+          "time_label": "2025-Q4",
+          "trigger_reason": "林思远坚持申请并得到导师和学校支持，但雇主因经济波动缩减招聘规模。",
+          "state_snapshot": {
+            "education": 1.0,
+            "career": 0.8508192423770162,
+            "finance": 0.0,
+            "health": 0.7000000000000001,
+            "mental": 0.3511242429803428,
+            "relationship": 0.5,
+            "family_support": 0.05,
+            "social_capital": 1.0,
+            "optionality": 1.0,
+            "goal_alignment": 1.0
+          },
+          "agent_actions": [
+            {
+              "agent_id": "Self",
+              "agent_type": "Self",
+              "action_type": "MAKE_DECISION",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "mental",
+                  "goal_alignment"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.2
+              },
+              "narrative": "林思远在收到市人社局实习申请结果前，决定同时申请滨海市其他几个体制内单位的实习，以分散风险并保持理想主义与现实的平衡。"
+            },
+            {
+              "agent_id": "Family",
+              "agent_type": "Family",
+              "action_type": "APPLY_PRESSURE",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "mental",
+                  "family_support"
+                ],
+                "delta_direction": "negative",
+                "intensity": 0.3
+              },
+              "narrative": "林父得知儿子在申请多个实习，认为这不够专注，再次强调必须尽快锁定市人社局的稳定职位，否则可能减少经济支持。"
+            },
+            {
+              "agent_id": "Mentor",
+              "agent_type": "Mentor",
+              "action_type": "GIVE_SUPPORT",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "social_capital"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.2
+              },
+              "narrative": "张教授赞赏林思远的备选策略，并主动联系在滨海市其他体制内单位的人脉，为他提供额外的推荐信和面试指导。"
+            }
+          ]
+        },
+        {
+          "node_id": "ff230cd4",
+          "node_type": "opportunity",
+          "title": "面试与备选机会并存",
+          "description": "林思远收到市人社局面试邀请，同时学校通知文化局实习进入终审，他需要在高风险面试和稳定备选之间做出权衡。",
+          "time_label": "2026-Q1",
+          "trigger_reason": "上一轮分散风险策略导致多个机会进展，当前时间点需要决策优先方向。",
+          "state_snapshot": {
+            "education": 1.0,
+            "career": 0.42602987161822886,
+            "finance": 0.0,
+            "health": 0.6000000000000001,
+            "mental": 0.35336607797027453,
+            "relationship": 0.5,
+            "family_support": 0.05,
+            "social_capital": 1.0,
+            "optionality": 0.8588371948119284,
+            "goal_alignment": 1.0
+          },
+          "agent_actions": [
+            {
+              "agent_id": "Self",
+              "agent_type": "Self",
+              "action_type": "MAKE_DECISION",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "mental",
+                  "goal_alignment"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.3
+              },
+              "narrative": "林思远在收到市人社局面试邀请后，结合INFP性格的价值观，决定优先准备面试，同时保持对其他机会的开放态度，以平衡理想与现实。"
+            },
+            {
+              "agent_id": "Family",
+              "agent_type": "Family",
+              "action_type": "APPLY_PRESSURE",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "mental",
+                  "family_support"
+                ],
+                "delta_direction": "negative",
+                "intensity": 0.2
+              },
+              "narrative": "林父得知儿子收到市人社局面试，强调必须抓住这个稳定机会，施加压力要求全力以赴，否则可能减少经济支持。"
+            },
+            {
+              "agent_id": "Mentor",
+              "agent_type": "Mentor",
+              "action_type": "GIVE_SUPPORT",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "social_capital"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.4
+              },
+              "narrative": "张教授为林思远提供面试辅导，分享体制内招聘的实用技巧，并推荐人脉资源，帮助他提升竞争力。"
+            }
+          ]
+        }
+      ],
+      "rounds": [],
+      "advice": {}
+    },
+    {
+      "id": "cd14ec61",
+      "name": "Path Gamma: 冒险路径 (继续专注市人社局实习，投入更多)",
+      "path_type": "risk",
+      "summary": "围绕「」的路径：通过 5 个关键节点推演，分支标签「继续专注市人社局实习，投入更多资源以应对挑战」。",
+      "risk_level": "high",
+      "satisfaction_score": 0.49451076090226653,
+      "final_state": {
+        "education": 1.0,
+        "career": 0.6043549670445633,
+        "finance": 0.0,
+        "health": 0.5000000000000001,
+        "mental": 0.32996376256613447,
+        "relationship": 0.5,
+        "family_support": 0.05,
+        "social_capital": 1.0,
+        "optionality": 0.7618072097487133,
+        "goal_alignment": 1.0
+      },
+      "nodes": [
+        {
+          "node_id": "3e128f0c",
+          "node_type": "opportunity",
+          "title": "实习与讲座机会出现",
+          "description": "张教授推荐了市人社局的线上政策讲座，明德大学发布了公共部门实习项目，这为林思远提供了探索体制内工作的早期机会，帮助他积累知识和实践经验。",
+          "time_label": "2025-Q1",
+          "trigger_reason": "导师和学校的主动支持，结合林思远的反思和平衡路径倾向，促成了这些初步资源的提供。",
+          "state_snapshot": {
+            "education": 1.0,
+            "career": 0.12074752801028986,
+            "finance": 0.3980066231270631,
+            "health": 0.8,
+            "mental": 0.5007678706947503,
+            "relationship": 0.5,
+            "family_support": 0.4818407200429786,
+            "social_capital": 0.5756181767209426,
+            "optionality": 1.0,
+            "goal_alignment": 0.7284273388073045
+          },
+          "agent_actions": [
+            {
+              "agent_id": "Self",
+              "agent_type": "Self",
+              "action_type": "REFLECT",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "mental",
+                  "goal_alignment"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.2
+              },
+              "narrative": "林思远在学期初反思自己的职业规划，结合INFP的理想主义，他开始思考如何在体制内找到既能稳定又有社会意义的工作，这让他感到一丝方向感，但也因完美主义而有些焦虑。"
+            },
+            {
+              "agent_id": "Family",
+              "agent_type": "Family",
+              "action_type": "APPLY_PRESSURE",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "mental",
+                  "family_support"
+                ],
+                "delta_direction": "negative",
+                "intensity": 0.3
+              },
+              "narrative": "林父在家庭聚餐时再次强调体制内工作的优势，催促林思远尽快开始准备公务员考试，这增加了林思远的压力，让他感到家庭期望与个人兴趣的冲突。"
+            },
+            {
+              "agent_id": "Mentor",
+              "agent_type": "Mentor",
+              "action_type": "PROVIDE_OPPORTUNITY",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "education",
+                  "social_capital"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.4
+              },
+              "narrative": "张教授推荐林思远参加一个由市人社局举办的线上政策讲座，这提供了了解体制内就业市场的机会，帮助他积累实用知识和人脉。"
+            }
+          ]
+        },
+        {
+          "node_id": "3702486e",
+          "node_type": "opportunity",
+          "title": "实习申请与竞争加剧",
+          "description": "林思远开始准备市人社局的实习申请，但雇主缩减名额并提高标准，导师和学校提供了支持，家庭施加压力，城市经济波动带来挑战。",
+          "time_label": "2025-Q2",
+          "trigger_reason": "基于平衡路径倾向，Self Agent 做出决策以推进职业目标，外部条件变化触发关键机会和风险。",
+          "state_snapshot": {
+            "education": 1.0,
+            "career": 0.2631766633721434,
+            "finance": 0.257898971139088,
+            "health": 0.8,
+            "mental": 0.44169182812884517,
+            "relationship": 0.5,
+            "family_support": 0.1453423109198979,
+            "social_capital": 0.8645660063762592,
+            "optionality": 0.7028863368245828,
+            "goal_alignment": 0.9129573254890204
+          },
+          "agent_actions": [
+            {
+              "agent_id": "Self",
+              "agent_type": "Self",
+              "action_type": "MAKE_DECISION",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "mental",
+                  "goal_alignment"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.2
+              },
+              "narrative": "林思远决定开始准备市人社局的实习申请，他花时间研究政策法规，并调整简历以突出社会意义和稳定性的结合，这让他感到目标更清晰，但完美主义让他反复修改材料。"
+            },
+            {
+              "agent_id": "Family",
+              "agent_type": "Family",
+              "action_type": "APPLY_PRESSURE",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "mental",
+                  "family_support"
+                ],
+                "delta_direction": "negative",
+                "intensity": 0.3
+              },
+              "narrative": "林父得知儿子在准备实习，催促他尽快提交申请并强调体制内工作的稳定性，这增加了林思远的焦虑感，但父亲也承诺提供经济支持以减轻负担。"
+            },
+            {
+              "agent_id": "Mentor",
+              "agent_type": "Mentor",
+              "action_type": "PROVIDE_OPPORTUNITY",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "social_capital"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.4
+              },
+              "narrative": "张教授推荐林思远参加一个市人社局举办的线上政策研讨会，并介绍了一位在职校友，这为他提供了宝贵的网络资源和行业洞察。"
+            }
+          ]
+        },
+        {
+          "node_id": "7a700a74",
+          "node_type": "opportunity",
+          "title": "实习申请关键节点",
+          "description": "林思远在准备市人社局实习申请时，收到学校提供的直接接触雇主机会，但雇主缩减招聘规模，使他面临接受挑战或调整策略的选择。",
+          "time_label": "2025-Q3",
+          "trigger_reason": "基于历史分支选择坚持申请，结合当前时间点和路径倾向，实习申请进入关键阶段，需要应对变化的外部条件。",
+          "state_snapshot": {
+            "education": 1.0,
+            "career": 0.22610409440731877,
+            "finance": 0.0,
+            "health": 0.7000000000000001,
+            "mental": 0.4014244065677841,
+            "relationship": 0.5,
+            "family_support": 0.05,
+            "social_capital": 0.7787145316559588,
+            "optionality": 1.0,
+            "goal_alignment": 1.0
+          },
+          "agent_actions": [
+            {
+              "agent_id": "Self",
+              "agent_type": "Self",
+              "action_type": "MAKE_DECISION",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "mental",
+                  "goal_alignment"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.3
+              },
+              "narrative": "林思远决定坚持申请市人社局实习，他投入更多时间准备笔试和面试，结合理想主义价值观，专注于提升政策法规知识以增加竞争力。"
+            },
+            {
+              "agent_id": "Family",
+              "agent_type": "Family",
+              "action_type": "APPLY_PRESSURE",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "family_support",
+                  "mental"
+                ],
+                "delta_direction": "negative",
+                "intensity": 0.2
+              },
+              "narrative": "林父得知儿子仍在准备实习申请，再次施加压力，强调体制内就业的紧迫性，并暗示如果失败应考虑其他稳定工作，让林思远感到焦虑。"
+            },
+            {
+              "agent_id": "Mentor",
+              "agent_type": "Mentor",
+              "action_type": "GIVE_SUPPORT",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "social_capital",
+                  "career"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.4
+              },
+              "narrative": "张教授提供了一对一辅导，帮助林思远优化简历和模拟面试，并分享内部招聘信息，鼓励他结合理想与现实，提升技能以应对竞争。"
+            }
+          ]
+        },
+        {
+          "node_id": "d0bf6657",
+          "node_type": "opportunity",
+          "title": "实习申请关键节点",
+          "description": "林思远在准备市人社局实习申请过程中，获得了导师的针对性培训和学校的额外机会，但雇主缩减招聘和城市经济波动增加了不确定性，这使他面临是否继续专注申请或探索其他路径的抉择。",
+          "time_label": "2025-Q4",
+          "trigger_reason": "雇主招聘条件变化和外部经济风险触发关键机会点，结合历史分支（专注市人社局实习），需要决定是否坚持或调整方向。",
+          "state_snapshot": {
+            "education": 1.0,
+            "career": 0.45848042727417404,
+            "finance": 0.0,
+            "health": 0.6000000000000001,
+            "mental": 0.2,
+            "relationship": 0.5,
+            "family_support": 0.05,
+            "social_capital": 1.0,
+            "optionality": 1.0,
+            "goal_alignment": 1.0
+          },
+          "agent_actions": [
+            {
+              "agent_id": "Self",
+              "agent_type": "Self",
+              "action_type": "MAKE_DECISION",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "mental",
+                  "goal_alignment"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.3
+              },
+              "narrative": "林思远在实习申请过程中，虽然面临高竞争和家庭压力，但他决定加倍努力准备面试和笔试，结合导师的指导，以保持对体制内工作的追求，这增强了他的职业信心和动力。"
+            },
+            {
+              "agent_id": "Family",
+              "agent_type": "Family",
+              "action_type": "APPLY_PRESSURE",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "mental",
+                  "family_support"
+                ],
+                "delta_direction": "negative",
+                "intensity": 0.2
+              },
+              "narrative": "林父得知市人社局招聘竞争加剧后，再次强调稳定就业的重要性，催促林思远尽快获得实习机会，否则可能减少经济支持，这给林思远带来了额外的心理压力。"
+            },
+            {
+              "agent_id": "Mentor",
+              "agent_type": "Mentor",
+              "action_type": "GIVE_SUPPORT",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "social_capital"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.4
+              },
+              "narrative": "张教授为林思远提供了针对性的面试技巧培训和内部政策分析，帮助他更好地应对市人社局的严格招聘流程，这提升了林思远的职业竞争力和社交网络。"
+            }
+          ]
+        },
+        {
+          "node_id": "b4c200ae",
+          "node_type": "opportunity",
+          "title": "导师提供备选实习机会",
+          "description": "张教授介绍了一个区级政府部门的实习机会，为林思远提供了市人社局之外的备选路径，帮助他拓宽职业选择。",
+          "time_label": "2026-Q1",
+          "trigger_reason": "林思远的反思和导师的务实指导促使这一机会出现，以应对高竞争和不确定性。",
+          "state_snapshot": {
+            "education": 1.0,
+            "career": 0.6043549670445633,
+            "finance": 0.0,
+            "health": 0.5000000000000001,
+            "mental": 0.32996376256613447,
+            "relationship": 0.5,
+            "family_support": 0.05,
+            "social_capital": 1.0,
+            "optionality": 0.7618072097487133,
+            "goal_alignment": 1.0
+          },
+          "agent_actions": [
+            {
+              "agent_id": "Self",
+              "agent_type": "Self",
+              "action_type": "MAKE_DECISION",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "mental",
+                  "goal_alignment"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.3
+              },
+              "narrative": "林思远在反思后，决定在准备市人社局实习的同时，开始探索其他体制内单位作为备选，以平衡理想与现实，减少完美主义带来的焦虑。"
+            },
+            {
+              "agent_id": "Family",
+              "agent_type": "Family",
+              "action_type": "APPLY_PRESSURE",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "mental",
+                  "family_support"
+                ],
+                "delta_direction": "negative",
+                "intensity": 0.2
+              },
+              "narrative": "林父得知儿子还在准备实习，催促他尽快确定就业方向，强调体制内工作的稳定性，并暗示如果拖延可能减少经济支持。"
+            },
+            {
+              "agent_id": "Mentor",
+              "agent_type": "Mentor",
+              "action_type": "GIVE_SUPPORT",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "social_capital",
+                  "mental"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.3
+              },
+              "narrative": "张教授了解到林思远的备选计划，主动介绍了一个区级政府部门的实习机会，鼓励他拓宽视野，并提供了面试技巧指导。"
+            }
+          ]
+        }
+      ],
+      "rounds": [],
+      "advice": {}
+    },
+    {
+      "id": "38ed3b42",
+      "name": "Path Gamma: 冒险路径 (转向探索其他体制内或相关实习机)",
+      "path_type": "risk",
+      "summary": "围绕「」的路径：通过 5 个关键节点推演，分支标签「转向探索其他体制内或相关实习机会，以分散风险」。",
+      "risk_level": "high",
+      "satisfaction_score": 0.45947946834801334,
+      "final_state": {
+        "education": 1.0,
+        "career": 0.45703837579468165,
+        "finance": 0.0,
+        "health": 0.5000000000000001,
+        "mental": 0.2,
+        "relationship": 0.5,
+        "family_support": 0.05,
+        "social_capital": 1.0,
+        "optionality": 0.7529444018405356,
+        "goal_alignment": 1.0
+      },
+      "nodes": [
+        {
+          "node_id": "3e128f0c",
+          "node_type": "opportunity",
+          "title": "实习与讲座机会出现",
+          "description": "张教授推荐了市人社局的线上政策讲座，明德大学发布了公共部门实习项目，这为林思远提供了探索体制内工作的早期机会，帮助他积累知识和实践经验。",
+          "time_label": "2025-Q1",
+          "trigger_reason": "导师和学校的主动支持，结合林思远的反思和平衡路径倾向，促成了这些初步资源的提供。",
+          "state_snapshot": {
+            "education": 1.0,
+            "career": 0.12074752801028986,
+            "finance": 0.3980066231270631,
+            "health": 0.8,
+            "mental": 0.5007678706947503,
+            "relationship": 0.5,
+            "family_support": 0.4818407200429786,
+            "social_capital": 0.5756181767209426,
+            "optionality": 1.0,
+            "goal_alignment": 0.7284273388073045
+          },
+          "agent_actions": [
+            {
+              "agent_id": "Self",
+              "agent_type": "Self",
+              "action_type": "REFLECT",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "mental",
+                  "goal_alignment"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.2
+              },
+              "narrative": "林思远在学期初反思自己的职业规划，结合INFP的理想主义，他开始思考如何在体制内找到既能稳定又有社会意义的工作，这让他感到一丝方向感，但也因完美主义而有些焦虑。"
+            },
+            {
+              "agent_id": "Family",
+              "agent_type": "Family",
+              "action_type": "APPLY_PRESSURE",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "mental",
+                  "family_support"
+                ],
+                "delta_direction": "negative",
+                "intensity": 0.3
+              },
+              "narrative": "林父在家庭聚餐时再次强调体制内工作的优势，催促林思远尽快开始准备公务员考试，这增加了林思远的压力，让他感到家庭期望与个人兴趣的冲突。"
+            },
+            {
+              "agent_id": "Mentor",
+              "agent_type": "Mentor",
+              "action_type": "PROVIDE_OPPORTUNITY",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "education",
+                  "social_capital"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.4
+              },
+              "narrative": "张教授推荐林思远参加一个由市人社局举办的线上政策讲座，这提供了了解体制内就业市场的机会，帮助他积累实用知识和人脉。"
+            }
+          ]
+        },
+        {
+          "node_id": "3702486e",
+          "node_type": "opportunity",
+          "title": "实习申请与竞争加剧",
+          "description": "林思远开始准备市人社局的实习申请，但雇主缩减名额并提高标准，导师和学校提供了支持，家庭施加压力，城市经济波动带来挑战。",
+          "time_label": "2025-Q2",
+          "trigger_reason": "基于平衡路径倾向，Self Agent 做出决策以推进职业目标，外部条件变化触发关键机会和风险。",
+          "state_snapshot": {
+            "education": 1.0,
+            "career": 0.2631766633721434,
+            "finance": 0.257898971139088,
+            "health": 0.8,
+            "mental": 0.44169182812884517,
+            "relationship": 0.5,
+            "family_support": 0.1453423109198979,
+            "social_capital": 0.8645660063762592,
+            "optionality": 0.7028863368245828,
+            "goal_alignment": 0.9129573254890204
+          },
+          "agent_actions": [
+            {
+              "agent_id": "Self",
+              "agent_type": "Self",
+              "action_type": "MAKE_DECISION",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "mental",
+                  "goal_alignment"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.2
+              },
+              "narrative": "林思远决定开始准备市人社局的实习申请，他花时间研究政策法规，并调整简历以突出社会意义和稳定性的结合，这让他感到目标更清晰，但完美主义让他反复修改材料。"
+            },
+            {
+              "agent_id": "Family",
+              "agent_type": "Family",
+              "action_type": "APPLY_PRESSURE",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "mental",
+                  "family_support"
+                ],
+                "delta_direction": "negative",
+                "intensity": 0.3
+              },
+              "narrative": "林父得知儿子在准备实习，催促他尽快提交申请并强调体制内工作的稳定性，这增加了林思远的焦虑感，但父亲也承诺提供经济支持以减轻负担。"
+            },
+            {
+              "agent_id": "Mentor",
+              "agent_type": "Mentor",
+              "action_type": "PROVIDE_OPPORTUNITY",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "social_capital"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.4
+              },
+              "narrative": "张教授推荐林思远参加一个市人社局举办的线上政策研讨会，并介绍了一位在职校友，这为他提供了宝贵的网络资源和行业洞察。"
+            }
+          ]
+        },
+        {
+          "node_id": "7a700a74",
+          "node_type": "opportunity",
+          "title": "实习申请关键节点",
+          "description": "林思远在准备市人社局实习申请时，收到学校提供的直接接触雇主机会，但雇主缩减招聘规模，使他面临接受挑战或调整策略的选择。",
+          "time_label": "2025-Q3",
+          "trigger_reason": "基于历史分支选择坚持申请，结合当前时间点和路径倾向，实习申请进入关键阶段，需要应对变化的外部条件。",
+          "state_snapshot": {
+            "education": 1.0,
+            "career": 0.22610409440731877,
+            "finance": 0.0,
+            "health": 0.7000000000000001,
+            "mental": 0.4014244065677841,
+            "relationship": 0.5,
+            "family_support": 0.05,
+            "social_capital": 0.7787145316559588,
+            "optionality": 1.0,
+            "goal_alignment": 1.0
+          },
+          "agent_actions": [
+            {
+              "agent_id": "Self",
+              "agent_type": "Self",
+              "action_type": "MAKE_DECISION",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "mental",
+                  "goal_alignment"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.3
+              },
+              "narrative": "林思远决定坚持申请市人社局实习，他投入更多时间准备笔试和面试，结合理想主义价值观，专注于提升政策法规知识以增加竞争力。"
+            },
+            {
+              "agent_id": "Family",
+              "agent_type": "Family",
+              "action_type": "APPLY_PRESSURE",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "family_support",
+                  "mental"
+                ],
+                "delta_direction": "negative",
+                "intensity": 0.2
+              },
+              "narrative": "林父得知儿子仍在准备实习申请，再次施加压力，强调体制内就业的紧迫性，并暗示如果失败应考虑其他稳定工作，让林思远感到焦虑。"
+            },
+            {
+              "agent_id": "Mentor",
+              "agent_type": "Mentor",
+              "action_type": "GIVE_SUPPORT",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "social_capital",
+                  "career"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.4
+              },
+              "narrative": "张教授提供了一对一辅导，帮助林思远优化简历和模拟面试，并分享内部招聘信息，鼓励他结合理想与现实，提升技能以应对竞争。"
+            }
+          ]
+        },
+        {
+          "node_id": "d0bf6657",
+          "node_type": "opportunity",
+          "title": "实习申请关键节点",
+          "description": "林思远在准备市人社局实习申请过程中，获得了导师的针对性培训和学校的额外机会，但雇主缩减招聘和城市经济波动增加了不确定性，这使他面临是否继续专注申请或探索其他路径的抉择。",
+          "time_label": "2025-Q4",
+          "trigger_reason": "雇主招聘条件变化和外部经济风险触发关键机会点，结合历史分支（专注市人社局实习），需要决定是否坚持或调整方向。",
+          "state_snapshot": {
+            "education": 1.0,
+            "career": 0.45848042727417404,
+            "finance": 0.0,
+            "health": 0.6000000000000001,
+            "mental": 0.2,
+            "relationship": 0.5,
+            "family_support": 0.05,
+            "social_capital": 1.0,
+            "optionality": 1.0,
+            "goal_alignment": 1.0
+          },
+          "agent_actions": [
+            {
+              "agent_id": "Self",
+              "agent_type": "Self",
+              "action_type": "MAKE_DECISION",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "mental",
+                  "goal_alignment"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.3
+              },
+              "narrative": "林思远在实习申请过程中，虽然面临高竞争和家庭压力，但他决定加倍努力准备面试和笔试，结合导师的指导，以保持对体制内工作的追求，这增强了他的职业信心和动力。"
+            },
+            {
+              "agent_id": "Family",
+              "agent_type": "Family",
+              "action_type": "APPLY_PRESSURE",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "mental",
+                  "family_support"
+                ],
+                "delta_direction": "negative",
+                "intensity": 0.2
+              },
+              "narrative": "林父得知市人社局招聘竞争加剧后，再次强调稳定就业的重要性，催促林思远尽快获得实习机会，否则可能减少经济支持，这给林思远带来了额外的心理压力。"
+            },
+            {
+              "agent_id": "Mentor",
+              "agent_type": "Mentor",
+              "action_type": "GIVE_SUPPORT",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "social_capital"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.4
+              },
+              "narrative": "张教授为林思远提供了针对性的面试技巧培训和内部政策分析，帮助他更好地应对市人社局的严格招聘流程，这提升了林思远的职业竞争力和社交网络。"
+            }
+          ]
+        },
+        {
+          "node_id": "9ea51b05",
+          "node_type": "opportunity",
+          "title": "导师推荐地方政府实习",
+          "description": "张教授推荐林思远申请一个地方政府的短期实习项目，提供务实指导，帮助他积累体制内经验并扩展社交网络，这是一个关键机会。",
+          "time_label": "2026-Q1",
+          "trigger_reason": "林思远决定转向探索其他机会，导师基于了解体制内市场提供支持。",
+          "state_snapshot": {
+            "education": 1.0,
+            "career": 0.45703837579468165,
+            "finance": 0.0,
+            "health": 0.5000000000000001,
+            "mental": 0.2,
+            "relationship": 0.5,
+            "family_support": 0.05,
+            "social_capital": 1.0,
+            "optionality": 0.7529444018405356,
+            "goal_alignment": 1.0
+          },
+          "agent_actions": [
+            {
+              "agent_id": "Self",
+              "agent_type": "Self",
+              "action_type": "MAKE_DECISION",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "optionality",
+                  "mental"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.3
+              },
+              "narrative": "林思远在反思后决定转向探索其他体制内或相关实习机会，以分散风险，这让他感到更灵活和安心，减少了完美主义带来的焦虑。"
+            },
+            {
+              "agent_id": "Family",
+              "agent_type": "Family",
+              "action_type": "APPLY_PRESSURE",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "family_support",
+                  "mental"
+                ],
+                "delta_direction": "negative",
+                "intensity": 0.2
+              },
+              "narrative": "林父得知儿子转向其他机会后，再次施加压力，强调体制内工作的稳定性，要求他尽快确定就业方向，忽视林思远的个人兴趣。"
+            },
+            {
+              "agent_id": "Mentor",
+              "agent_type": "Mentor",
+              "action_type": "PROVIDE_OPPORTUNITY",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "social_capital"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.4
+              },
+              "narrative": "张教授推荐林思远申请一个地方政府的短期实习项目，提供务实指导，帮助他积累体制内经验并扩展社交网络。"
+            }
+          ]
+        }
+      ],
+      "rounds": [],
+      "advice": {}
+    },
+    {
+      "id": "33235680",
+      "name": "回溯路径: 认定了就要去这个非营利性组织实习并工作",
+      "path_type": "counterfactual",
+      "summary": "从原路径节点 3 回溯，修改条件「认定了就要去这个非营利性组织实习并工作」后重新推演，经过 4 轮得到的反事实路径。",
+      "risk_level": "low",
+      "satisfaction_score": 0.7116988001534635,
+      "final_state": {
+        "education": 1.0,
+        "career": 0.7068450886868234,
+        "finance": 0.0,
+        "health": 0.7,
+        "mental": 0.5032978241609882,
+        "relationship": 0.5,
+        "family_support": 0.05,
+        "social_capital": 1.0,
+        "optionality": 1.0,
+        "goal_alignment": 1.0
+      },
+      "nodes": [
+        {
+          "node_id": "3e128f0c",
+          "node_type": "opportunity",
+          "title": "实习与讲座机会出现",
+          "description": "张教授推荐了市人社局的线上政策讲座，明德大学发布了公共部门实习项目，这为林思远提供了探索体制内工作的早期机会，帮助他积累知识和实践经验。",
+          "time_label": "2025-Q1",
+          "trigger_reason": "导师和学校的主动支持，结合林思远的反思和平衡路径倾向，促成了这些初步资源的提供。",
+          "state_snapshot": {
+            "education": 1.0,
+            "career": 0.12074752801028986,
+            "finance": 0.3980066231270631,
+            "health": 0.8,
+            "mental": 0.5007678706947503,
+            "relationship": 0.5,
+            "family_support": 0.4818407200429786,
+            "social_capital": 0.5756181767209426,
+            "optionality": 1.0,
+            "goal_alignment": 0.7284273388073045
+          },
+          "agent_actions": [
+            {
+              "agent_id": "Self",
+              "agent_type": "Self",
+              "action_type": "REFLECT",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "mental",
+                  "goal_alignment"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.2
+              },
+              "narrative": "林思远在学期初反思自己的职业规划，结合INFP的理想主义，他开始思考如何在体制内找到既能稳定又有社会意义的工作，这让他感到一丝方向感，但也因完美主义而有些焦虑。"
+            },
+            {
+              "agent_id": "Family",
+              "agent_type": "Family",
+              "action_type": "APPLY_PRESSURE",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "mental",
+                  "family_support"
+                ],
+                "delta_direction": "negative",
+                "intensity": 0.3
+              },
+              "narrative": "林父在家庭聚餐时再次强调体制内工作的优势，催促林思远尽快开始准备公务员考试，这增加了林思远的压力，让他感到家庭期望与个人兴趣的冲突。"
+            },
+            {
+              "agent_id": "Mentor",
+              "agent_type": "Mentor",
+              "action_type": "PROVIDE_OPPORTUNITY",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "education",
+                  "social_capital"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.4
+              },
+              "narrative": "张教授推荐林思远参加一个由市人社局举办的线上政策讲座，这提供了了解体制内就业市场的机会，帮助他积累实用知识和人脉。"
+            }
+          ]
+        },
+        {
+          "node_id": "3702486e",
+          "node_type": "opportunity",
+          "title": "实习申请与竞争加剧",
+          "description": "林思远开始准备市人社局的实习申请，但雇主缩减名额并提高标准，导师和学校提供了支持，家庭施加压力，城市经济波动带来挑战。",
+          "time_label": "2025-Q2",
+          "trigger_reason": "基于平衡路径倾向，Self Agent 做出决策以推进职业目标，外部条件变化触发关键机会和风险。",
+          "state_snapshot": {
+            "education": 1.0,
+            "career": 0.2631766633721434,
+            "finance": 0.257898971139088,
+            "health": 0.8,
+            "mental": 0.44169182812884517,
+            "relationship": 0.5,
+            "family_support": 0.1453423109198979,
+            "social_capital": 0.8645660063762592,
+            "optionality": 0.7028863368245828,
+            "goal_alignment": 0.9129573254890204
+          },
+          "agent_actions": [
+            {
+              "agent_id": "Self",
+              "agent_type": "Self",
+              "action_type": "MAKE_DECISION",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "mental",
+                  "goal_alignment"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.2
+              },
+              "narrative": "林思远决定开始准备市人社局的实习申请，他花时间研究政策法规，并调整简历以突出社会意义和稳定性的结合，这让他感到目标更清晰，但完美主义让他反复修改材料。"
+            },
+            {
+              "agent_id": "Family",
+              "agent_type": "Family",
+              "action_type": "APPLY_PRESSURE",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "mental",
+                  "family_support"
+                ],
+                "delta_direction": "negative",
+                "intensity": 0.3
+              },
+              "narrative": "林父得知儿子在准备实习，催促他尽快提交申请并强调体制内工作的稳定性，这增加了林思远的焦虑感，但父亲也承诺提供经济支持以减轻负担。"
+            },
+            {
+              "agent_id": "Mentor",
+              "agent_type": "Mentor",
+              "action_type": "PROVIDE_OPPORTUNITY",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "social_capital"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.4
+              },
+              "narrative": "张教授推荐林思远参加一个市人社局举办的线上政策研讨会，并介绍了一位在职校友，这为他提供了宝贵的网络资源和行业洞察。"
+            }
+          ]
+        },
+        {
+          "node_id": "eb36ca1f",
+          "node_type": "opportunity",
+          "title": "非营利组织实习机会出现",
+          "description": "张教授和明德大学为林思远提供了非营利组织的实习机会，这符合他的社会意义追求，但薪资低且竞争激烈，需要他做出选择。",
+          "time_label": "2025-Q3",
+          "trigger_reason": "林思远基于风险偏好选择探索其他路径，导师和学校响应提供了相关机会。",
+          "state_snapshot": {
+            "education": 1.0,
+            "career": 0.3670946123337637,
+            "finance": 0.0,
+            "health": 0.7000000000000001,
+            "mental": 0.3454425080824053,
+            "relationship": 0.5,
+            "family_support": 0.05,
+            "social_capital": 0.6233131362482727,
+            "optionality": 0.960622509449943,
+            "goal_alignment": 1.0
+          },
+          "agent_actions": [
+            {
+              "agent_id": "Self",
+              "agent_type": "Self",
+              "action_type": "MAKE_DECISION",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "goal_alignment",
+                  "mental"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.3
+              },
+              "narrative": "林思远在权衡风险后，决定继续探索其他体制内或社会意义工作，如非营利组织，以降低直接竞争压力，这让他感到更符合个人价值观，但增加了不确定性。"
+            },
+            {
+              "agent_id": "Family",
+              "agent_type": "Family",
+              "action_type": "APPLY_PRESSURE",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "family_support",
+                  "mental"
+                ],
+                "delta_direction": "negative",
+                "intensity": 0.4
+              },
+              "narrative": "林父得知儿子放弃市人社局实习后，强烈施压要求他尽快锁定稳定工作，认为探索非营利组织是浪费时间，并威胁减少经济支持。"
+            },
+            {
+              "agent_id": "Mentor",
+              "agent_type": "Mentor",
+              "action_type": "GIVE_SUPPORT",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "social_capital",
+                  "career"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.2
+              },
+              "narrative": "张教授理解林思远的理想主义，为他推荐了几个非营利组织的实习机会，并建议通过技能提升来增加竞争力，但提醒这些岗位薪资较低。"
+            }
+          ]
+        },
+        {
+          "node_id": "3b223e62",
+          "node_type": "opportunity",
+          "title": "市人社局招聘宣讲会机会",
+          "description": "张教授推荐林思远参加市人社局的招聘宣讲会，提供内部指导和面试支持，这是一个关键的体制内就业机会，但需在准备公务员考试和继续非营利工作之间做出选择。",
+          "time_label": "2026-Q1",
+          "trigger_reason": "导师基于林思远的实习经历和职业兴趣，主动提供人脉资源以帮助他探索稳定职业路径。",
+          "state_snapshot": {
+            "education": 1.0,
+            "career": 0.0,
+            "finance": 0.31345196491183147,
+            "health": 0.7,
+            "mental": 0.37673685021670145,
+            "relationship": 0.5,
+            "family_support": 0.0,
+            "social_capital": 0.6275504956132045,
+            "optionality": 1.0,
+            "goal_alignment": 1.0
+          },
+          "agent_actions": [
+            {
+              "agent_id": "Self",
+              "agent_type": "Self",
+              "action_type": "REFLECT",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "mental",
+                  "goal_alignment"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.2
+              },
+              "narrative": "林思远在非营利组织实习后，反思自己的价值观与职业路径，感到理想主义得到满足，但开始担忧体制内就业的稳定性与个人成长。"
+            },
+            {
+              "agent_id": "Family",
+              "agent_type": "Family",
+              "action_type": "APPLY_PRESSURE",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "mental",
+                  "family_support"
+                ],
+                "delta_direction": "negative",
+                "intensity": 0.3
+              },
+              "narrative": "林父得知儿子在非营利组织实习，再次强调体制内工作的优势，催促林思远尽快准备公务员考试，否则可能减少经济支持。"
+            },
+            {
+              "agent_id": "Mentor",
+              "agent_type": "Mentor",
+              "action_type": "PROVIDE_OPPORTUNITY",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "social_capital",
+                  "optionality"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.4
+              },
+              "narrative": "张教授推荐林思远参加一个市人社局举办的招聘宣讲会，提供内部人脉和面试技巧指导，帮助他探索体制内机会。"
+            }
+          ]
+        },
+        {
+          "node_id": "2bf65aa7",
+          "node_type": "opportunity",
+          "title": "市人社局政策研究岗位招聘",
+          "description": "市人社局发布了政策研究岗位的招聘公告，要求社会服务经验和政策分析能力，这为林思远提供了一个结合理想与稳定的关键就业机会。",
+          "time_label": "2026-Q2",
+          "trigger_reason": "张教授的推荐和雇主的需求匹配，加上林思远的实习反思，共同促成了这个机会的出现。",
+          "state_snapshot": {
+            "education": 1.0,
+            "career": 0.24772595907106695,
+            "finance": 0.0979252437511848,
+            "health": 0.7,
+            "mental": 0.4040061573570958,
+            "relationship": 0.5,
+            "family_support": 0.0,
+            "social_capital": 0.7011831440624222,
+            "optionality": 1.0,
+            "goal_alignment": 1.0
+          },
+          "agent_actions": [
+            {
+              "agent_id": "Self",
+              "agent_type": "Self",
+              "action_type": "REFLECT",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "mental",
+                  "goal_alignment"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.2
+              },
+              "narrative": "林思远在非营利组织实习后，深入反思自己的职业价值观，意识到虽然这份工作有意义，但体制内的稳定性和社会影响力更符合他的长期理想，决定调整方向。"
+            },
+            {
+              "agent_id": "Family",
+              "agent_type": "Family",
+              "action_type": "APPLY_PRESSURE",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "mental",
+                  "family_support"
+                ],
+                "delta_direction": "negative",
+                "intensity": 0.3
+              },
+              "narrative": "林父得知儿子在非营利组织实习后，再次强调体制内工作的优势，催促林思远尽快准备公务员考试，否则可能减少经济支持。"
+            },
+            {
+              "agent_id": "Mentor",
+              "agent_type": "Mentor",
+              "action_type": "PROVIDE_OPPORTUNITY",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "social_capital",
+                  "optionality"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.4
+              },
+              "narrative": "张教授了解到市人社局即将开放一个政策研究岗位的招聘，认为林思远的实习经历和理想主义特质很匹配，主动推荐他申请并提供了内部指导。"
+            }
+          ]
+        },
+        {
+          "node_id": "e973d449",
+          "node_type": "opportunity",
+          "title": "市人社局招聘公告发布",
+          "description": "市人社局发布了秋季招聘公告，提供多个适合应届生的体制内岗位，但竞争激烈且要求严格，为林思远提供了关键求职机会。",
+          "time_label": "2026-Q3",
+          "trigger_reason": "雇主按计划进行季节性招聘，结合林思远的职业转向，创造了直接的就业可能性。",
+          "state_snapshot": {
+            "education": 1.0,
+            "career": 0.9103042964953737,
+            "finance": 0.0,
+            "health": 0.7,
+            "mental": 0.4421558295624345,
+            "relationship": 0.5,
+            "family_support": 0.05,
+            "social_capital": 1.0,
+            "optionality": 1.0,
+            "goal_alignment": 1.0
+          },
+          "agent_actions": [
+            {
+              "agent_id": "Self",
+              "agent_type": "Self",
+              "action_type": "MAKE_DECISION",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "goal_alignment",
+                  "mental"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.3
+              },
+              "narrative": "林思远在反思后，决定正式放弃非营利组织路径，全心投入体制内求职，开始系统准备公务员考试和招聘申请，以追求稳定且有社会意义的工作。"
+            },
+            {
+              "agent_id": "Family",
+              "agent_type": "Family",
+              "action_type": "APPLY_PRESSURE",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "mental",
+                  "family_support"
+                ],
+                "delta_direction": "negative",
+                "intensity": 0.2
+              },
+              "narrative": "林父得知儿子转向体制内工作，虽感欣慰，但催促他尽快找到稳定职位，并暗示如果拖延可能减少经济支持，增加林思远的压力。"
+            },
+            {
+              "agent_id": "Mentor",
+              "agent_type": "Mentor",
+              "action_type": "PROVIDE_OPPORTUNITY",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "social_capital"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.4
+              },
+              "narrative": "张教授推荐林思远参加一个市人社局内部的短期培训项目，这能提升他的政策知识和技能匹配度，为后续招聘增加竞争力。"
+            }
+          ]
+        },
+        {
+          "node_id": "dfed3664",
+          "node_type": "opportunity",
+          "title": "市人社局招聘机会与导师推荐",
+          "description": "市人社局发布招聘公告，张教授提供内部推荐名额，这为林思远创造了关键的求职机会，但经济波动和竞争加剧了不确定性。",
+          "time_label": "2026-Q4",
+          "trigger_reason": "林思远的求职决策和导师的人脉资源共同促成了这个机会的出现。",
+          "state_snapshot": {
+            "education": 1.0,
+            "career": 0.7068450886868234,
+            "finance": 0.0,
+            "health": 0.7,
+            "mental": 0.5032978241609882,
+            "relationship": 0.5,
+            "family_support": 0.05,
+            "social_capital": 1.0,
+            "optionality": 1.0,
+            "goal_alignment": 1.0
+          },
+          "agent_actions": [
+            {
+              "agent_id": "Self",
+              "agent_type": "Self",
+              "action_type": "MAKE_DECISION",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "mental",
+                  "goal_alignment"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.3
+              },
+              "narrative": "林思远在深思熟虑后，决定申请市人社局的职位，他认为这能结合稳定性和社会意义，符合他的价值观，并开始准备笔试和面试。"
+            },
+            {
+              "agent_id": "Family",
+              "agent_type": "Family",
+              "action_type": "APPLY_PRESSURE",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "mental",
+                  "family_support"
+                ],
+                "delta_direction": "negative",
+                "intensity": 0.2
+              },
+              "narrative": "林父得知儿子申请体制内工作后，表示支持但不断催促他尽快拿到offer，强调时间紧迫，这增加了林思远的焦虑感。"
+            },
+            {
+              "agent_id": "Mentor",
+              "agent_type": "Mentor",
+              "action_type": "PROVIDE_OPPORTUNITY",
+              "target_agent": "Self",
+              "payload": {
+                "affected_states": [
+                  "career",
+                  "social_capital"
+                ],
+                "delta_direction": "positive",
+                "intensity": 0.4
+              },
+              "narrative": "张教授通过个人关系，为林思远争取到一个市人社局内部推荐名额，这大大提高了他的求职竞争力，并提供了面试技巧指导。"
+            }
+          ]
+        }
+      ],
+      "rounds": [],
+      "advice": {}
+    }
+  ],
+  "_tree_events": [
+    {
+      "type": "add_node",
+      "id": "root",
+      "parent": null,
+      "label": "BASE_INIT",
+      "round": 0,
+      "time_label": "起点",
+      "is_active": true
+    },
+    {
+      "type": "add_node",
+      "id": "root_r1",
+      "parent": "root",
+      "label": "实习与讲座机会出现",
+      "round": 1,
+      "time_label": "2025-Q1",
+      "is_active": true,
+      "node_type": "opportunity"
+    },
+    {
+      "type": "add_node",
+      "id": "root_r2",
+      "parent": "root_r1",
+      "label": "实习申请与竞争加剧",
+      "round": 2,
+      "time_label": "2025-Q2",
+      "is_active": true,
+      "node_type": "opportunity"
+    },
+    {
+      "type": "branch",
+      "id": "br_6a0927d9",
+      "parent": "root_r2",
+      "label": "选项A：坚持申请市人社局实习，投入更多时",
+      "round": 2,
+      "time_label": "2025-Q2",
+      "tendency": "optimal"
+    },
+    {
+      "type": "branch",
+      "id": "br_73378076",
+      "parent": "root_r2",
+      "label": "选项B：探索其他体制内或社会意义工作，如",
+      "round": 2,
+      "time_label": "2025-Q2",
+      "tendency": "risk"
+    },
+    {
+      "type": "add_node",
+      "id": "br_6a0927d9_r3",
+      "parent": "br_6a0927d9",
+      "label": "实习申请关键节点",
+      "round": 3,
+      "time_label": "2025-Q3",
+      "is_active": true,
+      "node_type": "opportunity"
+    },
+    {
+      "type": "branch",
+      "id": "br_126d7a2f",
+      "parent": "br_6a0927d9_r3",
+      "label": "继续专注市人社局实习，加倍努力以应对高竞",
+      "round": 3,
+      "time_label": "2025-Q3",
+      "tendency": "optimal"
+    },
+    {
+      "type": "branch",
+      "id": "br_9911bc56",
+      "parent": "br_6a0927d9_r3",
+      "label": "调整策略，同时申请其他体制内实习作为备选",
+      "round": 3,
+      "time_label": "2025-Q3",
+      "tendency": "risk"
+    },
+    {
+      "type": "add_node",
+      "id": "br_73378076_r3",
+      "parent": "br_73378076",
+      "label": "非营利组织实习机会出现",
+      "round": 3,
+      "time_label": "2025-Q3",
+      "is_active": true,
+      "node_type": "opportunity"
+    },
+    {
+      "type": "add_node",
+      "id": "br_126d7a2f_r4",
+      "parent": "br_126d7a2f",
+      "label": "实习申请关键节点",
+      "round": 4,
+      "time_label": "2025-Q4",
+      "is_active": true,
+      "node_type": "opportunity"
+    },
+    {
+      "type": "branch",
+      "id": "br_8369a71f",
+      "parent": "br_126d7a2f_r4",
+      "label": "继续专注市人社局实习，投入更多资源以应对",
+      "round": 4,
+      "time_label": "2025-Q4",
+      "tendency": "optimal"
+    },
+    {
+      "type": "branch",
+      "id": "br_bc40e96c",
+      "parent": "br_126d7a2f_r4",
+      "label": "转向探索其他体制内或相关实习机会，以分散",
+      "round": 4,
+      "time_label": "2025-Q4",
+      "tendency": "risk"
+    },
+    {
+      "type": "add_node",
+      "id": "br_9911bc56_r4",
+      "parent": "br_9911bc56",
+      "label": "市人社局实习面试邀请",
+      "round": 4,
+      "time_label": "2025-Q4",
+      "is_active": true,
+      "node_type": "opportunity"
+    },
+    {
+      "type": "add_node",
+      "id": "br_73378076_r4",
+      "parent": "br_73378076_r3",
+      "label": "申请社会福利机构实习",
+      "round": 4,
+      "time_label": "2025-Q4",
+      "is_active": true,
+      "node_type": "decision"
+    },
+    {
+      "type": "add_node",
+      "id": "br_8369a71f_r5",
+      "parent": "br_8369a71f",
+      "label": "导师提供备选实习机会",
+      "round": 5,
+      "time_label": "2026-Q1",
+      "is_active": true,
+      "node_type": "opportunity"
+    },
+    {
+      "type": "add_node",
+      "id": "br_bc40e96c_r5",
+      "parent": "br_bc40e96c",
+      "label": "导师推荐地方政府实习",
+      "round": 5,
+      "time_label": "2026-Q1",
+      "is_active": true,
+      "node_type": "opportunity"
+    },
+    {
+      "type": "add_node",
+      "id": "br_9911bc56_r5",
+      "parent": "br_9911bc56_r4",
+      "label": "面试与备选机会并存",
+      "round": 5,
+      "time_label": "2026-Q1",
+      "is_active": true,
+      "node_type": "opportunity"
+    },
+    {
+      "type": "add_node",
+      "id": "br_73378076_r5",
+      "parent": "br_73378076_r4",
+      "label": "市人社局春季招聘机会",
+      "round": 5,
+      "time_label": "2026-Q1",
+      "is_active": true,
+      "node_type": "opportunity"
+    },
+    {
+      "type": "branch",
+      "id": "bt_43fb3a43",
+      "parent": null,
+      "label": "回溯: 认定了就要去这个非营利性组织实习并工",
+      "round": 3,
+      "time_label": "2025-Q3",
+      "tendency": "counterfactual"
+    },
+    {
+      "type": "add_node",
+      "id": "bt_43fb3a43_r1",
+      "parent": "bt_43fb3a43",
+      "label": "市人社局招聘宣讲会机会",
+      "round": 4,
+      "time_label": "2026-Q1",
+      "is_active": true,
+      "node_type": "opportunity"
+    },
+    {
+      "type": "add_node",
+      "id": "bt_43fb3a43_r2",
+      "parent": "bt_43fb3a43_r1",
+      "label": "市人社局政策研究岗位招聘",
+      "round": 5,
+      "time_label": "2026-Q2",
+      "is_active": true,
+      "node_type": "opportunity"
+    },
+    {
+      "type": "add_node",
+      "id": "bt_43fb3a43_r3",
+      "parent": "bt_43fb3a43_r2",
+      "label": "市人社局招聘公告发布",
+      "round": 6,
+      "time_label": "2026-Q3",
+      "is_active": true,
+      "node_type": "opportunity"
+    },
+    {
+      "type": "add_node",
+      "id": "bt_43fb3a43_r4",
+      "parent": "bt_43fb3a43_r3",
+      "label": "市人社局招聘机会与导师推荐",
+      "round": 7,
+      "time_label": "2026-Q4",
+      "is_active": true,
+      "node_type": "opportunity"
+    }
+  ]
+}

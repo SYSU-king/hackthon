@@ -1,5 +1,6 @@
 /**
  * Parameters Configuration Page
+ * Includes: concern parameters, simulation rounds, time unit, agent count
  */
 
 import { api } from '../api.js';
@@ -40,6 +41,7 @@ export function renderParameters(container) {
               <input type="range" class="slider" id="rounds-slider" min="4" max="20" value="12" />
               <span class="mono-sm" id="rounds-value" style="min-width:40px;">12</span>
             </div>
+            <div class="mono-xs text-muted" style="margin-top:4px;">每轮 ≈ 1个季度/学期</div>
           </div>
           <div class="form-group">
             <label class="form-label">时间单位</label>
@@ -48,6 +50,16 @@ export function renderParameters(container) {
               <option value="semester">每学期</option>
               <option value="year">每年</option>
             </select>
+          </div>
+        </div>
+        <div class="form-group mt-16">
+          <label class="form-label">智能体数量</label>
+          <div class="slider-container">
+            <input type="range" class="slider" id="agent-count-slider" min="3" max="12" value="6" />
+            <span class="mono-sm" id="agent-count-value" style="min-width:40px;">6</span>
+          </div>
+          <div class="mono-xs text-muted" style="margin-top:4px;">
+            智能体包括：Self, Family, Mentor, School, Employer, City, Industry, Risk 等。数量越多推演越丰富，但耗时更长。
           </div>
         </div>
       </div>
@@ -69,6 +81,10 @@ export function renderParameters(container) {
     document.getElementById('rounds-value').textContent = e.target.value;
   });
 
+  document.getElementById('agent-count-slider').addEventListener('input', (e) => {
+    document.getElementById('agent-count-value').textContent = e.target.value;
+  });
+
   document.getElementById('btn-back').addEventListener('click', () => navigateTo('onboarding'));
 
   document.getElementById('btn-start').addEventListener('click', async () => {
@@ -82,7 +98,8 @@ export function renderParameters(container) {
       await api.submitParameters(state.projectId, validParams);
       const rounds = parseInt(document.getElementById('rounds-slider').value);
       const timeUnit = document.getElementById('time-unit').value;
-      state.simConfig = { rounds, timeUnit };
+      const agentCount = parseInt(document.getElementById('agent-count-slider').value);
+      state.simConfig = { rounds, timeUnit, agentCount };
       navigateTo('simulation');
     } catch (e) {
       alert('Failed: ' + e.message);

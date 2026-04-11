@@ -387,15 +387,7 @@ h3 { font-family: var(--font-body); font-weight: 700; font-size: 14px; text-tran
 .param-remove:hover { border-color: var(--error); color: var(--error); }
 
 /* ── Page: Simulation ── */
-.sim-layout { display: flex; height: calc(100vh - var(--topnav-h)); }
-.sim-canvas {
-  flex: 1; position: relative; overflow: hidden;
-  background: var(--surface);
-  background-size: 40px 40px;
-  background-image:
-    linear-gradient(to right, #E5E5E5 1px, transparent 1px),
-    linear-gradient(to bottom, #E5E5E5 1px, transparent 1px);
-}
+.sim-layout { display: flex; height: calc(100vh - var(--topnav-h) - 80px); }
 .sim-panel {
   width: 320px; background: var(--surface-low);
   border-left: 1px solid var(--outline-variant);
@@ -426,10 +418,6 @@ h3 { font-family: var(--font-body); font-weight: 700; font-size: 14px; text-tran
   position: absolute; top: -20px; font-family: var(--font-mono);
   font-size: 10px; color: var(--accent); font-weight: 700;
   transition: left 0.4s ease;
-}
-.sim-tree-container {
-  width: 100%; height: 100%; display: flex;
-  align-items: center; justify-content: center;
 }
 
 /* ── Page: Results ── */
@@ -504,14 +492,7 @@ h3 { font-family: var(--font-body); font-weight: 700; font-size: 14px; text-tran
   flex: 1; display: flex; overflow: hidden;
   min-height: calc(100vh - var(--topnav-h) - 120px);
 }
-.graph-canvas-wrap {
-  flex: 1; position: relative; overflow: hidden;
-  background: #0d0f11;
-  background-size: 40px 40px;
-  background-image:
-    linear-gradient(to right, rgba(255,255,255,0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255,255,255,0.03) 1px, transparent 1px);
-}
+/* graph-canvas-wrap: styles defined at bottom of file (MiroFish dot-pattern) */
 #graph-svg { display: block; }
 .graph-sidebar {
   width: 340px; background: var(--surface-low);
@@ -557,11 +538,12 @@ h3 { font-family: var(--font-body); font-weight: 700; font-size: 14px; text-tran
 
 /* Graph hint overlay */
 .graph-hint {
-  position: absolute; top: 16px; right: 16px;
+  position: absolute; bottom: 16px; right: 16px;
   display: flex; align-items: center; gap: 6px;
   background: rgba(0,0,0,0.5); padding: 6px 12px;
   color: #aaa; backdrop-filter: blur(6px);
   transition: opacity 0.5s;
+  border-radius: 6px;
 }
 
 
@@ -614,3 +596,645 @@ h3 { font-family: var(--font-body); font-weight: 700; font-size: 14px; text-tran
   .graph-sidebar { width: 100%; max-height: 300px; }
 }
 
+/* ── Tree Node Tooltip ── */
+.tree-node-tooltip {
+  position: absolute;
+  z-index: 100;
+  background: var(--white);
+  border: 1px solid rgba(198, 198, 198, 0.5);
+  padding: 0;
+  min-width: 220px;
+  max-width: 300px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  pointer-events: auto;
+}
+
+.tree-tooltip-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  border-bottom: 1px solid rgba(198, 198, 198, 0.3);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--outline);
+}
+
+.tree-tooltip-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--outline);
+  font-size: 14px;
+  padding: 0 4px;
+  line-height: 1;
+}
+.tree-tooltip-close:hover {
+  color: var(--accent);
+}
+
+.tree-tooltip-title {
+  padding: 10px 14px 6px;
+  font-family: var(--font-headline);
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.tree-tooltip-time {
+  padding: 2px 14px 10px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--outline);
+  letter-spacing: 0.05em;
+}
+
+.tree-tooltip-tendency {
+  padding: 4px 14px 10px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+/* Simulation tree scrollable */
+.sim-tree-container {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.sim-canvas {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background: var(--surface);
+  background-size: 40px 40px;
+  background-image:
+    linear-gradient(to right, #E5E5E5 1px, transparent 1px),
+    linear-gradient(to bottom, #E5E5E5 1px, transparent 1px);
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   Simulation Completed Tab Bar
+   ═══════════════════════════════════════════════════════════════════ */
+
+.sim-completed-tabbed {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - var(--topnav-h));
+}
+
+.sim-tab-bar {
+  display: flex;
+  gap: 0;
+  background: var(--surface);
+  border-bottom: 1px solid var(--outline-variant);
+  padding: 0 24px;
+  flex-shrink: 0;
+  height: 56px;
+}
+
+.sim-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 24px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: transparent;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  color: var(--outline);
+  transition: all 0.2s;
+  height: 100%;
+}
+
+.sim-tab:hover {
+  color: var(--on-surface);
+  background: var(--surface-low);
+}
+
+.sim-tab-active {
+  color: var(--accent);
+  font-weight: 700;
+  border-bottom-color: var(--accent);
+}
+
+.sim-tab-content {
+  flex: 1;
+  overflow: auto;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   Graph Detail Panel (MiroFish-style overlay)
+   ═══════════════════════════════════════════════════════════════════ */
+
+.graph-detail-panel {
+  position: absolute;
+  top: 60px;
+  right: 20px;
+  width: 320px;
+  max-height: calc(100% - 100px);
+  background: #FFF;
+  border: 1px solid #EAEAEA;
+  border-radius: 10px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+  overflow: hidden;
+  font-family: 'Inter', system-ui, sans-serif;
+  font-size: 13px;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+}
+
+.gd-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  background: #FAFAFA;
+  border-bottom: 1px solid #EEE;
+  flex-shrink: 0;
+}
+
+.gd-title {
+  font-weight: 600;
+  color: #333;
+  font-size: 14px;
+}
+
+.gd-type-badge {
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  margin-left: auto;
+  margin-right: 12px;
+}
+
+.gd-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  color: #999;
+  line-height: 1;
+  padding: 0;
+  transition: color 0.2s;
+}
+.gd-close:hover { color: #333; }
+
+.gd-content {
+  padding: 16px;
+  overflow-y: auto;
+  flex: 1;
+}
+
+.gd-row {
+  margin-bottom: 12px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.gd-label {
+  color: #888;
+  font-size: 12px;
+  font-weight: 500;
+  min-width: 80px;
+}
+
+.gd-value {
+  color: #333;
+  flex: 1;
+  word-break: break-word;
+}
+
+.gd-uuid {
+  font-family: 'Space Grotesk', monospace;
+  font-size: 11px;
+  color: #666;
+}
+
+.gd-fact {
+  line-height: 1.5;
+  color: #444;
+}
+
+.gd-section {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid #F0F0F0;
+}
+
+.gd-section-title {
+  font-size: 12px;
+  font-weight: 600;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.gd-prop {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.gd-prop-key {
+  color: #888;
+  font-weight: 500;
+  min-width: 90px;
+  font-size: 12px;
+}
+
+.gd-prop-val {
+  color: #333;
+  flex: 1;
+  font-size: 12px;
+}
+
+.gd-impact-high { color: #FF4500; font-weight: 700; }
+.gd-impact-medium { color: #FF8F00; }
+.gd-impact-low { color: #2E7D32; }
+
+.gd-summary {
+  line-height: 1.6;
+  color: #444;
+  font-size: 12px;
+}
+
+.gd-labels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.gd-label-tag {
+  display: inline-block;
+  padding: 4px 12px;
+  background: #F5F5F5;
+  border: 1px solid #E0E0E0;
+  border-radius: 16px;
+  font-size: 11px;
+  color: #555;
+}
+
+.gd-edge-header {
+  background: #F8F8F8;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #333;
+  line-height: 1.5;
+  word-break: break-word;
+}
+
+.gd-episodes {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.gd-episode-tag {
+  display: inline-block;
+  padding: 6px 10px;
+  background: #F8F8F8;
+  border: 1px solid #E8E8E8;
+  border-radius: 6px;
+  font-family: 'Space Grotesk', monospace;
+  font-size: 10px;
+  color: #666;
+  word-break: break-all;
+}
+
+/* ── Self-loop accordion ── */
+.gd-self-loop-hdr {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: linear-gradient(135deg, #E8F5E9 0%, #F1F8E9 100%);
+  border: 1px solid #C8E6C9;
+}
+
+.gd-self-count {
+  margin-left: auto;
+  font-size: 11px;
+  color: #666;
+  background: rgba(255,255,255,0.8);
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.gd-self-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.gd-self-item {
+  background: #FAFAFA;
+  border: 1px solid #EAEAEA;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.gd-self-item-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 12px;
+  background: #F5F5F5;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.gd-self-item-header:hover { background: #EEEEEE; }
+.gd-self-item.expanded .gd-self-item-header { background: #E8E8E8; }
+
+.gd-self-idx {
+  font-size: 10px;
+  font-weight: 600;
+  color: #888;
+  background: #E0E0E0;
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.gd-self-name {
+  font-size: 12px;
+  font-weight: 500;
+  color: #333;
+  flex: 1;
+}
+
+.gd-self-toggle {
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: #888;
+  background: #E0E0E0;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.gd-self-item-content {
+  padding: 12px;
+  border-top: 1px solid #EAEAEA;
+}
+
+.gd-self-item-content .gd-row { margin-bottom: 8px; }
+.gd-self-item-content .gd-label { font-size: 11px; min-width: 60px; }
+.gd-self-item-content .gd-value { font-size: 12px; }
+
+
+/* ── Graph Legend Panel (MiroFish-style) ── */
+.graph-legend-panel {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  background: rgba(255,255,255,0.95);
+  padding: 12px 16px;
+  border-radius: 8px;
+  border: 1px solid #EAEAEA;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+  z-index: 10;
+}
+
+.gl-title {
+  display: block;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent);
+  margin-bottom: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: var(--font-mono);
+}
+
+.gl-items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 16px;
+  max-width: 320px;
+}
+
+.gl-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #555;
+}
+
+.gl-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.gl-label {
+  white-space: nowrap;
+  font-family: var(--font-mono);
+  font-size: 10px;
+}
+
+
+/* ── Edge Label Toggle ── */
+.graph-edge-toggle {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(0,0,0,0.6);
+  padding: 8px 14px;
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+  z-index: 10;
+}
+
+.graph-toggle-switch {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 20px;
+}
+
+.graph-toggle-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.graph-toggle-slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-color: #555;
+  border-radius: 20px;
+  transition: 0.3s;
+}
+
+.graph-toggle-slider:before {
+  position: absolute;
+  content: "";
+  height: 14px;
+  width: 14px;
+  left: 3px;
+  bottom: 3px;
+  background-color: white;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+
+.graph-toggle-switch input:checked + .graph-toggle-slider {
+  background-color: var(--accent);
+}
+
+.graph-toggle-switch input:checked + .graph-toggle-slider:before {
+  transform: translateX(16px);
+}
+
+.graph-toggle-label {
+  font-size: 11px;
+  color: #ccc;
+  font-family: var(--font-mono);
+}
+
+
+/* ── Graph canvas override: MiroFish dot-pattern background ── */
+.graph-canvas-wrap {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+  background-color: #FAFAFA;
+  background-image: radial-gradient(#D0D0D0 1.5px, transparent 1.5px);
+  background-size: 24px 24px;
+}
+
+
+/* ═══════════════════════════════════════════════════════════════════
+   Backtracking / Counterfactual UI (§14.2 + §14.4)
+   ═══════════════════════════════════════════════════════════════════ */
+
+/* Counterfactual path card */
+.path-card-counterfactual {
+  border-left: 4px solid #9C27B0;
+  background: linear-gradient(135deg, var(--white) 0%, #F3E5F5 100%);
+}
+.path-card-counterfactual:hover {
+  border-color: #7B1FA2;
+}
+
+/* Backtrack node list */
+.backtrack-node-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.bt-node-card {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  border: 1px solid rgba(198, 198, 198, 0.3);
+  background: var(--white);
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.bt-node-card:hover {
+  border-color: #9C27B0;
+  background: #F3E5F5;
+}
+.bt-node-card.bt-selected {
+  border-color: #9C27B0;
+  border-width: 2px;
+  background: linear-gradient(135deg, #EDE7F6 0%, #F3E5F5 100%);
+}
+
+.bt-node-idx {
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 700;
+  background: var(--surface-high);
+  color: var(--on-surface-variant);
+}
+.bt-selected .bt-node-idx {
+  background: #9C27B0;
+  color: var(--white);
+}
+
+.bt-node-info {
+  flex: 1;
+}
+.bt-node-title {
+  font-weight: 600;
+  font-size: 14px;
+  line-height: 1.2;
+}
+.bt-node-meta {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--outline);
+  margin-top: 2px;
+}
+
+/* Backtrack state controls */
+.bt-state-controls {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 8px;
+}
+
+.bt-state-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0;
+}
+.bt-state-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--on-surface-variant);
+  min-width: 90px;
+}
+.bt-state-val {
+  min-width: 40px;
+  text-align: right;
+  color: var(--accent);
+  font-weight: 700;
+}
+
+/* Error text utility */
+.text-error {
+  color: var(--error);
+}

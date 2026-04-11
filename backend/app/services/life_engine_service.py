@@ -4,6 +4,12 @@ LifePath Engine Service — LLM-powered life path simulation.
 This is the core engine that replaces mock data with real LLM-driven simulation,
 following MiroFish's paradigm: seed → graph → agents → multi-round simulation → report.
 
+Architecture:
+  TREE-BASED BRANCHING — all paths start from a shared root.  When the LLM
+  signals a critical decision or opportunity, the engine clones the current
+  world-state and forks into 2-3 parallel branches.  This produces an
+  authentic decision tree instead of 3 independent lines.
+
 Flow:
   1. Parameter expansion (LLM) — expand user concerns into multi-layer influence factors
   2. Agent generation (LLM) — create agents with personas based on user profile
@@ -12,6 +18,7 @@ Flow:
 """
 
 import json
+import copy
 import random
 import logging
 from typing import Optional
@@ -175,7 +182,7 @@ def generate_agents(profile: dict, parameters: list[dict], expanded: dict) -> li
 
 
 # ═══════════════════════════════════════════════════════════════════
-# 3. MULTI-ROUND SIMULATION — LLM-driven agent actions + rule state
+# 3. MULTI-ROUND SIMULATION — Tree-based branching
 # ═══════════════════════════════════════════════════════════════════
 
 ROUND_SYSTEM_PROMPT = """你是一个人生推演引擎。当前正在进行多轮人生推演模拟。
@@ -217,8 +224,16 @@ ROUND_SYSTEM_PROMPT = """你是一个人生推演引擎。当前正在进行多�
     "trigger_reason": "触发原因"
   },
   "should_branch": false,
-  "branch_reason": ""
-}"""
+  "branch_reason": "",
+  "branch_choices": ["选项A描述", "选项B描述"]
+}
+
+**分支判定指南**：
+- 当 Self Agent 面临 A/B 选择时（如保研 vs 就业），设置 should_branch = true
+- 当关键机会出现时（如收到 offer），存在接受/拒绝两种路径
+- 当风险事件打断主线 — 可产生规避和承受两条分支
+- 大约每 3-4 轮应该出现一次分支机会
+- branch_choices 中描述每个分支的选择方向（2-3 个选项）"""
 
 
 def simulate_round(
@@ -264,7 +279,7 @@ def simulate_round(
 1. 行动内容要切合当前时间点和状态
 2. 不同路径倾向下 Agent 的行动应有差异
 3. Self Agent 的决策要合理，符合人物性格
-4. 大约每 3-4 轮会出现一个关键转折"""
+4. 大约每 3-4 轮会出现一个关键转折，需要设置 should_branch = true"""
 
     result = llm.chat_json(
         messages=[
@@ -279,6 +294,7 @@ def simulate_round(
     result.setdefault("round_summary", "")
     result.setdefault("key_event", None)
     result.setdefault("should_branch", False)
+    result.setdefault("branch_choices", [])
 
     return result
 
@@ -323,7 +339,333 @@ def update_state_by_rules(current_state: dict, actions: list[dict]) -> dict:
 
 
 # ═══════════════════════════════════════════════════════════════════
-# 4. PATH CLASSIFICATION — Classify generated path type
+# 4. TREE-BASED SIMULATION PIPELINE
+# ═══════════════════════════════════════════════════════════════════
+
+class BranchState:
+    """Mutable state for a single branch during simulation."""
+
+    def __init__(self, branch_id: str, parent_id: str, label: str,
+                 state: dict, history: str, nodes: list, rounds_done: int,
+                 tendency: str, state_history: list):
+        self.branch_id = branch_id
+        self.parent_id = parent_id          # "" for root
+        self.label = label                  # human-readable label
+        self.state = state                  # current LifeState dict
+        self.history = history              # rolling summary string
+        self.nodes = nodes                  # list[PathNode-dict]
+        self.rounds_done = rounds_done
+        self.tendency = tendency            # "balanced" initially
+        self.state_history = state_history  # list[dict] for classification
+        self.alive = True                   # pruning flag
+
+
+MAX_LIVE_BRANCHES = 4
+MAX_TOTAL_PATHS = 5
+
+
+def generate_llm_paths(
+    project_data: dict,
+    rounds: int = 12,
+    progress_callback=None,
+    agent_count: int = 6,
+) -> tuple[list[dict], list[dict], dict]:
+    """
+    Generate life paths using LLM with TREE-BASED BRANCHING.
+
+    All branches share a common root and diverge at decision points.
+
+    Returns:
+        (paths, agents, expanded_factors)
+    """
+    profile = project_data.get("profile", {}) or {}
+    parameters = project_data.get("parameters", [])
+    concern = profile.get("current_concern", "人生发展") if profile else "人生发展"
+
+    # ── Step 1: Expand Parameters ──
+    if progress_callback:
+        progress_callback("parameter_expansion", 5, "正在用 AI 发散影响因素...")
+
+    try:
+        expanded = expand_parameters(profile, parameters)
+    except Exception as e:
+        logger.error(f"Parameter expansion failed: {e}")
+        expanded = {"influence_factors": [], "causal_chains": [], "recommended_agents": ["Self", "Family", "Mentor", "Employer"]}
+
+    if progress_callback:
+        n_factors = len(expanded.get("influence_factors", []))
+        progress_callback("parameter_expansion", 15, f"AI 发散出 {n_factors} 个影响因素")
+
+    # ── Step 2: Generate Agents ──
+    if progress_callback:
+        progress_callback("agent_generation", 18, "正在生成智能体角色...")
+
+    try:
+        agents = generate_agents(profile, parameters, expanded)
+        # Limit to requested agent_count
+        if len(agents) > agent_count:
+            agents = agents[:agent_count]
+    except Exception as e:
+        logger.error(f"Agent generation failed: {e}")
+        agents = _make_fallback_agents()
+
+    if progress_callback:
+        progress_callback("agent_generation", 25, f"已生成 {len(agents)} 个智能体")
+
+    # ── Step 3: Tree-based simulation ──
+    selected_rounds = min(rounds, 20)
+
+    # Initialize root branch
+    root_state = LifeStateSnapshot().model_dump()
+    root = BranchState(
+        branch_id="root",
+        parent_id="",
+        label="BASE",
+        state=root_state,
+        history=f"用户关注：{concern}",
+        nodes=[],
+        rounds_done=0,
+        tendency="balanced",
+        state_history=[dict(root_state)],
+    )
+
+    live_branches: list[BranchState] = [root]
+    finished_branches: list[BranchState] = []
+    tree_events: list[dict] = []   # recorded for frontend tree viz
+
+    # Track the last emitted tree node ID per branch for correct parent chaining
+    last_tree_node: dict[str, str] = {}  # branch_id -> last tree node id
+
+    # Emit root node
+    tree_events.append({
+        "type": "add_node",
+        "id": "root",
+        "parent": None,
+        "label": "BASE_INIT",
+        "round": 0,
+        "time_label": "起点",
+        "is_active": True,
+    })
+    last_tree_node["root"] = "root"
+
+    if progress_callback:
+        progress_callback("simulating", 28,
+                          f"开始树状推演 — 共 {selected_rounds} 轮, 从共同起点出发...")
+
+    for r in range(selected_rounds):
+        year = 2025 + r // 4
+        quarter = (r % 4) + 1
+        time_label = f"{year}-Q{quarter}"
+
+        if progress_callback:
+            pct = 28 + int(60 * (r + 1) / selected_rounds)
+            branch_labels = ", ".join(b.label for b in live_branches)
+            progress_callback(
+                "simulating", pct,
+                f"第 {r+1}/{selected_rounds} 轮 — {time_label} | 活跃分支: {branch_labels}"
+            )
+
+        next_gen: list[BranchState] = []
+
+        for branch in live_branches:
+            if not branch.alive:
+                continue
+
+            # ── Run one round for this branch ──
+            try:
+                round_result = simulate_round(
+                    round_num=r + 1,
+                    time_label=time_label,
+                    agents=agents,
+                    current_state=branch.state,
+                    profile=profile,
+                    history_summary=branch.history,
+                    path_tendency=branch.tendency,
+                )
+            except Exception as e:
+                logger.error(f"Round {r+1} failed for branch {branch.branch_id}: {e}")
+                # Produce a fallback node and keep going
+                fallback_node_id = f"{branch.branch_id}_r{r+1}"
+                branch.nodes.append(PathNode(
+                    node_type="result",
+                    title=f"阶段进展 ({time_label})",
+                    description="推演引擎在此轮遇到问题，使用默认进展",
+                    time_label=time_label,
+                    trigger_reason="系统推演",
+                    state_snapshot=LifeStateSnapshot(**branch.state),
+                ).model_dump())
+                # Still emit tree event for fallback node
+                parent_node_id = last_tree_node.get(branch.branch_id, branch.branch_id)
+                tree_events.append({
+                    "type": "add_node",
+                    "id": fallback_node_id,
+                    "parent": parent_node_id,
+                    "label": f"阶段 {r+1}",
+                    "round": r + 1,
+                    "time_label": time_label,
+                    "is_active": True,
+                    "node_type": "result",
+                })
+                last_tree_node[branch.branch_id] = fallback_node_id
+                branch.rounds_done = r + 1
+                next_gen.append(branch)
+                continue
+
+            actions = round_result.get("actions", [])
+            branch.state = update_state_by_rules(branch.state, actions)
+            branch.state_history.append(dict(branch.state))
+            branch.rounds_done = r + 1
+
+            summary = round_result.get("round_summary", "")
+            if summary:
+                branch.history += f"\n{time_label}: {summary}"
+                lines = branch.history.split("\n")
+                if len(lines) > 10:
+                    branch.history = lines[0] + "\n" + "\n".join(lines[-8:])
+
+            # Record key event as node
+            key_event = round_result.get("key_event")
+            if key_event and key_event.get("title"):
+                node = PathNode(
+                    node_type=key_event.get("type", "result"),
+                    title=key_event.get("title", ""),
+                    description=key_event.get("description", ""),
+                    time_label=time_label,
+                    trigger_reason=key_event.get("trigger_reason", ""),
+                    state_snapshot=LifeStateSnapshot(**branch.state),
+                    agent_actions=[AgentAction(**a) for a in actions[:3]],
+                )
+                branch.nodes.append(node.model_dump())
+
+                new_node_id = f"{branch.branch_id}_r{r+1}"
+                parent_node_id = last_tree_node.get(branch.branch_id, branch.branch_id)
+
+                tree_events.append({
+                    "type": "add_node",
+                    "id": new_node_id,
+                    "parent": parent_node_id,
+                    "label": key_event.get("title", "")[:20],
+                    "round": r + 1,
+                    "time_label": time_label,
+                    "is_active": True,
+                    "node_type": key_event.get("type", "result"),
+                })
+                last_tree_node[branch.branch_id] = new_node_id
+
+            # ── Branch Decision ──
+            should_branch = round_result.get("should_branch", False)
+            choices = round_result.get("branch_choices", [])
+            total_live = len(live_branches) + len(next_gen) - len([b for b in next_gen if not b.alive])
+
+            if should_branch and choices and total_live < MAX_LIVE_BRANCHES and len(finished_branches) + total_live < MAX_TOTAL_PATHS:
+                # Fork!  Keep at most 2 new children.
+                fork_choices = choices[:2]
+                tendencies = ["optimal", "risk"]  # assign different tendencies
+
+                if progress_callback:
+                    progress_callback(
+                        "branch", pct,
+                        f"🌿 分支点! {round_result.get('branch_reason', '关键决策')} → {len(fork_choices)} 条新路径"
+                    )
+
+                # Determine parent for branch events: use the last emitted tree node
+                branch_parent_id = last_tree_node.get(branch.branch_id, branch.branch_id)
+
+                for ci, choice_label in enumerate(fork_choices):
+                    child_id = f"br_{gen_id()}"
+                    child_tendency = tendencies[ci] if ci < len(tendencies) else "balanced"
+                    child = BranchState(
+                        branch_id=child_id,
+                        parent_id=branch.branch_id,
+                        label=choice_label[:30],
+                        state=copy.deepcopy(branch.state),
+                        history=branch.history + f"\n[分支] {choice_label}",
+                        nodes=list(branch.nodes),   # inherit parent nodes
+                        rounds_done=r + 1,
+                        tendency=child_tendency,
+                        state_history=list(branch.state_history),
+                    )
+                    next_gen.append(child)
+
+                    tree_events.append({
+                        "type": "branch",
+                        "id": child_id,
+                        "parent": branch_parent_id,
+                        "label": choice_label[:20],
+                        "round": r + 1,
+                        "time_label": time_label,
+                        "tendency": child_tendency,
+                    })
+                    # FIXED: New branch's subsequent nodes should chain from the branch node itself
+                    # Use branch_parent_id as the last tree node so the first child of this
+                    # branch attaches to the correct parent
+                    last_tree_node[child_id] = child_id
+
+                # Parent branch is now dead (replaced by children)
+                branch.alive = False
+            else:
+                # No fork — just keep going
+                next_gen.append(branch)
+
+        # Collect finished or pruned branches
+        for branch in next_gen:
+            if not branch.alive:
+                finished_branches.append(branch)
+        live_branches = [b for b in next_gen if b.alive]
+
+        # If no live branches left, stop early
+        if not live_branches:
+            break
+
+    # All remaining live branches are also finished
+    finished_branches.extend(live_branches)
+
+    # ── Step 4: Convert branches to paths ──
+    if progress_callback:
+        progress_callback("generating_paths", 90, f"正在整理 {len(finished_branches)} 条路径...")
+
+    paths = []
+    for branch in finished_branches:
+        if not branch.nodes:
+            continue  # skip empty branches
+        path_type, risk_level, satisfaction = classify_path(branch.state_history)
+        path = LifePath(
+            name=_name_path(branch, path_type),
+            path_type=path_type,
+            summary=f"围绕「{concern}」的路径：通过 {len(branch.nodes)} 个关键节点推演，分支标签「{branch.label}」。",
+            risk_level=risk_level,
+            satisfaction_score=satisfaction,
+            final_state=LifeStateSnapshot(**branch.state),
+            nodes=[PathNode(**n) if isinstance(n, dict) else n for n in branch.nodes],
+        )
+        paths.append(path.model_dump())
+
+    # Sort by satisfaction descending
+    paths.sort(key=lambda p: p.get("satisfaction_score", 0), reverse=True)
+    paths = paths[:MAX_TOTAL_PATHS]
+
+    # Attach tree_events to project for frontend consumption
+    project_data["_tree_events"] = tree_events
+
+    return paths, agents, expanded
+
+
+def _name_path(branch: BranchState, path_type: str) -> str:
+    """Generate a readable path name."""
+    type_names = {
+        "optimal": "Path Alpha: 最优路径",
+        "conservative": "Path Beta: 稳健路径",
+        "risk": "Path Gamma: 冒险路径",
+        "balanced": "Path Delta: 平衡路径",
+    }
+    base = type_names.get(path_type, f"Path: {path_type}")
+    if branch.label and branch.label != "BASE":
+        base += f" ({branch.label[:15]})"
+    return base
+
+
+# ═══════════════════════════════════════════════════════════════════
+# 5. PATH CLASSIFICATION
 # ═══════════════════════════════════════════════════════════════════
 
 def classify_path(state_history: list[dict]) -> tuple[str, str, float]:
@@ -356,28 +698,32 @@ def classify_path(state_history: list[dict]) -> tuple[str, str, float]:
 
 
 # ═══════════════════════════════════════════════════════════════════
-# 5. ADVICE GENERATION — LLM-powered actionable advice
+# 6. ADVICE GENERATION
 # ═══════════════════════════════════════════════════════════════════
 
 ADVICE_SYSTEM_PROMPT = """你是一个人生路径推演引擎的建议专家。
 
 根据推演出的人生路径，为用户提供实质性的、可执行的行动建议。
 
-**如果用户满意这条路径**，输出：
-- 路径成真的前提条件
-- 近期（1个月内）该做的事
-- 中期（3个月）布局
-- 需要规避的风险
-- 关键节点提醒
+**如果用户满意这条路径**，输出 JSON：
+{
+  "mode": "satisfied",
+  "title": "标题",
+  "immediate_actions": ["建议1", "建议2", "建议3"],
+  "mid_term_plan": ["计划1", "计划2", "计划3"],
+  "risk_mitigation": ["规避1", "规避2", "规避3"],
+  "key_nodes": ["节点1", "节点2", "节点3"]
+}
 
-**如果用户不满意这条路径**，输出：
-- 风险成因分析
-- 最值得干预的节点
-- 替代路径建议
-- 可逆条件分析
-- 心理和行动层面应对方案
-
-输出有效 JSON 格式。"""
+**如果用户不满意这条路径**，输出 JSON：
+{
+  "mode": "unsatisfied",
+  "title": "标题",
+  "risk_analysis": ["分析1", "分析2", "分析3"],
+  "intervention_points": ["干预1", "干预2", "干预3"],
+  "alternative_paths": ["替代1", "替代2", "替代3"],
+  "mental_support": ["支持1", "支持2", "支持3"]
+}"""
 
 
 def generate_llm_advice(path_data: dict, profile: dict, feedback: str = "satisfied") -> dict:
@@ -426,167 +772,86 @@ def generate_llm_advice(path_data: dict, profile: dict, feedback: str = "satisfi
 
 
 # ═══════════════════════════════════════════════════════════════════
-# 6. FULL PIPELINE — Generate complete life paths
+# 7. REPORT GENERATION — Project-level summary
 # ═══════════════════════════════════════════════════════════════════
 
-def generate_llm_paths(
-    project_data: dict,
-    rounds: int = 12,
-    progress_callback=None,
-) -> tuple[list[dict], list[dict], dict]:
-    """
-    Generate life paths using LLM.
+REPORT_SYSTEM_PROMPT = """你是一个人生推演引擎的报告生成专家。
 
-    Returns:
-        (paths, agents, expanded_factors)
-    """
+请基于多条推演路径的对比，生成一份综合评估报告。报告需要客观地呈现：
+1. 不同路径之间的核心差异
+2. 关键分叉节点分析
+3. 各路径的优势和风险
+4. 综合推荐
+
+**输出要求**：输出有效 JSON：
+{
+  "title": "报告标题",
+  "executive_summary": "200字以内的总结概述",
+  "path_comparison": [
+    {
+      "path_name": "路径名",
+      "strengths": ["优势1", "优势2"],
+      "risks": ["风险1", "风险2"],
+      "key_turning_point": "关键转折点描述"
+    }
+  ],
+  "critical_nodes": [
+    {
+      "time_label": "时间点",
+      "description": "这个时间点为什么关键",
+      "recommendation": "建议如何应对"
+    }
+  ],
+  "overall_recommendation": "综合推荐建议（100字以内）",
+  "next_steps": ["下一步行动1", "下一步行动2", "下一步行动3"]
+}"""
+
+
+def generate_report(project_data: dict) -> dict:
+    """Generate a project-level comparison report across all paths."""
+    llm = get_llm_client()
+
+    paths = project_data.get("paths", [])
     profile = project_data.get("profile", {}) or {}
-    parameters = project_data.get("parameters", [])
+    profile_text = _format_profile(profile)
 
-    # ── Step 1: Expand Parameters ──
-    if progress_callback:
-        progress_callback("parameter_expansion", 5, "正在用 AI 发散影响因素...")
-
-    try:
-        expanded = expand_parameters(profile, parameters)
-    except Exception as e:
-        logger.error(f"Parameter expansion failed: {e}")
-        expanded = {"influence_factors": [], "causal_chains": [], "recommended_agents": ["Self", "Family", "Mentor", "Employer"]}
-
-    if progress_callback:
-        n_factors = len(expanded.get("influence_factors", []))
-        progress_callback("parameter_expansion", 15, f"AI 发散出 {n_factors} 个影响因素")
-
-    # ── Step 2: Generate Agents ──
-    if progress_callback:
-        progress_callback("agent_generation", 18, "正在生成智能体角色...")
-
-    try:
-        agents = generate_agents(profile, parameters, expanded)
-    except Exception as e:
-        logger.error(f"Agent generation failed: {e}")
-        agents = _make_fallback_agents()
-
-    if progress_callback:
-        progress_callback("agent_generation", 25, f"已生成 {len(agents)} 个智能体")
-
-    # ── Step 3: Build graph data for frontend ──
-    graph_data = _build_graph_from_expansion(expanded, agents)
-
-    # ── Step 4: Multi-path simulation (PARALLEL) ──
-    path_configs = [
-        ("optimal", "Path Alpha: 最优路径"),
-        ("conservative", "Path Beta: 稳健路径"),
-        ("risk", "Path Gamma: 冒险路径"),
-    ]
-
-    concern = profile.get("current_concern", "人生发展")
-    selected_rounds = min(rounds, 8)
-
-    def _simulate_single_path(path_idx, tendency, path_name):
-        """Simulate one path — runs in its own thread."""
-        if progress_callback:
-            base_progress = 25 + path_idx * 20
-            progress_callback("simulating", base_progress, f"正在推演「{path_name}」...")
-
-        current_state = LifeStateSnapshot().model_dump()
-        history_summary = f"用户关注：{concern}"
-        state_history = [dict(current_state)]
-        nodes = []
-        sim_rounds = []
-
-        for r in range(selected_rounds):
-            year = 2025 + r // 4
-            quarter = (r % 4) + 1
-            time_label = f"{year}-Q{quarter}"
-
-            if progress_callback:
-                rnd_progress = base_progress + int(18 * (r + 1) / selected_rounds)
-                progress_callback("simulating", rnd_progress, f"推演「{path_name}」第 {r+1}/{selected_rounds} 轮 — {time_label}")
-
-            try:
-                round_result = simulate_round(
-                    round_num=r + 1,
-                    time_label=time_label,
-                    agents=agents,
-                    current_state=current_state,
-                    profile=profile,
-                    history_summary=history_summary,
-                    path_tendency=tendency,
-                )
-
-                actions = round_result.get("actions", [])
-                current_state = update_state_by_rules(current_state, actions)
-                state_history.append(dict(current_state))
-
-                summary = round_result.get("round_summary", "")
-                if summary:
-                    history_summary = f"{history_summary}\n{time_label}: {summary}"
-                    lines = history_summary.split("\n")
-                    if len(lines) > 8:
-                        history_summary = lines[0] + "\n" + "\n".join(lines[-6:])
-
-                key_event = round_result.get("key_event")
-                if key_event and key_event.get("title"):
-                    node = PathNode(
-                        node_type=key_event.get("type", "result"),
-                        title=key_event.get("title", ""),
-                        description=key_event.get("description", ""),
-                        time_label=time_label,
-                        trigger_reason=key_event.get("trigger_reason", ""),
-                        state_snapshot=LifeStateSnapshot(**current_state),
-                        agent_actions=[AgentAction(**a) for a in actions[:3]],
-                    )
-                    nodes.append(node)
-
-                sim_round = SimulationRound(
-                    round_num=r + 1,
-                    time_label=time_label,
-                    actions=[AgentAction(**a) for a in actions],
-                    state_after=LifeStateSnapshot(**current_state),
-                    events_summary=summary,
-                    branch_triggered=round_result.get("should_branch", False),
-                )
-                sim_rounds.append(sim_round)
-
-            except Exception as e:
-                logger.error(f"Round {r+1} simulation failed for {tendency}: {e}")
-                nodes.append(PathNode(
-                    node_type="result",
-                    title=f"阶段进展 ({time_label})",
-                    description="推演引擎在此轮遇到问题，使用默认进展",
-                    time_label=time_label,
-                    trigger_reason="系统推演",
-                    state_snapshot=LifeStateSnapshot(**current_state),
-                ))
-
-        path_type, risk_level, satisfaction = classify_path(state_history)
-
-        path = LifePath(
-            name=path_name,
-            path_type=path_type,
-            summary=f"围绕「{concern}」的{path_name}：通过 {len(nodes)} 个关键节点推演未来 {selected_rounds // 4 + 1} 年的发展路径。",
-            risk_level=risk_level,
-            satisfaction_score=satisfaction,
-            final_state=LifeStateSnapshot(**current_state),
-            nodes=nodes,
-            rounds=sim_rounds,
+    paths_desc = ""
+    for p in paths[:5]:
+        nodes_summary = " → ".join(
+            n.get("title", "") for n in (p.get("nodes") or [])[:6]
         )
-        return path.model_dump()
+        paths_desc += f"""
+### {p.get('name', '')}
+- 类型: {p.get('path_type', '')} | 风险: {p.get('risk_level', '')} | 满意度: {p.get('satisfaction_score', 0):.0%}
+- 节点链: {nodes_summary}
+- 最终状态: {json.dumps(p.get('final_state', {}), ensure_ascii=False)}
+"""
 
-    # Run all 3 paths in parallel threads
-    import concurrent.futures
-    if progress_callback:
-        progress_callback("simulating", 25, "三条路径并发推演中...")
+    user_msg = f"""## 用户背景
+{profile_text}
 
-    with concurrent.futures.ThreadPoolExecutor(max_workers=3) as pool:
-        futures = [
-            pool.submit(_simulate_single_path, idx, tendency, path_name)
-            for idx, (tendency, path_name) in enumerate(path_configs)
-        ]
-        paths = [f.result() for f in concurrent.futures.as_completed(futures)]
+## 推演路径
+{paths_desc}
 
-    return paths, agents, expanded
+请生成综合评估报告。"""
+
+    result = llm.chat_json(
+        messages=[
+            {"role": "system", "content": REPORT_SYSTEM_PROMPT},
+            {"role": "user", "content": user_msg},
+        ],
+        temperature=0.4,
+        max_tokens=4000,
+    )
+
+    result.setdefault("title", "人生路径推演报告")
+    result.setdefault("executive_summary", "")
+    result.setdefault("path_comparison", [])
+    result.setdefault("critical_nodes", [])
+    result.setdefault("overall_recommendation", "")
+    result.setdefault("next_steps", [])
+
+    return result
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -698,3 +963,181 @@ def _build_graph_from_expansion(expanded: dict, agents: list[dict]) -> dict:
             })
 
     return {"nodes": nodes, "edges": edges}
+
+
+# ═══════════════════════════════════════════════════════════════════
+# 8. BACKTRACK / COUNTERFACTUAL SIMULATION
+# ═══════════════════════════════════════════════════════════════════
+
+def run_backtrack_simulation(
+    project_data: dict,
+    source_path: dict,
+    node_index: int,
+    modified_state: dict,
+    description: str,
+    rounds: int,
+    progress_callback=None,
+) -> tuple[dict, list[dict]]:
+    """
+    Run a counterfactual simulation branching from a specific node.
+    
+    Implements §14.2 (可反事实) — "What if I chose differently?"
+    and §14.4 (可交互) — "User can modify parameters mid-simulation."
+    
+    Args:
+        project_data: Full project dict
+        source_path: The path to branch from
+        node_index: Index of the node to branch from
+        modified_state: State overrides applied at the branch point
+        description: Natural language description of the counterfactual
+        rounds: Number of new rounds to simulate
+        progress_callback: Progress reporting function
+    
+    Returns:
+        (new_path_dict, tree_events)
+    """
+    profile = project_data.get("profile", {}) or {}
+    agents = project_data.get("agents", [])
+    source_nodes = source_path.get("nodes", [])
+    concern = profile.get("current_concern", "人生发展") if profile else "人生发展"
+    
+    # Take nodes up to (and including) the branch point
+    inherited_nodes = []
+    for i, n in enumerate(source_nodes):
+        if i <= node_index:
+            inherited_nodes.append(copy.deepcopy(n))
+    
+    # Build history from inherited nodes
+    history_lines = [f"用户关注：{concern}"]
+    for n in inherited_nodes:
+        history_lines.append(f"{n.get('time_label', '?')}: {n.get('title', '')}")
+    if description:
+        history_lines.append(f"[回溯修改] {description}")
+    history = "\n".join(history_lines[-10:])
+    
+    # Determine the starting round number and time label from the branch node
+    branch_node = inherited_nodes[-1] if inherited_nodes else {}
+    branch_time = branch_node.get("time_label", "2026-Q1")
+    
+    # Parse time label to determine starting round
+    start_round = node_index + 1
+    
+    # Construct initial state from the modified state
+    current_state = dict(modified_state)
+    state_history = [dict(current_state)]
+    
+    tree_events = []
+    
+    # Emit a backtrack root node
+    bt_root_id = f"bt_{gen_id()}"
+    tree_events.append({
+        "type": "branch",
+        "id": bt_root_id,
+        "parent": None,  # Will be rendered as a standalone tree
+        "label": f"回溯: {description[:18]}" if description else "反事实分支",
+        "round": start_round,
+        "time_label": branch_time,
+        "tendency": "counterfactual",
+    })
+    
+    last_node_id = bt_root_id
+    new_nodes = list(inherited_nodes)
+    
+    if progress_callback:
+        progress_callback("backtracking", 10, f"回溯到节点 {node_index + 1}，应用修改: {description[:30]}...")
+    
+    # Run new rounds
+    for r in range(rounds):
+        # Calculate time label from branch point
+        total_round = start_round + r + 1
+        year = 2025 + total_round // 4
+        quarter = (total_round % 4) + 1
+        time_label = f"{year}-Q{quarter}"
+        
+        if progress_callback:
+            pct = 10 + int(80 * (r + 1) / rounds)
+            progress_callback(
+                "backtracking", pct,
+                f"回溯推演 第 {r+1}/{rounds} 轮 — {time_label}"
+            )
+        
+        try:
+            round_result = simulate_round(
+                round_num=total_round,
+                time_label=time_label,
+                agents=agents,
+                current_state=current_state,
+                profile=profile,
+                history_summary=history,
+                path_tendency="counterfactual",
+            )
+        except Exception as e:
+            logger.error(f"Backtrack round {r+1} failed: {e}")
+            # Produce a fallback node
+            fallback_node = PathNode(
+                node_type="result",
+                title=f"回溯进展 ({time_label})",
+                description="回溯推演在此轮遇到问题，使用默认进展",
+                time_label=time_label,
+                trigger_reason="回溯推演",
+                state_snapshot=LifeStateSnapshot(**current_state),
+            ).model_dump()
+            new_nodes.append(fallback_node)
+            continue
+        
+        actions = round_result.get("actions", [])
+        current_state = update_state_by_rules(current_state, actions)
+        state_history.append(dict(current_state))
+        
+        summary = round_result.get("round_summary", "")
+        if summary:
+            history += f"\n{time_label}: {summary}"
+            lines = history.split("\n")
+            if len(lines) > 10:
+                history = lines[0] + "\n" + "\n".join(lines[-8:])
+        
+        # Record key event as node
+        key_event = round_result.get("key_event")
+        if key_event and key_event.get("title"):
+            node = PathNode(
+                node_type=key_event.get("type", "result"),
+                title=key_event.get("title", ""),
+                description=key_event.get("description", ""),
+                time_label=time_label,
+                trigger_reason=key_event.get("trigger_reason", ""),
+                state_snapshot=LifeStateSnapshot(**current_state),
+                agent_actions=[AgentAction(**a) for a in actions[:3]],
+            )
+            new_nodes.append(node.model_dump())
+            
+            new_node_id = f"{bt_root_id}_r{r+1}"
+            tree_events.append({
+                "type": "add_node",
+                "id": new_node_id,
+                "parent": last_node_id,
+                "label": key_event.get("title", "")[:20],
+                "round": total_round,
+                "time_label": time_label,
+                "is_active": True,
+                "node_type": key_event.get("type", "result"),
+            })
+            last_node_id = new_node_id
+    
+    if progress_callback:
+        progress_callback("generating_paths", 92, "正在整理回溯路径...")
+    
+    # Build the new path
+    path_type, risk_level, satisfaction = classify_path(state_history)
+    desc_short = description[:20] if description else "反事实"
+    
+    new_path = LifePath(
+        name=f"回溯路径: {desc_short}",
+        path_type="counterfactual",
+        summary=f"从原路径节点 {node_index + 1} 回溯，修改条件「{description}」后重新推演，经过 {rounds} 轮得到的反事实路径。",
+        risk_level=risk_level,
+        satisfaction_score=satisfaction,
+        final_state=LifeStateSnapshot(**current_state),
+        nodes=[PathNode(**n) if isinstance(n, dict) else n for n in new_nodes],
+    ).model_dump()
+    
+    return new_path, tree_events

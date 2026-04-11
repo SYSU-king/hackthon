@@ -45,8 +45,19 @@ class ParametersSubmit(BaseModel):
 class SimulationStart(BaseModel):
     rounds: int = Field(default=12, ge=4, le=20)
     time_unit: str = "quarter"  # month / quarter / semester / year
+    agent_count: int = Field(default=6, ge=3, le=12)  # configurable agent count
 
 
 # ── Advice ──
 class AdviceRequest(BaseModel):
     feedback: str = "satisfied"  # satisfied / unsatisfied
+
+
+# ── Backtracking / Counterfactual ──
+class BacktrackRequest(BaseModel):
+    """Request to modify a node's parameters and re-derive from that point."""
+    node_index: int = Field(ge=0, description="Index of the node in the path to modify from")
+    path_id: str = Field(description="ID of the path to branch from")
+    modifications: dict = Field(default_factory=dict, description="State overrides, e.g. {'education': 0.9, 'career': 0.2}")
+    description: str = Field(default="", description="Natural language description of the change, e.g. '保研成功'")
+    rounds: int = Field(default=6, ge=2, le=12, description="Number of rounds to simulate from this point")

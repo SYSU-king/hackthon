@@ -1,19 +1,42 @@
 /**
  * Graph Page — Interactive knowledge graph visualization
- * Features: SVG force-directed layout, draggable nodes, click detail, zoom/pan
+ * 
+ * Adapted from MiroFish GraphPanel architecture:
+ * - D3.js force-directed layout with zoom/pan
+ * - Draggable nodes with proper click vs drag detection
+ * - Curved multi-edges between same node pairs
+ * - Self-loop edge support (merged per node)
+ * - Edge label toggling
+ * - Detail panel for nodes and edges (right overlay)
+ * - Entity type legend with dynamic color palette
+ * - Dot-grid background aesthetic
  */
+
+import * as d3 from 'd3';
 import { api } from '../api.js';
 import { navigateTo } from '../app.js';
 import { t } from '../i18n.js';
 
-let _simNodes = [];
-let _simEdges = [];
-let _dragNode = null;
-let _dragOffset = { x: 0, y: 0 };
-let _selectedNodeId = null;
+// ── State ──
+let _currentSimulation = null;
+let _selectedItem = null;  // { type: 'node'|'edge', data, entityType?, color? }
+let _showEdgeLabels = true;
+let _linkLabelsSelection = null;
+let _linkLabelBgSelection = null;
+let _expandedSelfLoops = new Set();
+
+// ── Color palette (from MiroFish) ──
+const ENTITY_COLORS = [
+  '#FF6B35', '#004E89', '#7B2D8E', '#1A936F', '#C5283D',
+  '#E9724C', '#3498db', '#9b59b6', '#27ae60', '#f39c12',
+];
 
 export function renderGraph(container) {
   const projectId = window.appState.projectId;
+
+  // Reset state
+  _selectedItem = null;
+  _expandedSelfLoops = new Set();
 
   container.innerHTML = `
     <div class="page-graph">
@@ -34,20 +57,33 @@ export function renderGraph(container) {
       <div class="graph-layout">
         <div class="graph-canvas-wrap" id="graph-canvas-wrap">
           <svg id="graph-svg" width="100%" height="100%"></svg>
-          <div class="graph-legend" id="graph-legend"></div>
+
+          <!-- Legend (bottom-left) -->
+          <div class="graph-legend-panel" id="graph-legend-panel"></div>
+
+          <!-- Edge label toggle (top-right inside canvas) -->
+          <div class="graph-edge-toggle" id="graph-edge-toggle">
+            <label class="graph-toggle-switch">
+              <input type="checkbox" id="edge-label-checkbox" ${_showEdgeLabels ? 'checked' : ''} />
+              <span class="graph-toggle-slider"></span>
+            </label>
+            <span class="graph-toggle-label">Edge Labels</span>
+          </div>
+
+          <!-- Drag hint -->
           <div class="graph-hint mono-xs" id="graph-hint">
             <span class="material-symbols-outlined icon-sm">pan_tool</span>
-            拖拽节点 · 点击查看详情
+            拖拽节点 · 点击查看详情 · 滚轮缩放
           </div>
+
+          <!-- Detail panel (right overlay inside canvas) -->
+          <div class="graph-detail-panel" id="graph-detail-panel" style="display:none;"></div>
         </div>
+
         <aside class="graph-sidebar" id="graph-sidebar">
           <div class="panel">
             <h3 class="mono-xs panel-title">${t('graph_agents')}</h3>
             <div id="agents-list" class="agents-list"></div>
-          </div>
-          <div class="panel" id="node-detail-panel" style="display:none">
-            <h3 class="mono-xs panel-title">${t('graph_node_detail')}</h3>
-            <div id="node-detail"></div>
           </div>
         </aside>
       </div>
@@ -60,11 +96,26 @@ export function renderGraph(container) {
     </div>
   `;
 
+  // Edge label toggle
+  document.getElementById('edge-label-checkbox')?.addEventListener('change', (e) => {
+    _showEdgeLabels = e.target.checked;
+    if (_linkLabelsSelection) {
+      _linkLabelsSelection.style('display', _showEdgeLabels ? 'block' : 'none');
+    }
+    if (_linkLabelBgSelection) {
+      _linkLabelBgSelection.style('display', _showEdgeLabels ? 'block' : 'none');
+    }
+  });
+
   if (projectId) {
     loadGraphData(projectId);
   }
 }
 
+
+// ═══════════════════════════════════════════════════════════════════
+// Data Loading
+// ═══════════════════════════════════════════════════════════════════
 
 async function loadGraphData(projectId) {
   try {
@@ -81,8 +132,7 @@ async function loadGraphData(projectId) {
       `NODES: ${nodes.length} | EDGES: ${edges.length} | AGENTS: ${agents.length}`;
 
     renderAgentsList(agents);
-    renderForceGraph(nodes, edges);
-    renderLegend(nodes);
+    renderD3Graph(nodes, edges);
 
   } catch (err) {
     document.getElementById('graph-stats').textContent = t('graph_load_error');
@@ -90,6 +140,10 @@ async function loadGraphData(projectId) {
   }
 }
 
+
+// ═══════════════════════════════════════════════════════════════════
+// Agents List (sidebar)
+// ═══════════════════════════════════════════════════════════════════
 
 function renderAgentsList(agents) {
   const container = document.getElementById('agents-list');
@@ -104,12 +158,10 @@ function renderAgentsList(agents) {
     City: 'location_city', Industry: 'trending_up', Risk: 'warning',
   };
 
-  const typeColors = getTypeColors();
-
   container.innerHTML = agents.map(a => `
-    <div class="agent-card" data-agent-type="${a.agent_type}" style="border-left: 3px solid ${typeColors[a.agent_type] || '#666'}">
+    <div class="agent-card" data-agent-type="${a.agent_type}" style="border-left: 3px solid ${getAgentColor(a.agent_type)}">
       <div class="agent-card-header">
-        <span class="material-symbols-outlined icon-sm" style="color:${typeColors[a.agent_type] || '#666'}">${typeIcons[a.agent_type] || 'smart_toy'}</span>
+        <span class="material-symbols-outlined icon-sm" style="color:${getAgentColor(a.agent_type)}">${typeIcons[a.agent_type] || 'smart_toy'}</span>
         <strong class="mono-xs">${a.name || a.agent_type}</strong>
         <span class="badge badge-sm">${a.agent_type}</span>
       </div>
@@ -117,383 +169,729 @@ function renderAgentsList(agents) {
       ${a.stance ? `<div class="mono-xs muted">STANCE: ${a.stance} | INFLUENCE: ${(a.influence * 100).toFixed(0)}%</div>` : ''}
     </div>
   `).join('');
-
-  // Click agent card to highlight corresponding graph node
-  container.querySelectorAll('.agent-card').forEach(card => {
-    card.addEventListener('click', () => {
-      const type = card.dataset.agentType;
-      const node = _simNodes.find(n => n.type === type);
-      if (node) {
-        highlightNode(node.id);
-        showNodeDetail(node);
-      }
-    });
-  });
 }
 
-
-function getTypeColors() {
-  return {
+function getAgentColor(type) {
+  const map = {
     Self: '#c9a0ff', Factor: '#556677', Family: '#ff9eb1',
     Mentor: '#7ecfff', School: '#ffd17e', Employer: '#7eff9e',
     City: '#ff7eb3', Industry: '#b4ff7e', Risk: '#ff7e7e',
     Partner: '#ffb07e', Person: '#888',
   };
+  return map[type] || '#666';
 }
 
 
-function renderForceGraph(nodes, edges) {
-  const svg = document.getElementById('graph-svg');
+// ═══════════════════════════════════════════════════════════════════
+// D3 Force-Directed Graph (MiroFish architecture)
+// ═══════════════════════════════════════════════════════════════════
+
+function renderD3Graph(nodesData, edgesData) {
+  // Stop previous simulation
+  if (_currentSimulation) {
+    _currentSimulation.stop();
+    _currentSimulation = null;
+  }
+
   const wrap = document.getElementById('graph-canvas-wrap');
+  const svg = d3.select('#graph-svg');
   const width = wrap.clientWidth || 800;
   const height = wrap.clientHeight || 600;
 
-  svg.setAttribute('viewBox', `0 0 ${width} ${height}`);
-  svg.innerHTML = '';
+  svg
+    .attr('width', width)
+    .attr('height', height)
+    .attr('viewBox', `0 0 ${width} ${height}`);
 
-  if (!nodes.length) {
-    svg.innerHTML = `<text x="${width/2}" y="${height/2}" text-anchor="middle" fill="#666" font-family="monospace">${t('graph_no_data')}</text>`;
+  svg.selectAll('*').remove();
+
+  if (!nodesData.length) {
+    svg.append('text')
+      .attr('x', width / 2).attr('y', height / 2)
+      .attr('text-anchor', 'middle').attr('fill', '#666')
+      .attr('font-family', 'monospace')
+      .text(t('graph_no_data'));
     return;
   }
 
-  // Initialize node positions
-  _simNodes = nodes.map((n, i) => ({
-    ...n,
-    x: width / 2 + (Math.random() - 0.5) * 400,
-    y: height / 2 + (Math.random() - 0.5) * 300,
-    vx: 0, vy: 0,
-    idx: i,
-  }));
-
+  // Build node map keyed by whatever ID field exists
   const nodeMap = {};
-  _simNodes.forEach(n => nodeMap[n.id] = n);
+  nodesData.forEach(n => {
+    nodeMap[n.uuid || n.id] = n;
+  });
 
-  _simEdges = edges.filter(e => nodeMap[e.source] && nodeMap[e.target]).map(e => ({
-    ...e,
-    sourceNode: nodeMap[e.source],
-    targetNode: nodeMap[e.target],
+  // Build entity type → color mapping
+  const typeColorMap = {};
+  let typeIdx = 0;
+  nodesData.forEach(n => {
+    const type = n.labels?.find(l => l !== 'Entity') || n.type || n.group || 'Entity';
+    if (!typeColorMap[type]) {
+      typeColorMap[type] = ENTITY_COLORS[typeIdx % ENTITY_COLORS.length];
+      typeIdx++;
+    }
+  });
+  const getColor = (type) => typeColorMap[type] || '#999';
+
+  // Prepare D3 node objects
+  const nodes = nodesData.map(n => ({
+    id: n.uuid || n.id,
+    name: n.name || 'Unnamed',
+    type: n.labels?.find(l => l !== 'Entity') || n.type || n.group || 'Entity',
+    rawData: n,
   }));
 
-  // Run initial force simulation (200 ticks to settle)
-  runForceSimulation(width, height, 200);
+  const nodeIds = new Set(nodes.map(n => n.id));
 
-  // Render to SVG DOM nodes (not innerHTML — for interactivity)
-  buildSVGElements(svg, width, height);
-}
+  // ── Process edges: handle multi-edges & self-loops (MiroFish approach) ──
+  const edgePairCount = {};
+  const selfLoopEdges = {};
+  const processedSelfLoopNodes = new Set();
 
+  // Normalize edge source/target field names
+  const tempEdges = edgesData.filter(e => {
+    const src = e.source_node_uuid || e.source;
+    const tgt = e.target_node_uuid || e.target;
+    return nodeIds.has(src) && nodeIds.has(tgt);
+  });
 
-function runForceSimulation(width, height, ticks) {
-  for (let tick = 0; tick < ticks; tick++) {
-    // Repulsion
-    for (let i = 0; i < _simNodes.length; i++) {
-      for (let j = i + 1; j < _simNodes.length; j++) {
-        const a = _simNodes[i], b = _simNodes[j];
-        let dx = b.x - a.x, dy = b.y - a.y;
-        let dist = Math.sqrt(dx * dx + dy * dy) || 1;
-        let force = 4000 / (dist * dist);
-        a.vx -= dx / dist * force;
-        a.vy -= dy / dist * force;
-        b.vx += dx / dist * force;
-        b.vy += dy / dist * force;
-      }
+  // Count edges per pair, collect self-loops
+  tempEdges.forEach(e => {
+    const src = e.source_node_uuid || e.source;
+    const tgt = e.target_node_uuid || e.target;
+    if (src === tgt) {
+      if (!selfLoopEdges[src]) selfLoopEdges[src] = [];
+      selfLoopEdges[src].push({
+        ...e,
+        source_name: nodeMap[src]?.name,
+        target_name: nodeMap[tgt]?.name,
+      });
+    } else {
+      const pairKey = [src, tgt].sort().join('_');
+      edgePairCount[pairKey] = (edgePairCount[pairKey] || 0) + 1;
     }
-    // Attraction (edges)
-    for (const e of _simEdges) {
-      const a = e.sourceNode, b = e.targetNode;
-      let dx = b.x - a.x, dy = b.y - a.y;
-      let dist = Math.sqrt(dx * dx + dy * dy) || 1;
-      let force = (dist - 140) * 0.008;
-      a.vx += dx / dist * force;
-      a.vy += dy / dist * force;
-      b.vx -= dx / dist * force;
-      b.vy -= dy / dist * force;
+  });
+
+  const edgePairIndex = {};
+  const edges = [];
+
+  tempEdges.forEach(e => {
+    const src = e.source_node_uuid || e.source;
+    const tgt = e.target_node_uuid || e.target;
+    const isSelfLoop = src === tgt;
+
+    if (isSelfLoop) {
+      if (processedSelfLoopNodes.has(src)) return;
+      processedSelfLoopNodes.add(src);
+
+      const allSelfLoops = selfLoopEdges[src];
+      const nodeName = nodeMap[src]?.name || 'Unknown';
+
+      edges.push({
+        source: src,
+        target: tgt,
+        type: 'SELF_LOOP',
+        name: `Self (${allSelfLoops.length})`,
+        curvature: 0,
+        isSelfLoop: true,
+        rawData: {
+          isSelfLoopGroup: true,
+          source_name: nodeName,
+          target_name: nodeName,
+          selfLoopCount: allSelfLoops.length,
+          selfLoopEdges: allSelfLoops,
+        },
+      });
+      return;
     }
-    // Center gravity
-    for (const n of _simNodes) {
-      n.vx += (width / 2 - n.x) * 0.002;
-      n.vy += (height / 2 - n.y) * 0.002;
-      n.vx *= 0.85;
-      n.vy *= 0.85;
-      n.x += n.vx;
-      n.y += n.vy;
-      n.x = Math.max(50, Math.min(width - 50, n.x));
-      n.y = Math.max(50, Math.min(height - 50, n.y));
+
+    const pairKey = [src, tgt].sort().join('_');
+    const totalCount = edgePairCount[pairKey];
+    const currentIndex = edgePairIndex[pairKey] || 0;
+    edgePairIndex[pairKey] = currentIndex + 1;
+
+    const isReversed = src > tgt;
+
+    let curvature = 0;
+    if (totalCount > 1) {
+      const curvatureRange = Math.min(1.2, 0.6 + totalCount * 0.15);
+      curvature = ((currentIndex / (totalCount - 1)) - 0.5) * curvatureRange * 2;
+      if (isReversed) curvature = -curvature;
     }
-  }
-}
 
+    edges.push({
+      source: src,
+      target: tgt,
+      type: e.fact_type || e.relation || e.name || 'RELATED',
+      name: e.name || e.relation || e.fact_type || 'RELATED',
+      curvature,
+      isSelfLoop: false,
+      pairIndex: currentIndex,
+      pairTotal: totalCount,
+      rawData: {
+        ...e,
+        source_name: nodeMap[src]?.name,
+        target_name: nodeMap[tgt]?.name,
+      },
+    });
+  });
 
-function buildSVGElements(svg, width, height) {
-  const typeColors = getTypeColors();
+  // ── D3 Force Simulation ──
+  const simulation = d3.forceSimulation(nodes)
+    .force('link', d3.forceLink(edges).id(d => d.id).distance(d => {
+      const base = 150;
+      const count = d.pairTotal || 1;
+      return base + (count - 1) * 50;
+    }))
+    .force('charge', d3.forceManyBody().strength(-400))
+    .force('center', d3.forceCenter(width / 2, height / 2))
+    .force('collide', d3.forceCollide(50))
+    .force('x', d3.forceX(width / 2).strength(0.04))
+    .force('y', d3.forceY(height / 2).strength(0.04));
 
-  // Create SVG namespace helper
-  const NS = 'http://www.w3.org/2000/svg';
-  function el(tag, attrs = {}) {
-    const e = document.createElementNS(NS, tag);
-    for (const [k, v] of Object.entries(attrs)) e.setAttribute(k, v);
-    return e;
-  }
+  _currentSimulation = simulation;
 
-  // Defs (glow filter)
-  const defs = el('defs');
-  defs.innerHTML = `
+  // ── SVG structure ──
+  // Defs
+  const defs = svg.append('defs');
+  defs.html(`
     <filter id="glow"><feGaussianBlur stdDeviation="4" result="blur"/>
     <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
     <filter id="glow-strong"><feGaussianBlur stdDeviation="6" result="blur"/>
     <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
-  `;
-  svg.appendChild(defs);
+  `);
 
-  // Edges group
-  const edgesG = el('g', { class: 'graph-edges' });
-  for (const e of _simEdges) {
-    const line = el('line', {
-      x1: e.sourceNode.x, y1: e.sourceNode.y,
-      x2: e.targetNode.x, y2: e.targetNode.y,
-      stroke: '#334', 'stroke-width': '1', 'stroke-opacity': '0.4',
-      'data-source': e.sourceNode.id, 'data-target': e.targetNode.id,
-    });
-    edgesG.appendChild(line);
+  const g = svg.append('g');
+
+  // Zoom
+  svg.call(d3.zoom()
+    .extent([[0, 0], [width, height]])
+    .scaleExtent([0.1, 4])
+    .on('zoom', (event) => {
+      g.attr('transform', event.transform);
+    })
+  );
+
+  // ── Path helpers ──
+  function getLinkPath(d) {
+    const sx = d.source.x, sy = d.source.y;
+    const tx = d.target.x, ty = d.target.y;
+
+    if (d.isSelfLoop) {
+      const loopR = 30;
+      const x1 = sx + 8, y1 = sy - 4;
+      const x2 = sx + 8, y2 = sy + 4;
+      return `M${x1},${y1} A${loopR},${loopR} 0 1,1 ${x2},${y2}`;
+    }
+
+    if (d.curvature === 0) {
+      return `M${sx},${sy} L${tx},${ty}`;
+    }
+
+    const dx = tx - sx, dy = ty - sy;
+    const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+    const pairTotal = d.pairTotal || 1;
+    const offsetRatio = 0.25 + pairTotal * 0.05;
+    const baseOffset = Math.max(35, dist * offsetRatio);
+    const offsetX = -dy / dist * d.curvature * baseOffset;
+    const offsetY = dx / dist * d.curvature * baseOffset;
+    const cx = (sx + tx) / 2 + offsetX;
+    const cy = (sy + ty) / 2 + offsetY;
+
+    return `M${sx},${sy} Q${cx},${cy} ${tx},${ty}`;
   }
-  svg.appendChild(edgesG);
 
-  // Nodes group
-  const nodesG = el('g', { class: 'graph-nodes' });
-  for (const n of _simNodes) {
-    const color = typeColors[n.type] || '#666';
-    const r = n.size || 14;
+  function getLinkMidpoint(d) {
+    const sx = d.source.x, sy = d.source.y;
+    const tx = d.target.x, ty = d.target.y;
 
-    const g = el('g', {
-      class: 'graph-node',
-      'data-id': n.id,
-      style: 'cursor:grab;',
+    if (d.isSelfLoop) {
+      return { x: sx + 70, y: sy };
+    }
+
+    if (d.curvature === 0) {
+      return { x: (sx + tx) / 2, y: (sy + ty) / 2 };
+    }
+
+    const dx = tx - sx, dy = ty - sy;
+    const dist = Math.sqrt(dx * dx + dy * dy) || 1;
+    const pairTotal = d.pairTotal || 1;
+    const offsetRatio = 0.25 + pairTotal * 0.05;
+    const baseOffset = Math.max(35, dist * offsetRatio);
+    const offsetX = -dy / dist * d.curvature * baseOffset;
+    const offsetY = dx / dist * d.curvature * baseOffset;
+    const cx = (sx + tx) / 2 + offsetX;
+    const cy = (sy + ty) / 2 + offsetY;
+
+    return {
+      x: 0.25 * sx + 0.5 * cx + 0.25 * tx,
+      y: 0.25 * sy + 0.5 * cy + 0.25 * ty,
+    };
+  }
+
+  // ── Links ──
+  const linkGroup = g.append('g').attr('class', 'links');
+
+  const link = linkGroup.selectAll('path')
+    .data(edges)
+    .enter().append('path')
+    .attr('stroke', '#C0C0C0')
+    .attr('stroke-width', 1.5)
+    .attr('fill', 'none')
+    .style('cursor', 'pointer')
+    .on('click', (event, d) => {
+      event.stopPropagation();
+      resetHighlights(linkGroup, node, linkLabelBg, linkLabels);
+      d3.select(event.target).attr('stroke', '#3498db').attr('stroke-width', 3);
+      showDetailPanel({ type: 'edge', data: d.rawData });
     });
 
-    // Outer glow ring (for hover)
-    const ring = el('circle', {
-      cx: n.x, cy: n.y, r: r + 6,
-      fill: 'none', stroke: color, 'stroke-width': '0', 'stroke-opacity': '0.3',
-      class: 'node-ring',
+  // Link label backgrounds
+  const linkLabelBg = linkGroup.selectAll('rect.link-label-bg')
+    .data(edges)
+    .enter().append('rect')
+    .attr('class', 'link-label-bg')
+    .attr('fill', 'rgba(255,255,255,0.95)')
+    .attr('rx', 3).attr('ry', 3)
+    .style('cursor', 'pointer')
+    .style('pointer-events', 'all')
+    .style('display', _showEdgeLabels ? 'block' : 'none')
+    .on('click', (event, d) => {
+      event.stopPropagation();
+      resetHighlights(linkGroup, node, linkLabelBg, linkLabels);
+      link.filter(l => l === d).attr('stroke', '#3498db').attr('stroke-width', 3);
+      showDetailPanel({ type: 'edge', data: d.rawData });
     });
-    g.appendChild(ring);
 
-    // Main circle
-    const circle = el('circle', {
-      cx: n.x, cy: n.y, r: r,
-      fill: color, 'fill-opacity': '0.85',
-      stroke: color, 'stroke-width': '2', 'stroke-opacity': '0.3',
-      filter: 'url(#glow)',
+  // Link labels
+  const linkLabels = linkGroup.selectAll('text.link-label')
+    .data(edges)
+    .enter().append('text')
+    .attr('class', 'link-label')
+    .text(d => d.name)
+    .attr('font-size', '9px')
+    .attr('fill', '#999')
+    .attr('text-anchor', 'middle')
+    .attr('dominant-baseline', 'middle')
+    .style('cursor', 'pointer')
+    .style('pointer-events', 'all')
+    .style('font-family', "'Inter', system-ui, sans-serif")
+    .style('display', _showEdgeLabels ? 'block' : 'none')
+    .on('click', (event, d) => {
+      event.stopPropagation();
+      resetHighlights(linkGroup, node, linkLabelBg, linkLabels);
+      link.filter(l => l === d).attr('stroke', '#3498db').attr('stroke-width', 3);
+      showDetailPanel({ type: 'edge', data: d.rawData });
     });
-    g.appendChild(circle);
 
-    // Label
-    const label = n.name.length > 10 ? n.name.slice(0, 10) + '…' : n.name;
-    const text = el('text', {
-      x: n.x, y: n.y + r + 16,
-      'text-anchor': 'middle', fill: '#bbb', 'font-size': '11',
-      'font-family': "'Inter',sans-serif", 'pointer-events': 'none',
-    });
-    text.textContent = label;
-    g.appendChild(text);
+  _linkLabelsSelection = linkLabels;
+  _linkLabelBgSelection = linkLabelBg;
 
-    nodesG.appendChild(g);
+  // ── Nodes ──
+  const nodeGroup = g.append('g').attr('class', 'nodes');
 
-    // ── Drag handlers ──
-    g.addEventListener('mousedown', (evt) => {
-      evt.preventDefault();
-      _dragNode = n;
-      g.style.cursor = 'grabbing';
-      const pt = svgPoint(svg, evt.clientX, evt.clientY);
-      _dragOffset = { x: pt.x - n.x, y: pt.y - n.y };
+  const node = nodeGroup.selectAll('circle')
+    .data(nodes)
+    .enter().append('circle')
+    .attr('r', 12)
+    .attr('fill', d => getColor(d.type))
+    .attr('stroke', '#fff')
+    .attr('stroke-width', 2.5)
+    .style('cursor', 'pointer')
+    .attr('filter', 'url(#glow)')
+    .call(d3.drag()
+      .on('start', (event, d) => {
+        d.fx = d.x;
+        d.fy = d.y;
+        d._dragStartX = event.x;
+        d._dragStartY = event.y;
+        d._isDragging = false;
+      })
+      .on('drag', (event, d) => {
+        const dx = event.x - d._dragStartX;
+        const dy = event.y - d._dragStartY;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        if (!d._isDragging && distance > 3) {
+          d._isDragging = true;
+          simulation.alphaTarget(0.3).restart();
+        }
+        if (d._isDragging) {
+          d.fx = event.x;
+          d.fy = event.y;
+        }
+      })
+      .on('end', (event, d) => {
+        if (d._isDragging) {
+          simulation.alphaTarget(0);
+        }
+        d.fx = null;
+        d.fy = null;
+        d._isDragging = false;
+      })
+    )
+    .on('click', (event, d) => {
+      event.stopPropagation();
+      // Reset highlights
+      node.attr('stroke', '#fff').attr('stroke-width', 2.5).attr('filter', 'url(#glow)');
+      linkGroup.selectAll('path').attr('stroke', '#C0C0C0').attr('stroke-width', 1.5);
+      // Highlight selected node
+      d3.select(event.target)
+        .attr('stroke', '#FF4500')
+        .attr('stroke-width', 4)
+        .attr('filter', 'url(#glow-strong)');
+      // Highlight connected edges
+      link.filter(l => l.source.id === d.id || l.target.id === d.id)
+        .attr('stroke', '#FF4500')
+        .attr('stroke-width', 2.5);
 
-      // Hide hint
+      // Hide drag hint
       const hint = document.getElementById('graph-hint');
       if (hint) hint.style.display = 'none';
+
+      showDetailPanel({
+        type: 'node',
+        data: d.rawData,
+        entityType: d.type,
+        color: getColor(d.type),
+      });
+    })
+    .on('mouseenter', (event, d) => {
+      if (!_selectedItem || (_selectedItem.data?.uuid || _selectedItem.data?.id) !== (d.rawData.uuid || d.rawData.id)) {
+        d3.select(event.target).attr('stroke', '#333').attr('stroke-width', 3);
+      }
+    })
+    .on('mouseleave', (event, d) => {
+      if (!_selectedItem || (_selectedItem.data?.uuid || _selectedItem.data?.id) !== (d.rawData.uuid || d.rawData.id)) {
+        d3.select(event.target).attr('stroke', '#fff').attr('stroke-width', 2.5);
+      }
     });
 
-    // ── Click handler ──
-    g.addEventListener('click', (evt) => {
-      // Only trigger if not dragging
-      if (!_wasDragged) {
-        highlightNode(n.id);
-        showNodeDetail(n);
-      }
-      _wasDragged = false;
+  // Node labels
+  const nodeLabels = nodeGroup.selectAll('text')
+    .data(nodes)
+    .enter().append('text')
+    .text(d => d.name.length > 8 ? d.name.substring(0, 8) + '…' : d.name)
+    .attr('font-size', '11px')
+    .attr('fill', '#bbb')
+    .attr('font-weight', '500')
+    .attr('dx', 16)
+    .attr('dy', 4)
+    .style('pointer-events', 'none')
+    .style('font-family', "'Inter', sans-serif");
+
+  // ── Tick handler ──
+  simulation.on('tick', () => {
+    link.attr('d', d => getLinkPath(d));
+
+    linkLabels.each(function (d) {
+      const mid = getLinkMidpoint(d);
+      d3.select(this).attr('x', mid.x).attr('y', mid.y).attr('transform', '');
     });
-  }
-  svg.appendChild(nodesG);
 
-  // ── SVG-level mouse handlers for drag ──
-  let _wasDragged = false;
-
-  svg.addEventListener('mousemove', (evt) => {
-    if (!_dragNode) return;
-    _wasDragged = true;
-    const pt = svgPoint(svg, evt.clientX, evt.clientY);
-    _dragNode.x = pt.x - _dragOffset.x;
-    _dragNode.y = pt.y - _dragOffset.y;
-
-    // Clamp
-    _dragNode.x = Math.max(20, Math.min(width - 20, _dragNode.x));
-    _dragNode.y = Math.max(20, Math.min(height - 20, _dragNode.y));
-
-    updateNodePosition(_dragNode, svg);
-  });
-
-  svg.addEventListener('mouseup', () => {
-    if (_dragNode) {
-      const g = svg.querySelector(`.graph-node[data-id="${_dragNode.id}"]`);
-      if (g) g.style.cursor = 'grab';
-      _dragNode = null;
-    }
-  });
-
-  svg.addEventListener('mouseleave', () => {
-    _dragNode = null;
-  });
-
-  // Touch support for mobile
-  svg.addEventListener('touchstart', (evt) => {
-    const touch = evt.touches[0];
-    const target = document.elementFromPoint(touch.clientX, touch.clientY);
-    const nodeG = target?.closest('.graph-node');
-    if (nodeG) {
-      evt.preventDefault();
-      const id = nodeG.dataset.id;
-      _dragNode = _simNodes.find(n => n.id === id);
-      if (_dragNode) {
-        const pt = svgPoint(svg, touch.clientX, touch.clientY);
-        _dragOffset = { x: pt.x - _dragNode.x, y: pt.y - _dragNode.y };
+    linkLabelBg.each(function (d, i) {
+      const mid = getLinkMidpoint(d);
+      const textEl = linkLabels.nodes()[i];
+      if (textEl) {
+        const bbox = textEl.getBBox();
+        d3.select(this)
+          .attr('x', mid.x - bbox.width / 2 - 4)
+          .attr('y', mid.y - bbox.height / 2 - 2)
+          .attr('width', bbox.width + 8)
+          .attr('height', bbox.height + 4)
+          .attr('transform', '');
       }
-    }
-  }, { passive: false });
+    });
 
-  svg.addEventListener('touchmove', (evt) => {
-    if (!_dragNode) return;
-    evt.preventDefault();
-    const touch = evt.touches[0];
-    const pt = svgPoint(svg, touch.clientX, touch.clientY);
-    _dragNode.x = Math.max(20, Math.min(width - 20, pt.x - _dragOffset.x));
-    _dragNode.y = Math.max(20, Math.min(height - 20, pt.y - _dragOffset.y));
-    updateNodePosition(_dragNode, svg);
-  }, { passive: false });
-
-  svg.addEventListener('touchend', () => {
-    _dragNode = null;
+    node.attr('cx', d => d.x).attr('cy', d => d.y);
+    nodeLabels.attr('x', d => d.x).attr('y', d => d.y);
   });
+
+  // Click on empty space to close detail
+  svg.on('click', () => {
+    _selectedItem = null;
+    node.attr('stroke', '#fff').attr('stroke-width', 2.5).attr('filter', 'url(#glow)');
+    linkGroup.selectAll('path').attr('stroke', '#C0C0C0').attr('stroke-width', 1.5);
+    linkLabelBg.attr('fill', 'rgba(255,255,255,0.95)');
+    linkLabels.attr('fill', '#999');
+    closeDetailPanel();
+  });
+
+  // ── Legend ──
+  renderLegend(typeColorMap);
+
+  // ── Resize handler ──
+  const handleResize = () => {
+    const w = wrap.clientWidth;
+    const h = wrap.clientHeight;
+    svg.attr('width', w).attr('height', h).attr('viewBox', `0 0 ${w} ${h}`);
+  };
+  window.addEventListener('resize', handleResize);
 }
 
 
-/** Convert screen coords to SVG coords */
-function svgPoint(svg, clientX, clientY) {
-  const pt = svg.createSVGPoint();
-  pt.x = clientX;
-  pt.y = clientY;
-  return pt.matrixTransform(svg.getScreenCTM().inverse());
+function resetHighlights(linkGroup, node, linkLabelBg, linkLabels) {
+  if (linkGroup) linkGroup.selectAll('path').attr('stroke', '#C0C0C0').attr('stroke-width', 1.5);
+  if (linkLabelBg) linkLabelBg.attr('fill', 'rgba(255,255,255,0.95)');
+  if (linkLabels) linkLabels.attr('fill', '#999');
+  if (node) node.attr('stroke', '#fff').attr('stroke-width', 2.5).attr('filter', 'url(#glow)');
 }
 
 
-/** Update a node's DOM position (circle + text + edges) */
-function updateNodePosition(node, svg) {
-  const g = svg.querySelector(`.graph-node[data-id="${node.id}"]`);
-  if (!g) return;
+// ═══════════════════════════════════════════════════════════════════
+// Detail Panel (right overlay — MiroFish style)
+// ═══════════════════════════════════════════════════════════════════
 
-  const circles = g.querySelectorAll('circle');
-  circles.forEach(c => {
-    c.setAttribute('cx', node.x);
-    c.setAttribute('cy', node.y);
-  });
+function showDetailPanel(item) {
+  _selectedItem = item;
+  const panel = document.getElementById('graph-detail-panel');
+  if (!panel) return;
 
-  const text = g.querySelector('text');
-  const r = node.size || 14;
-  if (text) {
-    text.setAttribute('x', node.x);
-    text.setAttribute('y', node.y + r + 16);
+  panel.style.display = 'flex';
+
+  if (item.type === 'node') {
+    renderNodeDetailPanel(panel, item);
+  } else {
+    renderEdgeDetailPanel(panel, item);
   }
-
-  // Update connected edges
-  svg.querySelectorAll(`line[data-source="${node.id}"]`).forEach(l => {
-    l.setAttribute('x1', node.x);
-    l.setAttribute('y1', node.y);
-  });
-  svg.querySelectorAll(`line[data-target="${node.id}"]`).forEach(l => {
-    l.setAttribute('x2', node.x);
-    l.setAttribute('y2', node.y);
-  });
 }
 
-
-/** Highlight a node and dim others */
-function highlightNode(nodeId) {
-  _selectedNodeId = nodeId;
-  const svg = document.getElementById('graph-svg');
-  if (!svg) return;
-
-  // Reset all
-  svg.querySelectorAll('.graph-node').forEach(g => {
-    const circles = g.querySelectorAll('circle');
-    const main = circles[1] || circles[0];
-    if (main) {
-      main.setAttribute('fill-opacity', g.dataset.id === nodeId ? '1' : '0.4');
-      main.setAttribute('filter', g.dataset.id === nodeId ? 'url(#glow-strong)' : '');
-    }
-    // Show ring for selected
-    const ring = g.querySelector('.node-ring');
-    if (ring) {
-      ring.setAttribute('stroke-width', g.dataset.id === nodeId ? '3' : '0');
-    }
-    // Label
-    const text = g.querySelector('text');
-    if (text) {
-      text.setAttribute('fill', g.dataset.id === nodeId ? '#fff' : '#666');
-      text.setAttribute('font-weight', g.dataset.id === nodeId ? '700' : '400');
-    }
-  });
-
-  // Highlight connected edges
-  svg.querySelectorAll('.graph-edges line').forEach(line => {
-    const src = line.getAttribute('data-source');
-    const tgt = line.getAttribute('data-target');
-    const connected = src === nodeId || tgt === nodeId;
-    line.setAttribute('stroke-opacity', connected ? '0.8' : '0.15');
-    line.setAttribute('stroke-width', connected ? '2' : '1');
-    line.setAttribute('stroke', connected ? '#FF4500' : '#334');
-  });
+function closeDetailPanel() {
+  const panel = document.getElementById('graph-detail-panel');
+  if (panel) panel.style.display = 'none';
+  _selectedItem = null;
+  _expandedSelfLoops = new Set();
 }
 
+function renderNodeDetailPanel(panel, item) {
+  const data = item.data;
+  const attrs = data.attributes || data.properties || {};
+  const labels = data.labels || [];
+  const summary = data.summary || data.persona || data.description || '';
 
-function showNodeDetail(node) {
-  const panel = document.getElementById('node-detail-panel');
-  const detail = document.getElementById('node-detail');
-  panel.style.display = 'block';
-
-  const typeColors = getTypeColors();
-  const color = typeColors[node.type] || '#666';
-
-  detail.innerHTML = `
-    <div class="node-detail-content">
-      <div class="flex items-center gap-8 mb-8">
-        <span class="node-detail-dot" style="background:${color};width:10px;height:10px;display:inline-block;border-radius:50%;"></span>
-        <span class="mono-xs muted">${node.type} ${node.group ? `// ${node.group}` : ''}</span>
+  panel.innerHTML = `
+    <div class="gd-panel-header">
+      <span class="gd-title">Node Details</span>
+      <span class="gd-type-badge" style="background:${item.color};color:#fff;">${item.entityType}</span>
+      <button class="gd-close" id="gd-close">×</button>
+    </div>
+    <div class="gd-content">
+      <div class="gd-row">
+        <span class="gd-label">Name:</span>
+        <span class="gd-value">${data.name || '—'}</span>
       </div>
-      <h4 style="font-size:16px;margin-bottom:8px;">${node.name}</h4>
-      ${node.persona ? `<p style="font-size:13px;color:var(--secondary);line-height:1.6;margin-bottom:8px;">${node.persona}</p>` : ''}
-      ${node.impact ? `<div class="mono-xs" style="margin-top:8px;">IMPACT: <span class="badge badge-sm" style="background:${node.impact === 'high' ? '#FF4500' : node.impact === 'medium' ? '#FF8F00' : '#2E7D32'};color:#fff;">${node.impact.toUpperCase()}</span></div>` : ''}
-      ${node.description ? `<p style="font-size:12px;color:var(--outline);margin-top:8px;">${node.description}</p>` : ''}
+      ${data.uuid ? `
+      <div class="gd-row">
+        <span class="gd-label">UUID:</span>
+        <span class="gd-value gd-uuid">${data.uuid}</span>
+      </div>` : ''}
+      ${data.id && !data.uuid ? `
+      <div class="gd-row">
+        <span class="gd-label">ID:</span>
+        <span class="gd-value gd-uuid">${data.id}</span>
+      </div>` : ''}
+      ${data.created_at ? `
+      <div class="gd-row">
+        <span class="gd-label">Created:</span>
+        <span class="gd-value">${formatDateTime(data.created_at)}</span>
+      </div>` : ''}
+
+      ${Object.keys(attrs).length > 0 ? `
+      <div class="gd-section">
+        <div class="gd-section-title">Properties:</div>
+        ${Object.entries(attrs).map(([k, v]) => `
+          <div class="gd-prop">
+            <span class="gd-prop-key">${k}:</span>
+            <span class="gd-prop-val">${v || 'None'}</span>
+          </div>
+        `).join('')}
+      </div>` : ''}
+
+      ${summary ? `
+      <div class="gd-section">
+        <div class="gd-section-title">Summary:</div>
+        <div class="gd-summary">${summary}</div>
+      </div>` : ''}
+
+      ${labels.length > 0 ? `
+      <div class="gd-section">
+        <div class="gd-section-title">Labels:</div>
+        <div class="gd-labels">
+          ${labels.map(l => `<span class="gd-label-tag">${l}</span>`).join('')}
+        </div>
+      </div>` : ''}
+
+      ${data.stance ? `
+      <div class="gd-section">
+        <div class="gd-section-title">Agent Info:</div>
+        <div class="gd-prop"><span class="gd-prop-key">Stance:</span><span class="gd-prop-val">${data.stance}</span></div>
+        ${data.influence !== undefined ? `<div class="gd-prop"><span class="gd-prop-key">Influence:</span><span class="gd-prop-val">${(data.influence * 100).toFixed(0)}%</span></div>` : ''}
+        ${data.impact ? `<div class="gd-prop"><span class="gd-prop-key">Impact:</span><span class="gd-prop-val gd-impact-${data.impact}">${data.impact.toUpperCase()}</span></div>` : ''}
+      </div>` : ''}
+    </div>
+  `;
+
+  document.getElementById('gd-close')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeDetailPanel();
+  });
+}
+
+function renderEdgeDetailPanel(panel, item) {
+  const data = item.data;
+
+  if (data.isSelfLoopGroup) {
+    renderSelfLoopDetailPanel(panel, data);
+    return;
+  }
+
+  panel.innerHTML = `
+    <div class="gd-panel-header">
+      <span class="gd-title">Relationship</span>
+      <button class="gd-close" id="gd-close">×</button>
+    </div>
+    <div class="gd-content">
+      <div class="gd-edge-header">
+        ${data.source_name || '?'} → ${data.name || data.relation || 'RELATED_TO'} → ${data.target_name || '?'}
+      </div>
+      ${data.uuid ? `
+      <div class="gd-row">
+        <span class="gd-label">UUID:</span>
+        <span class="gd-value gd-uuid">${data.uuid}</span>
+      </div>` : ''}
+      <div class="gd-row">
+        <span class="gd-label">Label:</span>
+        <span class="gd-value">${data.name || data.relation || 'RELATED_TO'}</span>
+      </div>
+      <div class="gd-row">
+        <span class="gd-label">Type:</span>
+        <span class="gd-value">${data.fact_type || data.relation_type || 'Unknown'}</span>
+      </div>
+      ${data.fact ? `
+      <div class="gd-row">
+        <span class="gd-label">Fact:</span>
+        <span class="gd-value gd-fact">${data.fact}</span>
+      </div>` : ''}
+      ${data.weight !== undefined ? `
+      <div class="gd-row">
+        <span class="gd-label">Weight:</span>
+        <span class="gd-value">${data.weight}</span>
+      </div>` : ''}
+      ${data.episodes?.length > 0 ? `
+      <div class="gd-section">
+        <div class="gd-section-title">Episodes:</div>
+        <div class="gd-episodes">
+          ${data.episodes.map(ep => `<span class="gd-episode-tag">${ep}</span>`).join('')}
+        </div>
+      </div>` : ''}
+      ${data.created_at ? `
+      <div class="gd-row">
+        <span class="gd-label">Created:</span>
+        <span class="gd-value">${formatDateTime(data.created_at)}</span>
+      </div>` : ''}
+    </div>
+  `;
+
+  document.getElementById('gd-close')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeDetailPanel();
+  });
+}
+
+function renderSelfLoopDetailPanel(panel, data) {
+  const loops = data.selfLoopEdges || [];
+
+  panel.innerHTML = `
+    <div class="gd-panel-header">
+      <span class="gd-title">Self Relations</span>
+      <button class="gd-close" id="gd-close">×</button>
+    </div>
+    <div class="gd-content">
+      <div class="gd-edge-header gd-self-loop-hdr">
+        ${data.source_name} — Self Relations
+        <span class="gd-self-count">${data.selfLoopCount} items</span>
+      </div>
+      <div class="gd-self-list" id="gd-self-list">
+        ${loops.map((loop, idx) => {
+          const loopId = loop.uuid || idx;
+          return `
+            <div class="gd-self-item ${_expandedSelfLoops.has(loopId) ? 'expanded' : ''}" data-self-id="${loopId}">
+              <div class="gd-self-item-header" data-toggle-id="${loopId}">
+                <span class="gd-self-idx">#${idx + 1}</span>
+                <span class="gd-self-name">${loop.name || loop.fact_type || 'RELATED'}</span>
+                <span class="gd-self-toggle">${_expandedSelfLoops.has(loopId) ? '−' : '+'}</span>
+              </div>
+              <div class="gd-self-item-content" style="display:${_expandedSelfLoops.has(loopId) ? 'block' : 'none'};">
+                ${loop.uuid ? `<div class="gd-row"><span class="gd-label">UUID:</span><span class="gd-value gd-uuid">${loop.uuid}</span></div>` : ''}
+                ${loop.fact ? `<div class="gd-row"><span class="gd-label">Fact:</span><span class="gd-value gd-fact">${loop.fact}</span></div>` : ''}
+                ${loop.fact_type ? `<div class="gd-row"><span class="gd-label">Type:</span><span class="gd-value">${loop.fact_type}</span></div>` : ''}
+                ${loop.created_at ? `<div class="gd-row"><span class="gd-label">Created:</span><span class="gd-value">${formatDateTime(loop.created_at)}</span></div>` : ''}
+              </div>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    </div>
+  `;
+
+  // Toggle handlers
+  panel.querySelectorAll('[data-toggle-id]').forEach(el => {
+    el.addEventListener('click', () => {
+      const id = el.dataset.toggleId;
+      const numId = isNaN(id) ? id : parseInt(id);
+      if (_expandedSelfLoops.has(numId)) {
+        _expandedSelfLoops.delete(numId);
+      } else {
+        _expandedSelfLoops.add(numId);
+      }
+      // Re-render
+      renderSelfLoopDetailPanel(panel, data);
+    });
+  });
+
+  document.getElementById('gd-close')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    closeDetailPanel();
+  });
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// Legend
+// ═══════════════════════════════════════════════════════════════════
+
+function renderLegend(typeColorMap) {
+  const legend = document.getElementById('graph-legend-panel');
+  if (!legend) return;
+
+  const types = Object.entries(typeColorMap);
+  if (types.length === 0) return;
+
+  legend.innerHTML = `
+    <span class="gl-title">Entity Types</span>
+    <div class="gl-items">
+      ${types.map(([name, color]) => `
+        <div class="gl-item">
+          <span class="gl-dot" style="background:${color};"></span>
+          <span class="gl-label">${name}</span>
+        </div>
+      `).join('')}
     </div>
   `;
 }
 
 
-function renderLegend(nodes) {
-  const types = [...new Set(nodes.map(n => n.type))];
-  const typeColors = getTypeColors();
+// ═══════════════════════════════════════════════════════════════════
+// Helpers
+// ═══════════════════════════════════════════════════════════════════
 
-  const legend = document.getElementById('graph-legend');
-  legend.innerHTML = types.map(t => `
-    <span class="legend-item">
-      <span class="legend-dot" style="background:${typeColors[t] || '#666'}"></span>
-      ${t}
-    </span>
-  `).join('');
+function formatDateTime(dateStr) {
+  if (!dateStr) return '';
+  try {
+    const date = new Date(dateStr);
+    return date.toLocaleString('en-US', {
+      month: 'short', day: 'numeric', year: 'numeric',
+      hour: 'numeric', minute: '2-digit', hour12: true,
+    });
+  } catch {
+    return dateStr;
+  }
 }

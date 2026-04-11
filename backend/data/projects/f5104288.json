@@ -1,0 +1,33 @@
+{
+  "id": "f5104288",
+  "title": "New Simulation",
+  "status": "configured",
+  "created_at": "2026-04-11T13:11:00.145324",
+  "updated_at": "2026-04-11T13:11:28.682532",
+  "profile": {
+    "personality_type": "INTJ",
+    "education_stage": "undergraduate",
+    "school": "中山大学",
+    "major": "计算机",
+    "gpa_range": "3.8+",
+    "family_economy": "一般",
+    "family_expectation": "留在本省",
+    "city_preference": "一线城市",
+    "career_preference": "体制内",
+    "risk_preference": "balanced",
+    "current_concern": "保研还是就业"
+  },
+  "parameters": [
+    {
+      "id": "cca55d85",
+      "name": "就业",
+      "description": "",
+      "priority": "primary",
+      "weight": 1.0
+    }
+  ],
+  "agents": [],
+  "graph_data": null,
+  "expanded_factors": null,
+  "paths": []
+}
