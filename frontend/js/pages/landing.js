@@ -30,22 +30,22 @@ export function renderLanding(container) {
           <svg viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
             <path d="M50 300 Q 200 300 400 150 T 750 100" stroke="black" stroke-width="1" stroke-dasharray="4 4"/>
             <path d="M50 300 Q 200 300 400 450 T 750 500" stroke="black" stroke-width="1" stroke-dasharray="2 2" opacity="0.3"/>
-            <path d="M50 300 L 750 300" stroke="#FF4500" stroke-width="1.5"/>
+            <path d="M50 300 L 750 300" stroke="#0F766E" stroke-width="1.5"/>
             <rect x="395" y="145" width="10" height="10" fill="white" stroke="black"/>
-            <rect x="395" y="295" width="10" height="10" fill="#FF4500"/>
+            <rect x="395" y="295" width="10" height="10" fill="#0F766E"/>
             <rect x="395" y="445" width="10" height="10" fill="white" stroke="black"/>
             <text x="415" y="155" font-family="Space Grotesk" font-size="10" fill="black">BRANCH_A: OPTIMAL</text>
-            <text x="415" y="305" font-family="Space Grotesk" font-size="10" fill="#FF4500">CURRENT_PATH</text>
+            <text x="415" y="305" font-family="Space Grotesk" font-size="10" fill="#0F766E">CURRENT_PATH</text>
             <text x="415" y="455" font-family="Space Grotesk" font-size="10" fill="black">BRANCH_B: DEGRADED</text>
             <circle cx="50" cy="300" r="4" fill="black"/>
-            <circle cx="400" cy="300" r="6" fill="#FF4500"/>
+            <circle cx="400" cy="300" r="6" fill="#0F766E"/>
             <circle cx="750" cy="300" r="4" fill="black"/>
           </svg>
           <div style="position:absolute;top:40px;left:40px;" class="mono-xs text-muted">NODE_ID: 0x4F2A<br/><span class="status-dot status-active" style="display:inline-block;margin-right:4px;"></span>LIVE</div>
           <div style="position:absolute;bottom:40px;right:40px;text-align:right;" class="mono-xs text-muted">
             LIVE_RENDER_ACTIVE
             <div style="display:flex;gap:4px;justify-content:flex-end;margin-top:8px;">
-              <div style="width:16px;height:4px;background:#FF4500;"></div>
+              <div style="width:16px;height:4px;background:#0F766E;"></div>
               <div style="width:16px;height:4px;background:#000;"></div>
               <div style="width:16px;height:4px;background:#000;"></div>
             </div>
@@ -131,7 +131,7 @@ export function renderLanding(container) {
           <span class="status-dot status-active"></span>
           <span class="mono-xs">ALL_SYSTEMS_OPERATIONAL</span>
         </div>
-        <span class="mono-xs muted">© 2025 LIFEPATH-ENGINE. Based on MiroFish Architecture.</span>
+        <span class="mono-xs muted">© 2025 LIFEPATH-ENGINE. Multi-agent life-path engine.</span>
       </div>
     </footer>
   `;

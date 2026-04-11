@@ -16,6 +16,12 @@ export const state = {
   projectId: null,
   project: null,
   simComplete: false,   // prevents re-simulation
+  simConfig: { rounds: 12, timeUnit: 'quarter', agentCount: 8 },
+  simulationTab: 'tree',
+  resultsView: 'overview',
+  selectedPathId: null,
+  backtrackNodeIndex: null,
+  treeEvents: [],
 };
 
 // ── Router ──
@@ -28,11 +34,45 @@ const routes = {
   graph: renderGraph,
 };
 
+const treeEventListeners = new Set();
+
+export function resetTreeEvents(events = []) {
+  state.treeEvents = Array.isArray(events) ? [...events] : [];
+}
+
+export function pushTreeEvent(event) {
+  if (!event?.id) return;
+  if (state.treeEvents.some(existing => existing.id === event.id)) return;
+  state.treeEvents = [...state.treeEvents, event];
+  treeEventListeners.forEach(listener => listener(event));
+}
+
+export function subscribeTreeEvents(listener, { replay = false } = {}) {
+  treeEventListeners.add(listener);
+  if (replay) {
+    state.treeEvents.forEach(event => listener(event));
+  }
+  return () => treeEventListeners.delete(listener);
+}
+
 export function navigateTo(page, params = {}) {
-  state.currentPage = page;
   Object.assign(state, params);
-  window.location.hash = page;
+  const targetPage = resolvePage(page);
+  state.currentPage = targetPage;
+  window.location.hash = targetPage;
   render();
+}
+
+function resolvePage(page) {
+  if (!state.projectId && ['simulation', 'graph', 'results'].includes(page)) {
+    return 'landing';
+  }
+
+  if (['graph', 'results'].includes(page) && !state.simComplete && state.project?.status !== 'completed') {
+    return 'simulation';
+  }
+
+  return page;
 }
 
 // Expose globally for onclick handlers
@@ -42,7 +82,9 @@ window.t = t;
 
 function render() {
   const app = document.getElementById('app');
-  const renderer = routes[state.currentPage];
+  const resolvedPage = resolvePage(state.currentPage);
+  state.currentPage = resolvedPage;
+  const renderer = routes[resolvedPage];
   if (renderer) {
     renderer(app);
   }
@@ -74,7 +116,7 @@ function updateLangButton() {
 function handleHash() {
   const hash = window.location.hash.slice(1) || 'landing';
   if (routes[hash]) {
-    state.currentPage = hash;
+    state.currentPage = resolvePage(hash);
     render();
   }
 }

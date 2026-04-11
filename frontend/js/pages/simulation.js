@@ -10,7 +10,7 @@
  */
 
 import { api } from '../api.js';
-import { navigateTo, state } from '../app.js';
+import { navigateTo, state, pushTreeEvent, resetTreeEvents, subscribeTreeEvents } from '../app.js';
 import { t } from '../i18n.js';
 
 /** Internal tree data */
@@ -18,8 +18,11 @@ let _treeNodes = [];  // {id, parent, label, x, y, round, time_label, type, tend
 let _treeEdges = [];
 let _selectedTreeNode = null;
 let _activeTab = 'tree'; // 'tree' or 'actions'
+let _unsubscribeTreeEvents = null;
 
 export function renderSimulation(container) {
+  _activeTab = state.simulationTab || 'tree';
+
   // ── If project is already completed, show tabbed view ──
   if (state.simComplete || state.project?.status === 'completed') {
     renderCompletedWithTabs(container);
@@ -100,7 +103,76 @@ export function renderSimulation(container) {
   _treeEdges = [];
   _selectedTreeNode = null;
   initTreeSVG();
+  clearTreeSubscription();
+  resetTreeEvents([]);
+  ensureTreeSubscription();
   startSim(container);
+}
+
+function clearTreeSubscription() {
+  if (_unsubscribeTreeEvents) {
+    _unsubscribeTreeEvents();
+    _unsubscribeTreeEvents = null;
+  }
+}
+
+function ensureTreeSubscription({ replay = false } = {}) {
+  clearTreeSubscription();
+  _unsubscribeTreeEvents = subscribeTreeEvents((event) => {
+    handleTreeEvent(event);
+    updateTreeMetrics();
+    renderTreeSummaryPanel();
+  }, { replay });
+}
+
+function updateTreeMetrics() {
+  const branchCount = _treeNodes.filter(n => n.isBranch).length;
+  const mb = document.getElementById('metric-branches');
+  if (mb) mb.textContent = branchCount || (_treeNodes.length ? 1 : '—');
+  const mn = document.getElementById('metric-nodes');
+  if (mn) mn.textContent = _treeNodes.length || '—';
+}
+
+function renderTreeSummaryPanel() {
+  const summaryPanel = document.getElementById('tree-summary-panel');
+  if (!summaryPanel) return;
+
+  if (_treeNodes.length === 0) {
+    summaryPanel.innerHTML = `
+      <div class="console-line">
+        <span class="console-ts">[INFO]</span>
+        <span style="color:var(--outline);">暂无推演树数据</span>
+      </div>
+    `;
+    return;
+  }
+
+  summaryPanel.innerHTML = `
+    <div class="console-line" style="border-left:2px solid var(--accent);padding-left:12px;margin-bottom:4px;">
+      <span class="console-ts" style="color:var(--accent);">[LIVE]</span>
+      <span style="font-weight:700;color:var(--accent);">推演树实时更新中，当前 ${_treeNodes.length} 个节点</span>
+    </div>
+    ${_treeNodes.slice(-20).reverse().map(n => `
+      <div class="console-line" style="cursor:pointer;" data-node-id="${n.id}">
+        <span class="console-ts">[R${n.round}]</span>
+        <span>${n.isBranch ? '🔶' : '⚫'} ${n.label || '—'}</span>
+      </div>
+    `).join('')}
+    ${_treeNodes.length > 20 ? `
+      <div class="console-line">
+        <span class="console-ts">[...]</span>
+        <span style="color:var(--outline);">更早节点 ${_treeNodes.length - 20} 个</span>
+      </div>
+    ` : ''}
+  `;
+
+  summaryPanel.querySelectorAll('[data-node-id]').forEach(el => {
+    el.addEventListener('click', () => {
+      const nodeId = el.dataset.nodeId;
+      const node = _treeNodes.find(n => n.id === nodeId);
+      if (node) showTreeNodeTooltipAtNode(node);
+    });
+  });
 }
 
 /**
@@ -130,6 +202,7 @@ function renderCompletedWithTabs(container) {
   container.querySelectorAll('.sim-tab').forEach(tab => {
     tab.addEventListener('click', () => {
       _activeTab = tab.dataset.tab;
+      state.simulationTab = _activeTab;
       renderCompletedWithTabs(container);
     });
   });
@@ -139,6 +212,7 @@ function renderCompletedWithTabs(container) {
   if (_activeTab === 'tree') {
     renderTreeTab(tabContent);
   } else {
+    clearTreeSubscription();
     renderActionsTab(tabContent);
   }
 }
@@ -201,67 +275,23 @@ async function renderTreeTab(tabContent) {
   _treeEdges = [];
   _selectedTreeNode = null;
   initTreeSVG();
+  clearTreeSubscription();
 
   // Load tree events from API
   try {
-    const data = await api.getTreeEvents(state.projectId);
-    const events = data.events || [];
-
-    if (events.length === 0) {
-      document.getElementById('tree-summary-panel').innerHTML = `
-        <div class="console-line">
-          <span class="console-ts">[INFO]</span>
-          <span style="color:var(--outline);">暂无推演树数据</span>
-        </div>
-      `;
-      return;
+    if (!state.treeEvents?.length) {
+      const data = await api.getTreeEvents(state.projectId);
+      const fetchedEvents = data.events || [];
+      if (!state.treeEvents?.length) {
+        resetTreeEvents(fetchedEvents);
+      } else {
+        fetchedEvents.forEach(pushTreeEvent);
+      }
     }
 
-    // Replay tree events
-    for (const evt of events) {
-      handleTreeEvent(evt);
-    }
-
-    // Update metrics
-    const branchCount = _treeNodes.filter(n => n.isBranch).length;
-    const mb = document.getElementById('metric-branches');
-    if (mb) mb.textContent = branchCount || 1;
-    const mn = document.getElementById('metric-nodes');
-    if (mn) mn.textContent = _treeNodes.length;
-
-    // Build summary
-    const summaryPanel = document.getElementById('tree-summary-panel');
-    if (summaryPanel) {
-      summaryPanel.innerHTML = `
-        <div class="console-line" style="border-left:2px solid var(--accent);padding-left:12px;margin-bottom:4px;">
-          <span class="console-ts" style="color:var(--accent);">[DONE]</span>
-          <span style="font-weight:700;color:var(--accent);">推演完成，共 ${_treeNodes.length} 个节点</span>
-        </div>
-        ${_treeNodes.slice(0, 20).map(n => `
-          <div class="console-line" style="cursor:pointer;" data-node-id="${n.id}">
-            <span class="console-ts">[R${n.round}]</span>
-            <span>${n.isBranch ? '🔶' : '⚫'} ${n.label || '—'}</span>
-          </div>
-        `).join('')}
-        ${_treeNodes.length > 20 ? `
-          <div class="console-line">
-            <span class="console-ts">[...]</span>
-            <span style="color:var(--outline);">还有 ${_treeNodes.length - 20} 个节点</span>
-          </div>
-        ` : ''}
-      `;
-
-      // Click to highlight node on tree
-      summaryPanel.querySelectorAll('[data-node-id]').forEach(el => {
-        el.addEventListener('click', () => {
-          const nodeId = el.dataset.nodeId;
-          const node = _treeNodes.find(n => n.id === nodeId);
-          if (node) {
-            showTreeNodeTooltipAtNode(node);
-          }
-        });
-      });
-    }
+    ensureTreeSubscription({ replay: true });
+    updateTreeMetrics();
+    renderTreeSummaryPanel();
   } catch (e) {
     document.getElementById('tree-summary-panel').innerHTML = `
       <div class="console-line">
@@ -304,6 +334,8 @@ function renderActionsTab(tabContent) {
     state.simComplete = false;
     if (state.project) state.project.status = 'simulating';
     _activeTab = 'tree';
+    state.simulationTab = 'tree';
+    resetTreeEvents([]);
     navigateTo('simulation');
   });
 }
@@ -313,7 +345,7 @@ function renderActionsTab(tabContent) {
 // ═══════════════════════════════════════════════════════════════════
 
 async function startSim(container) {
-  const config = state.simConfig || { rounds: 12, timeUnit: 'quarter', agentCount: 6 };
+  const config = state.simConfig || { rounds: 12, timeUnit: 'quarter', agentCount: 8 };
 
   try {
     const resp = await api.startSimulation(
@@ -366,7 +398,7 @@ function handleSSEEvent(event, container) {
 
   // ── Handle tree events (the core new feature) ──
   if (phase === 'tree_event' && tree_event) {
-    handleTreeEvent(tree_event);
+    pushTreeEvent(tree_event);
     return;  // don't log tree events to the console
   }
 
@@ -418,10 +450,9 @@ function handleSSEEvent(event, container) {
 
       // Mark simulation as complete
       state.simComplete = true;
-
-      // Always navigate to graph (only AI engine is supported)
-      const nextPage = agent_count > 0 ? 'graph' : 'results';
-      setTimeout(() => navigateTo(nextPage), 1500);
+      if (state.project) state.project.status = 'completed';
+      state.simulationTab = 'actions';
+      setTimeout(() => renderCompletedWithTabs(container), 1000);
     }
   }
 }
@@ -448,22 +479,22 @@ function addEventLog(timestamp, message, isHighlight = false) {
 // ═══════════════════════════════════════════════════════════════════
 
 const NODE_COLORS = {
-  decision: '#FF4500',
-  opportunity: '#2E7D32',
-  result: '#555',
-  cascade: '#1565C0',
-  risk: '#BA1A1A',
-  reflection: '#777',
-  branch: '#FF4500',
-  default: '#444',
+  decision: '#0F766E',
+  opportunity: '#2563EB',
+  result: '#334155',
+  cascade: '#7C3AED',
+  risk: '#DC2626',
+  reflection: '#0891B2',
+  branch: '#8B5CF6',
+  default: '#475569',
 };
 
 const TENDENCY_COLORS = {
-  optimal: '#2E7D32',
-  conservative: '#555',
-  risk: '#FF4500',
-  balanced: '#1565C0',
-  counterfactual: '#9C27B0',
+  optimal: '#0F766E',
+  conservative: '#2563EB',
+  risk: '#DC2626',
+  balanced: '#475569',
+  counterfactual: '#8B5CF6',
 };
 
 function initTreeSVG() {
@@ -521,6 +552,14 @@ function addTreeNode(evt) {
     type: evt.node_type || 'result',
     isBranch: false,
     tendency: '',
+    description: evt.description || '',
+    trigger_reason: evt.trigger_reason || '',
+    state_summary: evt.state_summary || [],
+    state_snapshot: evt.state_snapshot || {},
+    agent_actions: evt.agent_actions || [],
+    source_path_id: evt.source_path_id || '',
+    source_node_index: evt.source_node_index,
+    rawEvent: evt,
   });
 }
 
@@ -553,6 +592,14 @@ function addBranchNode(evt) {
     type: 'branch',
     isBranch: true,
     tendency: evt.tendency || 'balanced',
+    description: evt.description || '',
+    trigger_reason: evt.trigger_reason || '',
+    state_summary: evt.state_summary || [],
+    state_snapshot: evt.state_snapshot || {},
+    agent_actions: evt.agent_actions || [],
+    source_path_id: evt.source_path_id || '',
+    source_node_index: evt.source_node_index,
+    rawEvent: evt,
   });
 }
 
@@ -666,7 +713,7 @@ function layoutAndRender() {
     const x1 = e.from.x, y1 = e.from.y, x2 = e.to.x, y2 = e.to.y;
     const midY = (y1 + y2) / 2;
     line.setAttribute('d', `M${x1},${y1} C${x1},${midY} ${x2},${midY} ${x2},${y2}`);
-    line.setAttribute('stroke', e.to.isBranch ? (TENDENCY_COLORS[e.to.tendency] || '#FF4500') : '#666');
+    line.setAttribute('stroke', e.to.isBranch ? (TENDENCY_COLORS[e.to.tendency] || NODE_COLORS.branch) : '#64748B');
     line.setAttribute('stroke-width', e.to.isBranch ? '2.5' : '1.5');
     line.setAttribute('fill', 'none');
     line.setAttribute('stroke-opacity', '0.6');
@@ -691,7 +738,7 @@ function layoutAndRender() {
     g.style.cursor = 'pointer';
 
     const color = n.isBranch
-      ? (TENDENCY_COLORS[n.tendency] || '#FF4500')
+      ? (TENDENCY_COLORS[n.tendency] || NODE_COLORS.branch)
       : (NODE_COLORS[n.type] || NODE_COLORS.default);
 
     if (n.isBranch) {
@@ -804,6 +851,8 @@ function showTreeNodeTooltipAtNode(node) {
     balanced: '平衡路径',
     counterfactual: '反事实路径',
   };
+  const stateSummary = node.state_summary || [];
+  const actions = node.agent_actions || [];
 
   // FIXED: Convert from SVG coordinates to container pixel coordinates
   const container = document.getElementById('tree-container');
@@ -827,8 +876,8 @@ function showTreeNodeTooltipAtNode(node) {
   let y = (node.y - vbY) * scaleY + (svgRect.top - containerRect.top) - 10;
 
   // Prevent overflow
-  const tooltipW = 260;
-  const tooltipH = 160;
+  const tooltipW = 360;
+  const tooltipH = 320;
   if (x + tooltipW > containerRect.width) x = x - tooltipW - 32;
   if (y + tooltipH > containerRect.height) y = containerRect.height - tooltipH - 10;
   if (x < 0) x = 10;
@@ -846,6 +895,29 @@ function showTreeNodeTooltipAtNode(node) {
     <div class="tree-tooltip-title">${node.label || '—'}</div>
     ${node.time_label ? `<div class="tree-tooltip-time">${node.time_label} · Round ${node.round}</div>` : ''}
     ${node.isBranch && node.tendency ? `<div class="tree-tooltip-tendency" style="color:${TENDENCY_COLORS[node.tendency] || '#666'};">${tendencyLabels[node.tendency] || node.tendency}</div>` : ''}
+    ${node.description ? `<div class="tree-tooltip-block"><div class="tree-tooltip-label">事件说明</div><p>${node.description}</p></div>` : ''}
+    ${node.trigger_reason ? `<div class="tree-tooltip-block"><div class="tree-tooltip-label">触发原因</div><p>${node.trigger_reason}</p></div>` : ''}
+    ${actions.length > 0 ? `
+      <div class="tree-tooltip-block">
+        <div class="tree-tooltip-label">多 Agent 动作</div>
+        <div class="tree-tooltip-list">
+          ${actions.map(action => `
+            <div class="tree-tooltip-item">
+              <div class="tree-tooltip-item-title">${action.agent_type || 'Agent'} · ${(action.action_type || 'ACTION').replaceAll('_', ' ')}</div>
+              <div class="tree-tooltip-item-text">${action.narrative || '已执行动作。'}</div>
+            </div>
+          `).join('')}
+        </div>
+      </div>
+    ` : ''}
+    ${stateSummary.length > 0 ? `
+      <div class="tree-tooltip-block">
+        <div class="tree-tooltip-label">状态摘要</div>
+        <div class="tree-tooltip-metrics">
+          ${stateSummary.map(item => `<span>${item.label}: ${item.percent}%</span>`).join('')}
+        </div>
+      </div>
+    ` : ''}
   `;
 
   document.getElementById('tooltip-close')?.addEventListener('click', (e) => {

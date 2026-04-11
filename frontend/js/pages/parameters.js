@@ -55,8 +55,8 @@ export function renderParameters(container) {
         <div class="form-group mt-16">
           <label class="form-label">智能体数量</label>
           <div class="slider-container">
-            <input type="range" class="slider" id="agent-count-slider" min="3" max="12" value="6" />
-            <span class="mono-sm" id="agent-count-value" style="min-width:40px;">6</span>
+            <input type="range" class="slider" id="agent-count-slider" min="3" max="12" value="8" />
+            <span class="mono-sm" id="agent-count-value" style="min-width:40px;">8</span>
           </div>
           <div class="mono-xs text-muted" style="margin-top:4px;">
             智能体包括：Self, Family, Mentor, School, Employer, City, Industry, Risk 等。数量越多推演越丰富，但耗时更长。
