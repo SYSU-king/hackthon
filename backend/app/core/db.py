@@ -1,23 +1,24 @@
 """
 Local JSON file storage layer.
 
-Each project is stored as a single JSON file: data/projects/{project_id}.json
+Each project is stored as a single JSON file: storage/projects/{project_id}.json
 This keeps things simple and portable — no database needed.
 """
 
 import json
 import os
-from pathlib import Path
 from typing import Optional
 from app.core.config import settings
 
 
-PROJECTS_DIR = os.path.join(settings.DATA_DIR, "projects")
-os.makedirs(PROJECTS_DIR, exist_ok=True)
+def _projects_dir() -> str:
+    projects_dir = os.path.join(settings.DATA_DIR, "projects")
+    os.makedirs(projects_dir, exist_ok=True)
+    return projects_dir
 
 
 def _project_path(project_id: str) -> str:
-    return os.path.join(PROJECTS_DIR, f"{project_id}.json")
+    return os.path.join(_projects_dir(), f"{project_id}.json")
 
 
 def save_project(data: dict) -> dict:
@@ -41,9 +42,9 @@ def load_project(project_id: str) -> Optional[dict]:
 def list_projects() -> list[dict]:
     """List all project summary dicts."""
     projects = []
-    for filename in os.listdir(PROJECTS_DIR):
+    for filename in os.listdir(_projects_dir()):
         if filename.endswith(".json"):
-            filepath = os.path.join(PROJECTS_DIR, filename)
+            filepath = os.path.join(_projects_dir(), filename)
             with open(filepath, "r", encoding="utf-8") as f:
                 data = json.load(f)
                 projects.append({

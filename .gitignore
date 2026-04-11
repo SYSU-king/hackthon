@@ -8,3 +8,4 @@ __pycache__/
 .idea/
 .vscode/
 参考项目/
+backend/storage/

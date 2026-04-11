@@ -10,7 +10,7 @@ load_dotenv(_project_root / ".env")
 
 class Settings(BaseSettings):
     # Local JSON file storage directory
-    DATA_DIR: str = str(Path(__file__).resolve().parent.parent.parent / "data")
+    DATA_DIR: str = str(Path(__file__).resolve().parent.parent.parent / "storage")
 
     # LLM configuration (OpenAI SDK compatible)
     LLM_API_KEY: str = os.getenv("LLM_API_KEY", "")
