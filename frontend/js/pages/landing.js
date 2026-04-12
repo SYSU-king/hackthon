@@ -213,21 +213,32 @@ async function renderHistoryPanel(panel, fileInput) {
     }
 
     list.innerHTML = projects.map(project => `
-      <button class="card" data-project-id="${project.id}" style="text-align:left;padding:18px 20px;border:1px solid rgba(0,0,0,0.08);background:rgba(255,255,255,0.75);cursor:pointer;">
-        <div style="display:flex;justify-content:space-between;gap:16px;align-items:center;">
+      <div class="card" style="padding:18px 20px;border:1px solid rgba(0,0,0,0.08);background:rgba(255,255,255,0.75);">
+        <div style="display:flex;justify-content:space-between;gap:16px;align-items:flex-start;flex-wrap:wrap;">
           <div>
             <div style="font-weight:700;margin-bottom:6px;">${project.title}</div>
             <div class="mono-xs text-muted">ID: ${project.id} · STATUS: ${project.status} · ${project.created_at}</div>
           </div>
           <span class="tag tag-${project.status === 'completed' ? 'accent' : 'outline'}">${project.status.toUpperCase()}</span>
         </div>
-      </button>
+        <div class="flex gap-8 mt-16" style="flex-wrap:wrap;">
+          <button class="btn btn-primary history-open-view" data-project-id="${project.id}" style="padding:10px 18px;">直接查看</button>
+          <button class="btn btn-ghost history-open-continue" data-project-id="${project.id}" style="padding:10px 18px;">继续操作</button>
+        </div>
+      </div>
     `).join('');
 
-    list.querySelectorAll('[data-project-id]').forEach(el => {
+    list.querySelectorAll('.history-open-view').forEach(el => {
       el.addEventListener('click', async () => {
         const full = await api.getProject(el.dataset.projectId);
-        openProject(full);
+        openProject(full, 'view');
+      });
+    });
+
+    list.querySelectorAll('.history-open-continue').forEach(el => {
+      el.addEventListener('click', async () => {
+        const full = await api.getProject(el.dataset.projectId);
+        openProject(full, 'continue');
       });
     });
   } catch (e) {
@@ -235,10 +246,24 @@ async function renderHistoryPanel(panel, fileInput) {
   }
 }
 
-function openProject(project) {
+function openProject(project, mode = 'continue') {
   hydrateProjectState(project);
+
+  if (mode === 'view') {
+    if (project.status === 'completed' || (project.paths || []).length) {
+      navigateTo('results');
+    } else if (project.status === 'configured') {
+      navigateTo('simulation');
+    } else if (project.status === 'profiled') {
+      navigateTo('parameters');
+    } else {
+      navigateTo('onboarding');
+    }
+    return;
+  }
+
   if (project.status === 'completed' || (project.paths || []).length) {
-    navigateTo('results');
+    navigateTo('simulation', { simulationTab: 'tree' });
   } else if (project.status === 'configured') {
     navigateTo('simulation');
   } else if (project.status === 'profiled') {

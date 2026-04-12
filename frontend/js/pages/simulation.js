@@ -19,6 +19,16 @@ let _treeEdges = [];
 let _selectedTreeNode = null;
 let _activeTab = 'tree'; // 'tree' or 'actions'
 let _unsubscribeTreeEvents = null;
+let _treeViewport = {
+  contentW: 800,
+  contentH: 600,
+  viewBox: null,
+  autoFit: true,
+  dragPointerId: null,
+  dragStartClientX: 0,
+  dragStartClientY: 0,
+  dragStartViewBox: null,
+};
 
 function getBaseTreeEvent() {
   return {
@@ -65,6 +75,12 @@ export function renderSimulation(container) {
           <h1 style="font-family:var(--font-headline);font-size:28px;font-weight:700;font-style:italic;letter-spacing:-0.02em;">
             ${t('sim_tree_title')}: Session-${state.projectId?.slice(0, 4) || 'X'}
           </h1>
+        </div>
+        <div style="position:absolute;top:16px;right:24px;z-index:10;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <span class="mono-xs text-muted">滚轮缩放 · 拖拽平移</span>
+          <button class="btn btn-ghost tree-zoom-btn" id="tree-zoom-out" style="padding:8px 12px;">-</button>
+          <button class="btn btn-ghost tree-zoom-btn" id="tree-zoom-in" style="padding:8px 12px;">+</button>
+          <button class="btn btn-ghost tree-zoom-btn" id="tree-zoom-reset" style="padding:8px 12px;">重置视图</button>
         </div>
         <div class="sim-tree-container" id="tree-container">
           <svg id="tree-svg" width="100%" height="100%"></svg>
@@ -130,6 +146,7 @@ export function renderSimulation(container) {
   _treeEdges = [];
   _selectedTreeNode = null;
   initTreeSVG();
+  bindTreeViewportControls();
   clearTreeSubscription();
   resetTreeEvents([]);
   ensureTreeSubscription();
@@ -262,6 +279,12 @@ async function renderTreeTab(tabContent) {
             ${t('sim_completed_view') || '推演已完成'} · ${t('sim_tree_readonly') || '只读模式'}
           </div>
         </div>
+        <div style="position:absolute;top:16px;right:24px;z-index:10;display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <span class="mono-xs text-muted">滚轮缩放 · 拖拽平移</span>
+          <button class="btn btn-ghost tree-zoom-btn" id="tree-zoom-out" style="padding:8px 12px;">-</button>
+          <button class="btn btn-ghost tree-zoom-btn" id="tree-zoom-in" style="padding:8px 12px;">+</button>
+          <button class="btn btn-ghost tree-zoom-btn" id="tree-zoom-reset" style="padding:8px 12px;">重置视图</button>
+        </div>
         <div class="sim-tree-container" id="tree-container">
           <svg id="tree-svg" width="100%" height="100%"></svg>
         </div>
@@ -303,6 +326,7 @@ async function renderTreeTab(tabContent) {
   _treeEdges = [];
   _selectedTreeNode = null;
   initTreeSVG();
+  bindTreeViewportControls();
   clearTreeSubscription();
 
   // Load tree events from API
@@ -531,7 +555,19 @@ function initTreeSVG() {
   const wrap = document.getElementById('tree-container');
   const w = wrap?.clientWidth || 800;
   const h = wrap?.clientHeight || 600;
+  _treeViewport = {
+    contentW: w,
+    contentH: h,
+    viewBox: { x: 0, y: 0, width: w, height: h },
+    autoFit: true,
+    dragPointerId: null,
+    dragStartClientX: 0,
+    dragStartClientY: 0,
+    dragStartViewBox: null,
+  };
   svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+  svg.style.cursor = 'grab';
+  bindTreeViewportInteractions(svg);
 
   // Add defs
   svg.innerHTML = `
@@ -542,6 +578,130 @@ function initTreeSVG() {
     <g id="tree-edges"></g>
     <g id="tree-nodes"></g>
   `;
+}
+
+function bindTreeViewportControls() {
+  document.getElementById('tree-zoom-in')?.addEventListener('click', () => zoomTree(0.82));
+  document.getElementById('tree-zoom-out')?.addEventListener('click', () => zoomTree(1.22));
+  document.getElementById('tree-zoom-reset')?.addEventListener('click', () => resetTreeViewport(true));
+}
+
+function bindTreeViewportInteractions(svg) {
+  if (!svg || svg.dataset.viewportBound === 'true') return;
+  svg.dataset.viewportBound = 'true';
+
+  svg.addEventListener('wheel', (event) => {
+    event.preventDefault();
+    const rect = svg.getBoundingClientRect();
+    const normX = rect.width ? (event.clientX - rect.left) / rect.width : 0.5;
+    const normY = rect.height ? (event.clientY - rect.top) / rect.height : 0.5;
+    zoomTree(event.deltaY < 0 ? 0.88 : 1.14, normX, normY);
+  }, { passive: false });
+
+  svg.addEventListener('pointerdown', (event) => {
+    if (event.button !== 0) return;
+    _treeViewport.dragPointerId = event.pointerId;
+    _treeViewport.dragStartClientX = event.clientX;
+    _treeViewport.dragStartClientY = event.clientY;
+    _treeViewport.dragStartViewBox = { ...(_treeViewport.viewBox || { x: 0, y: 0, width: _treeViewport.contentW, height: _treeViewport.contentH }) };
+    svg.setPointerCapture(event.pointerId);
+    svg.style.cursor = 'grabbing';
+  });
+
+  svg.addEventListener('pointermove', (event) => {
+    if (_treeViewport.dragPointerId !== event.pointerId || !_treeViewport.dragStartViewBox) return;
+    const rect = svg.getBoundingClientRect();
+    if (!rect.width || !rect.height) return;
+    _treeViewport.autoFit = false;
+    const dx = (event.clientX - _treeViewport.dragStartClientX) / rect.width * _treeViewport.dragStartViewBox.width;
+    const dy = (event.clientY - _treeViewport.dragStartClientY) / rect.height * _treeViewport.dragStartViewBox.height;
+    _treeViewport.viewBox = clampTreeViewBox({
+      x: _treeViewport.dragStartViewBox.x - dx,
+      y: _treeViewport.dragStartViewBox.y - dy,
+      width: _treeViewport.dragStartViewBox.width,
+      height: _treeViewport.dragStartViewBox.height,
+    });
+    applyTreeViewBox();
+  });
+
+  const finishDrag = (event) => {
+    if (_treeViewport.dragPointerId !== event.pointerId) return;
+    _treeViewport.dragPointerId = null;
+    _treeViewport.dragStartViewBox = null;
+    svg.style.cursor = 'grab';
+  };
+
+  svg.addEventListener('pointerup', finishDrag);
+  svg.addEventListener('pointercancel', finishDrag);
+  svg.addEventListener('mouseleave', () => {
+    if (_treeViewport.dragPointerId === null) {
+      svg.style.cursor = 'grab';
+    }
+  });
+}
+
+function clampTreeViewBox(box) {
+  const width = Math.min(Math.max(box.width, 220), Math.max(_treeViewport.contentW, 220));
+  const height = Math.min(Math.max(box.height, 180), Math.max(_treeViewport.contentH, 180));
+  const maxX = Math.max(0, _treeViewport.contentW - width);
+  const maxY = Math.max(0, _treeViewport.contentH - height);
+  return {
+    x: Math.min(Math.max(box.x, 0), maxX),
+    y: Math.min(Math.max(box.y, 0), maxY),
+    width,
+    height,
+  };
+}
+
+function applyTreeViewBox() {
+  const svg = document.getElementById('tree-svg');
+  if (!svg || !_treeViewport.viewBox) return;
+  const { x, y, width, height } = _treeViewport.viewBox;
+  svg.setAttribute('viewBox', `${x} ${y} ${width} ${height}`);
+}
+
+function resetTreeViewport(forceAutoFit = false) {
+  _treeViewport.autoFit = true;
+  if (forceAutoFit) {
+    _treeViewport.viewBox = {
+      x: 0,
+      y: 0,
+      width: _treeViewport.contentW,
+      height: _treeViewport.contentH,
+    };
+  }
+  syncTreeViewport();
+}
+
+function syncTreeViewport() {
+  if (_treeViewport.autoFit || !_treeViewport.viewBox) {
+    _treeViewport.viewBox = {
+      x: 0,
+      y: 0,
+      width: _treeViewport.contentW,
+      height: _treeViewport.contentH,
+    };
+  } else {
+    _treeViewport.viewBox = clampTreeViewBox(_treeViewport.viewBox);
+  }
+  applyTreeViewBox();
+}
+
+function zoomTree(factor, anchorX = 0.5, anchorY = 0.5) {
+  if (!_treeViewport.viewBox) return;
+  const current = _treeViewport.viewBox;
+  const nextWidth = current.width * factor;
+  const nextHeight = current.height * factor;
+  const anchorAbsX = current.x + current.width * anchorX;
+  const anchorAbsY = current.y + current.height * anchorY;
+  _treeViewport.autoFit = false;
+  _treeViewport.viewBox = clampTreeViewBox({
+    x: anchorAbsX - nextWidth * anchorX,
+    y: anchorAbsY - nextHeight * anchorY,
+    width: nextWidth,
+    height: nextHeight,
+  });
+  applyTreeViewBox();
 }
 
 function handleTreeEvent(evt) {
@@ -682,8 +842,6 @@ function layoutAndRender() {
   const requiredW = Math.max(W, totalLeaves * MIN_COL_W + 80);
   const requiredH = Math.max(H, MARGIN_TOP + (totalDepth + 1) * ROW_H + 60);
 
-  svg.setAttribute('viewBox', `0 0 ${requiredW} ${requiredH}`);
-
   // Assign positions via recursive layout
   function layout(nodeId, x, width, depth) {
     const n = nodeMap[nodeId];
@@ -718,6 +876,10 @@ function layoutAndRender() {
       orphanOffset += orphanW + 40;
     }
   }
+
+  _treeViewport.contentW = requiredW + orphanOffset;
+  _treeViewport.contentH = requiredH;
+  syncTreeViewport();
 
   // Edges
   _treeEdges = [];

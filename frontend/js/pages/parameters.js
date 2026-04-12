@@ -9,12 +9,27 @@ import { navigateTo, state } from '../app.js';
 let params = [
   { name: '', description: '', priority: 'primary', weight: 1.0 },
 ];
+let paramsProjectId = null;
 
 const PRIORITY_OPTIONS = ['primary', 'secondary', 'constraint'];
 const PRIORITY_LABELS = { primary: '主参数', secondary: '次参数', constraint: '约束条件' };
 
 export function renderParameters(container) {
-  if (Array.isArray(state.project?.parameters) && state.project.parameters.length > 0) {
+  if (paramsProjectId !== state.projectId) {
+    paramsProjectId = state.projectId;
+    if (Array.isArray(state.project?.parameters) && state.project.parameters.length > 0) {
+      params = state.project.parameters.map(param => ({
+        name: param.name || '',
+        description: param.description || '',
+        priority: param.priority || 'primary',
+        weight: Number.isFinite(param.weight) ? param.weight : 1.0,
+      }));
+    } else {
+      params = [{ name: '', description: '', priority: 'primary', weight: 1.0 }];
+    }
+  }
+
+  if (Array.isArray(state.project?.parameters) && state.project.parameters.length > 0 && params.length === 0) {
     params = state.project.parameters.map(param => ({
       name: param.name || '',
       description: param.description || '',
@@ -82,6 +97,7 @@ export function renderParameters(container) {
 
   // Bind events
   document.getElementById('btn-add-param').addEventListener('click', () => {
+    collectParams(container);
     params.push({ name: '', description: '', priority: 'secondary', weight: 0.7 });
     renderParameters(container);
   });
@@ -122,6 +138,7 @@ export function renderParameters(container) {
   // Remove buttons
   container.querySelectorAll('.param-remove').forEach(btn => {
     btn.addEventListener('click', () => {
+      collectParams(container);
       const idx = parseInt(btn.dataset.index);
       params.splice(idx, 1);
       if (params.length === 0) params.push({ name: '', description: '', priority: 'primary', weight: 1.0 });
@@ -172,12 +189,12 @@ function renderParamCard(p, i) {
   `;
 }
 
-function collectParams() {
-  document.querySelectorAll('.param-name-input').forEach(input => {
+function collectParams(scope = document) {
+  scope.querySelectorAll('.param-name-input').forEach(input => {
     const idx = parseInt(input.dataset.index);
     params[idx].name = input.value;
   });
-  document.querySelectorAll('.param-weight-slider').forEach(slider => {
+  scope.querySelectorAll('.param-weight-slider').forEach(slider => {
     const idx = parseInt(slider.dataset.index);
     params[idx].weight = parseFloat(slider.value);
   });
