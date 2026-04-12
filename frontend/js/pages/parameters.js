@@ -176,7 +176,7 @@ function renderParamCard(p, i) {
         </select>
       </div>
       <div class="param-name" style="flex:1;">
-        <input class="form-input param-name-input" data-index="${i}" value="${p.name}" placeholder="如：保研 vs 就业" style="border-bottom-color:var(--accent);" />
+        <input class="form-input param-name-input" data-index="${i}" value="${p.name}" placeholder="如：国内读研 vs 申请海外大学" style="border-bottom-color:var(--accent);" />
       </div>
       <div class="param-weight" style="width:180px;">
         <div class="slider-container">

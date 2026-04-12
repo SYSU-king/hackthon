@@ -1253,7 +1253,7 @@
         "relation": "INFLUENCES",
         "name": "supportive",
         "fact_type": "agent_link",
-        "fact": "未来的你 对未来的你形成持续影响。"
+        "fact": "未来的你对自身路径形成持续影响。"
       },
       {
         "source": "ag_02",

@@ -40,8 +40,8 @@ const OPTIONS = {
   ],
   education: [
     { value: 'high_school', label: '高中在读', desc: '面临高考与志愿选择' },
-    { value: 'undergraduate', label: '本科在读', desc: '面临保研/考研/就业' },
-    { value: 'graduate', label: '研究生在读', desc: '面临就业/读博/转方向' },
+    { value: 'undergraduate', label: '本科在读', desc: '面临保研/考研/就业/申请海外大学' },
+    { value: 'graduate', label: '研究生在读', desc: '面临就业/读博/海外申请/转方向' },
     { value: 'working_1_3', label: '工作 1-3 年', desc: '面临转型、跳槽或深造' },
     { value: 'working_3_plus', label: '工作 3 年以上', desc: '面临晋升突破、换赛道或创业' },
   ],
@@ -134,7 +134,7 @@ function renderBackgroundStep() {
       <div class="card mt-24" style="background:var(--surface-low);border-left:2px solid var(--accent);padding:20px;">
         <div class="mono-xs text-accent" style="margin-bottom:8px;">FLOW_NOTE:</div>
         <p style="font-size:13px;color:var(--secondary);line-height:1.7;">
-          你已选择工作阶段，系统会自动跳过 GPA、保研等学生向问题，后续分支会更偏向跳槽、晋升、读研、创业与城市迁移。
+          你已选择工作阶段，系统会自动跳过 GPA、保研等学生向问题，后续分支会更偏向跳槽、晋升、海外 offer、创业与城市迁移。
         </p>
       </div>
     `;
@@ -200,16 +200,17 @@ function renderBackgroundStep() {
           <option value="<3.0" ${formData.gpa_range === '<3.0' ? 'selected' : ''}>3.0 以下</option>
         </select>
       </div>
-      <div class="form-group">
-        <label class="form-label">城市偏好</label>
-        <select class="form-select" id="field-city">
-          <option value="">请选择</option>
-          <option value="一线城市" ${formData.city_preference === '一线城市' ? 'selected' : ''}>一线城市（北上广深）</option>
-          <option value="新一线" ${formData.city_preference === '新一线' ? 'selected' : ''}>新一线（杭州、成都、武汉…）</option>
-          <option value="二线城市" ${formData.city_preference === '二线城市' ? 'selected' : ''}>二线城市</option>
-          <option value="家乡" ${formData.city_preference === '家乡' ? 'selected' : ''}>留在家乡</option>
-          <option value="无所谓" ${formData.city_preference === '无所谓' ? 'selected' : ''}>无所谓</option>
-        </select>
+        <div class="form-group">
+          <label class="form-label">城市偏好</label>
+          <select class="form-select" id="field-city">
+            <option value="">请选择</option>
+            <option value="一线城市" ${formData.city_preference === '一线城市' ? 'selected' : ''}>一线城市（北上广深）</option>
+            <option value="新一线" ${formData.city_preference === '新一线' ? 'selected' : ''}>新一线（杭州、成都、武汉…）</option>
+            <option value="海外城市" ${formData.city_preference === '海外城市' ? 'selected' : ''}>海外城市（港新英美澳等）</option>
+            <option value="二线城市" ${formData.city_preference === '二线城市' ? 'selected' : ''}>二线城市</option>
+            <option value="家乡" ${formData.city_preference === '家乡' ? 'selected' : ''}>留在家乡</option>
+            <option value="无所谓" ${formData.city_preference === '无所谓' ? 'selected' : ''}>无所谓</option>
+          </select>
       </div>
     </div>
   `;
@@ -255,7 +256,7 @@ function renderStepContent() {
     case 'preference':
       return `
         <h2 style="font-family:var(--font-headline);font-size:32px;font-weight:700;margin-bottom:8px;">${step.title}</h2>
-        <p class="text-secondary mb-24">${isWorkingStage() ? '职业路线、转型方式和风险承受度会直接影响回溯分支。' : '职业方向与风险偏好会影响后续推演走向。'}</p>
+        <p class="text-secondary mb-24">${isWorkingStage() ? '职业路线、转型方式、海外机会和风险承受度会直接影响回溯分支。' : '职业方向、继续深造、海外申请与风险偏好会影响后续推演走向。'}</p>
         <div class="form-group">
           <label class="form-label">职业方向偏好</label>
           ${renderRadioGrid(OPTIONS.career, 'career_preference', formData.career_preference)}
@@ -271,7 +272,7 @@ function renderStepContent() {
         <p class="text-secondary mb-24">你当前最想推演的问题是什么？</p>
         <div class="form-group">
           <label class="form-label">核心困惑（自由描述）</label>
-          <textarea class="form-textarea" id="field-concern" placeholder="${isWorkingStage() ? '例如：我是继续留在当前公司争取管理岗，还是转去更高风险的新赛道？' : '例如：我应该保研还是直接就业？如果选择保研，3 年后的发展会比直接工作更好吗？'}">${formData.current_concern}</textarea>
+          <textarea class="form-textarea" id="field-concern" placeholder="${isWorkingStage() ? '例如：我是继续留在当前公司争取管理岗，还是接受海外团队 offer 去新赛道？' : '例如：我应该保研、直接就业，还是申请海外大学？如果选择出国，3 年后的发展会更好吗？'}">${formData.current_concern}</textarea>
         </div>
         <div class="card mt-24" style="background:var(--surface-low);border-left:2px solid var(--accent);padding:20px;">
           <div class="mono-xs text-accent" style="margin-bottom:8px;">ANALYST_NOTE:</div>
