@@ -6,21 +6,53 @@
  */
 
 import { api, ensureStreamingResponse } from '../api.js';
-import { navigateTo, state } from '../app.js';
+import { navigateTo, state, pushTreeEvent, resetTreeEvents } from '../app.js';
 import { t, getStateLabel, STATE_KEYS } from '../i18n.js';
 
-let selectedPath = null;
-let currentView = 'overview'; // overview / detail / advice / report / backtrack
-let backtrackNodeIndex = null;
-
 const NODE_TYPE_COLORS = {
-  decision: 'var(--primary)',
-  opportunity: 'var(--accent)',
-  result: '#2E7D32',
-  cascade: '#5E5E5E',
+  decision: 'var(--accent)',
+  opportunity: '#7C3AED',
+  result: '#0F766E',
+  cascade: '#475569',
   risk: 'var(--error)',
-  reflection: '#1565C0',
+  reflection: '#2563EB',
+  branch: '#8B5CF6',
 };
+
+function sanitizeDisplayTitle(title) {
+  const cleaned = (title || '').replace(/[（(][^）)]*[）)]/g, '').trim();
+  return cleaned || '综合报告';
+}
+
+function renderBacktrackEventLine(event) {
+  const icon = event.type === 'branch' ? '◇' : '•';
+  const round = event.round !== undefined ? `R${event.round}` : '--';
+  const meta = [event.time_label, event.node_type].filter(Boolean).join(' · ');
+  return `
+    <div class="console-line" style="padding:8px 0;border-bottom:1px solid rgba(198,198,198,0.12);">
+      <span class="console-ts">[${round}]</span>
+      <span>${icon} ${event.label || '未命名节点'}${meta ? ` <span class="text-muted">/ ${meta}</span>` : ''}</span>
+    </div>
+  `;
+}
+
+function prependBacktrackEvent(listEl, event) {
+  if (!listEl || !event?.id) return;
+  if (listEl.querySelector(`[data-event-id="${event.id}"]`)) return;
+  const wrapper = document.createElement('div');
+  wrapper.dataset.eventId = event.id;
+  wrapper.innerHTML = renderBacktrackEventLine(event);
+  listEl.prepend(wrapper);
+}
+
+function getSelectedPath(paths = []) {
+  if (!state.selectedPathId) return null;
+  return paths.find(path => path.id === state.selectedPathId) || null;
+}
+
+function setResultsView(view, extra = {}) {
+  Object.assign(state, { resultsView: view, ...extra });
+}
 
 export async function renderResults(container) {
   // Load paths
@@ -32,6 +64,9 @@ export async function renderResults(container) {
     container.innerHTML = `<div class="p-48 text-center"><h1>${t('error_loading')}</h1><p>${e.message}</p></div>`;
     return;
   }
+
+  const currentView = state.resultsView || 'overview';
+  const selectedPath = getSelectedPath(paths);
 
   if (currentView === 'overview') {
     renderOverview(container, paths);
@@ -45,6 +80,7 @@ export async function renderResults(container) {
     renderBacktrackView(container, selectedPath);
   } else {
     // Fallback
+    setResultsView('overview', { selectedPathId: null, backtrackNodeIndex: null });
     renderOverview(container, paths);
   }
 }
@@ -85,27 +121,19 @@ function renderOverview(container, paths) {
   container.querySelectorAll('.path-card').forEach(card => {
     card.addEventListener('click', () => {
       const pathId = card.dataset.pathId;
-      selectedPath = paths.find(p => p.id === pathId);
-      currentView = 'detail';
+      setResultsView('detail', { selectedPathId: pathId, backtrackNodeIndex: null });
       renderResults(container);
     });
   });
 
   // Report button
   document.getElementById('btn-report')?.addEventListener('click', () => {
-    currentView = 'report';
+    setResultsView('report', { backtrackNodeIndex: null });
     renderResults(container);
   });
 }
 
 function renderPathCard(path) {
-  const typeLabels = {
-    optimal: t('path_optimal'),
-    conservative: t('path_conservative'),
-    risk: t('path_risk'),
-    balanced: t('path_balanced'),
-    counterfactual: '反事实',
-  };
   const riskColors = { low: '#2E7D32', medium: '#FF8F00', high: 'var(--error)' };
   const score = Math.round(path.satisfaction_score * 100);
   const isCounterfactual = path.path_type === 'counterfactual';
@@ -176,7 +204,7 @@ function renderDetail(container, path) {
         </div>
         <div class="mt-24" style="display:flex;flex-direction:column;gap:8px;">
           <button class="btn btn-accent btn-full" id="btn-advice">[${t('btn_get_advice')}]</button>
-          <button class="btn btn-primary btn-full" id="btn-backtrack" style="background:#9C27B0;">
+          <button class="btn btn-primary btn-full" id="btn-backtrack" style="background:var(--branch-accent);">
             <span class="material-symbols-outlined icon-sm">undo</span> [回溯推演]
           </button>
         </div>
@@ -191,7 +219,7 @@ function renderDetail(container, path) {
 
   // Back button
   document.getElementById('btn-back-overview').addEventListener('click', () => {
-    currentView = 'overview';
+    setResultsView('overview', { selectedPathId: null, backtrackNodeIndex: null });
     renderResults(container);
   });
 
@@ -207,19 +235,20 @@ function renderDetail(container, path) {
 
   // Advice button
   document.getElementById('btn-advice').addEventListener('click', () => {
-    currentView = 'advice';
+    setResultsView('advice');
     renderResults(container);
   });
 
   // Backtrack button
   document.getElementById('btn-backtrack').addEventListener('click', () => {
-    currentView = 'backtrack';
+    setResultsView('backtrack', { backtrackNodeIndex: 0 });
     renderResults(container);
   });
 }
 
 function renderNodeDetail(node, index, total) {
   const stateData = node.state_snapshot || {};
+  const actions = node.agent_actions || [];
   return `
     <div class="fade-in">
       <div class="mono-xs text-muted mb-8">NODE ${index + 1} OF ${total} // ${node.time_label}</div>
@@ -236,22 +265,22 @@ function renderNodeDetail(node, index, total) {
         <p style="font-size:14px;line-height:1.7;color:var(--secondary);">${node.description}</p>
       </div>
 
+      ${actions.length > 0 ? `
+      <div class="card mb-24">
+        <h3 style="margin-bottom:12px;">推演细节</h3>
+        ${actions.map(a => `
+          <div style="padding:10px 12px;border-left:2px solid ${NODE_TYPE_COLORS[node.node_type] || 'var(--accent)'};margin-bottom:10px;background:var(--surface-low);">
+            <div class="mono-xs" style="margin-bottom:6px;">[${a.agent_type || 'AGENT'}] ${(a.action_type || 'ACTION').replaceAll('_', ' ')}</div>
+            <p style="font-size:13px;color:var(--secondary);line-height:1.6;">${a.narrative || '该轮行动已记录。'}</p>
+          </div>
+        `).join('')}
+      </div>
+      ` : ''}
+
       ${node.trigger_reason ? `
       <div class="card mb-24" style="border-left:2px solid var(--accent);">
         <div class="mono-xs text-accent" style="margin-bottom:8px;">${t('detail_trigger')}:</div>
         <p style="font-size:14px;color:var(--secondary);">${node.trigger_reason}</p>
-      </div>
-      ` : ''}
-
-      ${node.agent_actions && node.agent_actions.length > 0 ? `
-      <div class="card mb-24">
-        <h3 style="margin-bottom:12px;">AGENT_ACTIONS</h3>
-        ${node.agent_actions.map(a => `
-          <div style="padding:8px 12px;border-left:2px solid ${NODE_TYPE_COLORS[a.action_type?.toLowerCase()] || '#666'};margin-bottom:8px;background:var(--surface-low);">
-            <div class="mono-xs" style="margin-bottom:4px;">[${a.agent_type || 'AGENT'}] ${a.action_type || 'ACTION'}</div>
-            <p style="font-size:13px;color:var(--secondary);">${a.narrative || ''}</p>
-          </div>
-        `).join('')}
       </div>
       ` : ''}
 
@@ -284,15 +313,17 @@ function renderNodeDetail(node, index, total) {
 
 function renderBacktrackView(container, path) {
   const nodes = path.nodes || [];
+  const backtrackNodeIndex = state.backtrackNodeIndex;
+  const selectedNode = backtrackNodeIndex === null ? null : nodes[backtrackNodeIndex];
 
   container.innerHTML = `
     <div style="padding:48px 64px;">
       <div class="mono-xs text-accent mb-8">[COUNTERFACTUAL_ENGINE]</div>
-      <div class="flex justify-between items-end mb-32">
+      <div class="flex justify-between items-end mb-32" style="flex-wrap:wrap;gap:16px;">
         <div>
           <h1 style="font-size:48px;">回溯推演</h1>
-          <p class="text-secondary mt-8" style="max-width:600px;">
-            选择任意节点，修改条件后重新推演。实现"如果我选另一条路"的反事实分析。(§14.2 可反事实 + §14.4 可交互)
+          <p class="text-secondary mt-8" style="max-width:680px;">
+            选择任意节点，修改条件后重新推演。新的反事实分支会在当前页面实时追加，不再跳转到系统页。
           </p>
         </div>
         <div class="flex gap-8">
@@ -300,10 +331,9 @@ function renderBacktrackView(container, path) {
         </div>
       </div>
 
-      <!-- Node Selection -->
-      <div class="card mb-24" style="border-left:4px solid #9C27B0;padding:24px;">
+      <div class="card mb-24" style="border-left:4px solid var(--branch-accent);padding:24px;">
         <h3 style="margin-bottom:16px;">1. 选择回溯节点</h3>
-        <p class="mono-xs text-muted mb-16">点击选择你想修改条件的节点（可从该节点开始重新推导）</p>
+        <p class="mono-xs text-muted mb-16">点击选择你想修改条件的节点，系统会从该节点长出新的反事实分支。</p>
         <div class="backtrack-node-list" id="bt-node-list">
           ${nodes.map((n, i) => `
             <div class="bt-node-card ${backtrackNodeIndex === i ? 'bt-selected' : ''}" data-index="${i}">
@@ -317,17 +347,16 @@ function renderBacktrackView(container, path) {
         </div>
       </div>
 
-      <!-- Modification Form -->
-      <div class="card mb-24" style="padding:24px;" id="bt-modify-section" ${backtrackNodeIndex === null ? 'style="opacity:0.5;pointer-events:none;"' : ''}>
+      <div class="card mb-24" style="padding:24px;${backtrackNodeIndex === null ? 'opacity:0.5;pointer-events:none;' : ''}">
         <h3 style="margin-bottom:16px;">2. 修改条件</h3>
         <div class="form-group">
           <label class="form-label">修改描述（自然语言）</label>
-          <textarea class="form-textarea" id="bt-description" placeholder="例如：假设保研成功 / 假设拿到了大厂 offer / 假设家庭经济好转">${''}</textarea>
+          <textarea class="form-textarea" id="bt-description" placeholder="例如：假设保研成功 / 假设拿到了大厂 offer / 假设家庭经济好转"></textarea>
         </div>
         <div class="form-group mt-16">
           <label class="form-label">状态参数调整</label>
           <div class="bt-state-controls" id="bt-state-controls">
-            ${renderBacktrackStateControls(nodes[backtrackNodeIndex || 0])}
+            ${renderBacktrackStateControls(selectedNode || nodes[0])}
           </div>
         </div>
         <div class="form-group mt-16">
@@ -345,60 +374,77 @@ function renderBacktrackView(container, path) {
         </button>
       </div>
 
-      <!-- Progress / result area -->
       <div id="bt-progress" class="mt-32" style="display:none;">
-        <div class="card" style="padding:24px;border-left:4px solid #9C27B0;">
+        <div class="card mb-16" style="padding:24px;border-left:4px solid var(--branch-accent);">
           <div class="console-line pulse" id="bt-status">
             <span class="console-ts">[BT]</span>
             <span>准备回溯推演...</span>
           </div>
           <div class="sim-progress-bar mt-16">
-            <div class="sim-progress-fill" id="bt-progress-fill" style="width:0%;background:#9C27B0;"></div>
+            <div class="sim-progress-fill" id="bt-progress-fill" style="width:0%;background:var(--branch-accent);"></div>
           </div>
+        </div>
+        <div class="card" style="padding:24px;">
+          <div class="flex justify-between items-center mb-16" style="flex-wrap:wrap;gap:8px;">
+            <div>
+              <h3 style="margin-bottom:4px;">实时回溯分支</h3>
+              <div class="mono-xs text-muted">新的树节点会在这里即时出现，随后你可以再切到系统树视图查看全量结构。</div>
+            </div>
+            <div class="mono-xs text-accent">LIVE_BRANCH_STREAM</div>
+          </div>
+          <div id="bt-tree-live">
+            ${selectedNode ? renderBacktrackEventLine({ id: 'source-preview', type: 'source', round: backtrackNodeIndex + 1, time_label: selectedNode.time_label, node_type: selectedNode.node_type, label: `源节点: ${selectedNode.title}` }) : '<div class="console-line"><span class="console-ts">[--]</span><span>等待选择节点...</span></div>'}
+          </div>
+          <div id="bt-result-actions" class="mt-16" style="display:none;"></div>
         </div>
       </div>
     </div>
   `;
 
-  // Back button
   document.getElementById('btn-back-from-bt')?.addEventListener('click', () => {
-    currentView = 'detail';
-    backtrackNodeIndex = null;
+    setResultsView('detail', { backtrackNodeIndex: null });
     renderResults(container);
   });
 
-  // Node selection
   container.querySelectorAll('.bt-node-card').forEach(card => {
     card.addEventListener('click', () => {
-      backtrackNodeIndex = parseInt(card.dataset.index);
+      state.backtrackNodeIndex = parseInt(card.dataset.index, 10);
       renderBacktrackView(container, path);
     });
   });
 
-  // Rounds slider
   document.getElementById('bt-rounds')?.addEventListener('input', (e) => {
     document.getElementById('bt-rounds-value').textContent = e.target.value;
   });
 
-  // Run backtrack
   document.getElementById('btn-run-backtrack')?.addEventListener('click', async () => {
     if (backtrackNodeIndex === null) return;
 
     const description = document.getElementById('bt-description')?.value || '';
-    const rounds = parseInt(document.getElementById('bt-rounds')?.value || '6');
-
-    // Collect state modifications
-    const modifications = {};
-    document.querySelectorAll('.bt-state-slider').forEach(slider => {
-      const key = slider.dataset.key;
-      modifications[key] = parseFloat(slider.value);
-    });
-
-    // Show progress
+    const rounds = parseInt(document.getElementById('bt-rounds')?.value || '6', 10);
+    const runBtn = document.getElementById('btn-run-backtrack');
     const progDiv = document.getElementById('bt-progress');
     const statusDiv = document.getElementById('bt-status');
     const progFill = document.getElementById('bt-progress-fill');
+    const liveTree = document.getElementById('bt-tree-live');
+    const actionBox = document.getElementById('bt-result-actions');
+
+    const modifications = {};
+    document.querySelectorAll('.bt-state-slider').forEach(slider => {
+      modifications[slider.dataset.key] = parseFloat(slider.value);
+    });
+
     if (progDiv) progDiv.style.display = 'block';
+    if (runBtn) {
+      runBtn.disabled = true;
+      runBtn.style.opacity = '0.5';
+    }
+    if (liveTree) {
+      liveTree.innerHTML = selectedNode
+        ? renderBacktrackEventLine({ id: 'source-preview', type: 'source', round: backtrackNodeIndex + 1, time_label: selectedNode.time_label, node_type: selectedNode.node_type, label: `源节点: ${selectedNode.title}` })
+        : '';
+    }
+    if (actionBox) actionBox.style.display = 'none';
 
     try {
       const resp = await ensureStreamingResponse(
@@ -412,9 +458,15 @@ function renderBacktrackView(container, path) {
         )
       );
 
+      if (!state.treeEvents?.length) {
+        const treeData = await api.getTreeEvents(state.projectId);
+        resetTreeEvents(treeData.events || []);
+      }
+
       const reader = resp.body.getReader();
       const decoder = new TextDecoder();
       let buffer = '';
+      let newPathId = null;
 
       while (true) {
         const { done, value } = await reader.read();
@@ -425,33 +477,55 @@ function renderBacktrackView(container, path) {
         buffer = lines.pop() || '';
 
         for (const line of lines) {
-          if (line.startsWith('data: ')) {
-            try {
-              const event = JSON.parse(line.slice(6));
-              // Update progress UI
-              if (statusDiv && event.message) {
-                statusDiv.innerHTML = `<span class="console-ts">[BT]</span><span>${event.message}</span>`;
-              }
-              if (progFill && event.progress !== undefined) {
-                progFill.style.width = `${event.progress}%`;
-              }
+          if (!line.startsWith('data: ')) continue;
+          try {
+            const event = JSON.parse(line.slice(6));
+            if (statusDiv?.isConnected && event.message) {
+              statusDiv.innerHTML = `<span class="console-ts">[BT]</span><span>${event.message}</span>`;
+            }
+            if (progFill?.isConnected && event.progress !== undefined) {
+              progFill.style.width = `${event.progress}%`;
+            }
 
-              if (event.phase === 'completed') {
+            if (event.phase === 'tree_event' && event.tree_event) {
+              pushTreeEvent(event.tree_event);
+              prependBacktrackEvent(liveTree, event.tree_event);
+            }
+
+            if (event.phase === 'completed') {
+              newPathId = event.new_path_id || null;
+              state.simComplete = true;
+              state.simulationTab = 'tree';
+              if (state.project) state.project.status = 'completed';
+              if (statusDiv?.isConnected) {
                 statusDiv.innerHTML = `<span class="console-ts" style="color:var(--accent);">[DONE]</span><span style="font-weight:700;color:var(--accent);">${event.message}</span>`;
                 statusDiv.classList.remove('pulse');
-                // After a short delay navigate to overview to see the new path
-                setTimeout(() => {
-                  currentView = 'overview';
-                  backtrackNodeIndex = null;
+              }
+              if (actionBox) {
+                actionBox.style.display = 'flex';
+                actionBox.style.gap = '8px';
+                actionBox.style.flexWrap = 'wrap';
+                actionBox.innerHTML = `
+                  <button class="btn btn-primary" id="bt-open-tree">查看推演树</button>
+                  <button class="btn btn-accent" id="bt-open-path" ${newPathId ? '' : 'disabled style="opacity:0.5;"'}>查看新路径</button>
+                `;
+                document.getElementById('bt-open-tree')?.addEventListener('click', () => {
+                  navigateTo('simulation', { simulationTab: 'tree' });
+                });
+                document.getElementById('bt-open-path')?.addEventListener('click', () => {
+                  if (!newPathId) return;
+                  setResultsView('detail', { selectedPathId: newPathId, backtrackNodeIndex: null });
                   renderResults(container);
-                }, 1500);
+                });
               }
+            }
 
-              if (event.phase === 'error') {
-                statusDiv.innerHTML = `<span class="console-ts" style="color:var(--error);">[ERR]</span><span style="color:var(--error);">${event.message}</span>`;
-                statusDiv.classList.remove('pulse');
-              }
-            } catch (e) { /* skip */ }
+            if (event.phase === 'error' && statusDiv?.isConnected) {
+              statusDiv.innerHTML = `<span class="console-ts" style="color:var(--error);">[ERR]</span><span style="color:var(--error);">${event.message}</span>`;
+              statusDiv.classList.remove('pulse');
+            }
+          } catch {
+            // ignore malformed chunks
           }
         }
       }
@@ -459,6 +533,11 @@ function renderBacktrackView(container, path) {
       if (statusDiv) {
         statusDiv.innerHTML = `<span class="console-ts" style="color:var(--error);">[ERR]</span><span style="color:var(--error);">回溯推演失败: ${e.message}</span>`;
         statusDiv.classList.remove('pulse');
+      }
+    } finally {
+      if (runBtn) {
+        runBtn.disabled = false;
+        runBtn.style.opacity = '1';
       }
     }
   });
@@ -489,8 +568,8 @@ async function renderReport(container, paths) {
       <div class="mono-xs text-accent mb-8">[SYSTEM_DIRECTIVE]</div>
       <div class="flex justify-between items-end mb-48">
         <div>
-          <h1 style="font-size:48px;">Comprehensive Report</h1>
-          <p class="text-secondary mt-8">多路径对比分析与综合建议</p>
+          <h1 style="font-size:44px;">综合报告</h1>
+          <p class="text-secondary mt-8">多路径对比、关键节点与下一步建议</p>
         </div>
         <div class="flex gap-8">
           <button class="btn btn-ghost" id="btn-back-from-report">[← ${t('btn_back')}]</button>
@@ -504,7 +583,7 @@ async function renderReport(container, paths) {
   `;
 
   document.getElementById('btn-back-from-report')?.addEventListener('click', () => {
-    currentView = 'overview';
+    setResultsView('overview');
     renderResults(container);
   });
 
@@ -537,7 +616,7 @@ function renderReportContent(report) {
     <div class="fade-in">
       <!-- Executive Summary -->
       <div class="card mb-24" style="border-left:4px solid var(--accent);padding:32px;">
-        <h2 style="margin-bottom:16px;">${report.title || 'REPORT'}</h2>
+        <h2 style="margin-bottom:16px;line-height:1.3;word-break:break-word;">${sanitizeDisplayTitle(report.title)}</h2>
         <p style="font-size:16px;line-height:1.8;color:var(--secondary);">${report.executive_summary || ''}</p>
       </div>
 
@@ -637,7 +716,7 @@ async function renderAdvice(container, path) {
   `;
 
   document.getElementById('btn-back-detail').addEventListener('click', () => {
-    currentView = 'detail';
+    setResultsView('detail');
     renderResults(container);
   });
 
@@ -650,7 +729,7 @@ async function loadAdvice(container, feedback) {
   adviceContainer.innerHTML = `<div class="p-32 text-center mono-xs pulse">${t('advice_generating')}</div>`;
 
   try {
-    const advice = await api.getAdvice(state.projectId, selectedPath.id, feedback);
+    const advice = await api.getAdvice(state.projectId, state.selectedPathId, feedback);
     
     if (feedback === 'satisfied') {
       adviceContainer.innerHTML = `
@@ -727,3 +806,4 @@ async function loadAdvice(container, feedback) {
     adviceContainer.innerHTML = `<div class="p-32 text-center text-error">Error: ${e.message}</div>`;
   }
 }
+

@@ -60,6 +60,7 @@ class Agent(BaseModel):
 
 class PathNode(BaseModel):
     node_id: str = Field(default_factory=gen_id)
+    tree_node_id: Optional[str] = None
     node_type: str = "decision"  # decision / opportunity / result / cascade / risk / reflection
     title: str = ""
     description: str = ""

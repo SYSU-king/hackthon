@@ -73,6 +73,26 @@ def test_submit_profile(client):
     assert project["status"] == "profiled"
 
 
+
+def test_import_project(client):
+    payload = {
+        "id": "demo-import",
+        "title": "Imported Demo",
+        "status": "completed",
+        "profile": {"education_stage": "working_3_plus"},
+        "paths": [{"id": "p1", "name": "Path Alpha", "nodes": []}],
+        "_tree_events": [{"id": "root", "type": "add_node", "label": "BASE"}],
+    }
+    resp = client.post("/api/projects/import", json=payload)
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["title"] == "Imported Demo"
+    assert data["status"] == "completed"
+    assert data["paths"][0]["id"] == "p1"
+
+    listed = client.get("/api/projects").json()
+    assert listed[0]["title"] == "Imported Demo"
+
 def test_submit_parameters(client):
     create_resp = client.post("/api/projects", json={"title": "Param Test"})
     pid = create_resp.json()["id"]

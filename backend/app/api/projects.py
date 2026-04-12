@@ -1,6 +1,6 @@
 """Project CRUD API"""
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Body
 from app.domain.models import Project
 from app.domain.schemas import ProjectCreate, ProjectOut, UserProfileCreate, ParametersSubmit
 from app.core.db import save_project, load_project, list_projects, delete_project
@@ -10,11 +10,58 @@ from datetime import datetime
 router = APIRouter(prefix="/api/projects", tags=["projects"])
 
 
+IMPORTABLE_KEYS = {
+    "title", "status", "created_at", "updated_at", "profile", "parameters",
+    "agents", "graph_data", "expanded_factors", "paths", "report", "_tree_events",
+}
+VALID_STATUSES = {"created", "profiled", "configured", "simulating", "completed"}
+
+
+def _normalize_imported_project(payload: dict) -> dict:
+    if not isinstance(payload, dict):
+        raise HTTPException(status_code=400, detail="Imported payload must be a JSON object")
+
+    base = Project(title=str(payload.get("title") or "Imported Project")).model_dump()
+    project = dict(base)
+
+    for key in IMPORTABLE_KEYS:
+        if key in payload:
+            project[key] = payload[key]
+
+    imported_id = str(payload.get("id") or "").strip()
+    if imported_id and not load_project(imported_id):
+        project["id"] = imported_id
+
+    if project.get("status") not in VALID_STATUSES:
+        project["status"] = "completed" if project.get("paths") else "created"
+
+    project["title"] = str(project.get("title") or base["title"]).strip() or base["title"]
+    project["created_at"] = payload.get("created_at") or base["created_at"]
+    project["updated_at"] = datetime.utcnow().isoformat()
+    project["profile"] = project.get("profile") or {}
+    project["parameters"] = project.get("parameters") or []
+    project["agents"] = project.get("agents") or []
+    project["paths"] = project.get("paths") or []
+    project["graph_data"] = project.get("graph_data") or {"nodes": [], "edges": []}
+    project["expanded_factors"] = project.get("expanded_factors") or {}
+    project["report"] = project.get("report") or None
+    project["_tree_events"] = project.get("_tree_events") or []
+
+    return project
+
+
 @router.post("", response_model=ProjectOut)
 def create_project(body: ProjectCreate):
     project = Project(title=body.title)
     save_project(project.model_dump())
     return project.model_dump()
+
+
+@router.post("/import")
+def import_project(body: dict = Body(...)):
+    project = _normalize_imported_project(body)
+    save_project(project)
+    return project
 
 
 @router.get("", response_model=list[ProjectOut])

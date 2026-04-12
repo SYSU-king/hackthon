@@ -1,6 +1,6 @@
 /* ================================================================
-   LIFEPATH ENGINE — Design System: "The Forensic Expert"
-   Monochromatic + Safety Orange (#FF4500)
+   LIFEPATH ENGINE — Design System: "Signal & Current"
+   Slate + Teal + Violet
    Zero-radius, technical journal aesthetic
    ================================================================ */
 
@@ -12,20 +12,22 @@
 }
 
 :root {
-  --primary: #000000;
-  --surface: #F9F9F9;
-  --surface-low: #F3F3F3;
-  --surface-container: #EEEEEE;
-  --surface-high: #E8E8E8;
-  --surface-highest: #E2E2E2;
-  --outline: #777777;
-  --outline-variant: #C6C6C6;
-  --on-surface: #1A1C1C;
-  --on-surface-variant: #474747;
-  --secondary: #5E5E5E;
-  --accent: #FF4500;
-  --accent-dark: #B12D00;
-  --accent-dim: #872000;
+  --primary: #18212F;
+  --surface: #F6F8FB;
+  --surface-low: #EEF2F7;
+  --surface-container: #E6EBF2;
+  --surface-high: #DDE5EE;
+  --surface-highest: #D3DDE8;
+  --outline: #667085;
+  --outline-variant: #C4CFDB;
+  --on-surface: #15202B;
+  --on-surface-variant: #475467;
+  --secondary: #526075;
+  --accent: #0F766E;
+  --accent-dark: #0B5C56;
+  --accent-dim: #094B46;
+  --branch-accent: #7C3AED;
+  --branch-soft: #F3EEFF;
   --error: #BA1A1A;
   --white: #FFFFFF;
 
@@ -66,7 +68,7 @@ a { color: inherit; text-decoration: none; }
 .muted         { opacity: 0.5; }
 .icon-sm       { font-size: 18px; }
 
-h1 { font-family: var(--font-headline); font-weight: 800; letter-spacing: -0.03em; line-height: 0.95; }
+h1 { font-family: var(--font-headline); font-weight: 800; letter-spacing: -0.03em; line-height: 1.05; }
 h2 { font-family: var(--font-mono); font-weight: 700; font-size: 12px; letter-spacing: 0.15em; text-transform: uppercase; }
 h3 { font-family: var(--font-body); font-weight: 700; font-size: 14px; text-transform: uppercase; letter-spacing: -0.01em; }
 
@@ -93,6 +95,12 @@ h3 { font-family: var(--font-body); font-weight: 700; font-size: 14px; text-tran
   color: var(--accent); font-weight: 700;
 }
 .nav-link.active { border-bottom: 2px solid var(--accent); }
+.nav-link.nav-disabled {
+  opacity: 0.32;
+  cursor: not-allowed;
+  pointer-events: none;
+  border-bottom-color: transparent;
+}
 
 /* Language toggle button */
 .btn-lang {
@@ -432,7 +440,7 @@ h3 { font-family: var(--font-body); font-weight: 700; font-size: 14px; text-tran
 }
 .path-card:hover { border-color: var(--accent); }
 .path-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
-.path-card-name { font-family: var(--font-headline); font-size: 24px; font-weight: 700; }
+.path-card-name { font-family: var(--font-headline); font-size: 24px; font-weight: 700; line-height: 1.15; overflow-wrap: anywhere; }
 .path-card-summary { font-size: 14px; color: var(--secondary); line-height: 1.6; margin-bottom: 16px; }
 .path-card-stats { display: flex; gap: 24px; }
 .path-stat { text-align: center; }
@@ -452,7 +460,7 @@ h3 { font-family: var(--font-body); font-weight: 700; font-size: 14px; text-tran
 .node-card:hover { border-left-color: var(--accent); }
 .node-card.active { border-left-color: var(--accent); background: var(--white); }
 .node-type { font-family: var(--font-mono); font-size: 9px; text-transform: uppercase; letter-spacing: 0.1em; }
-.node-title { font-weight: 600; font-size: 14px; margin-top: 4px; }
+.node-title { font-weight: 600; font-size: 14px; margin-top: 4px; line-height: 1.4; overflow-wrap: anywhere; }
 .node-time { font-family: var(--font-mono); font-size: 10px; color: var(--outline); margin-top: 2px; }
 
 /* State bars */
@@ -492,7 +500,7 @@ h3 { font-family: var(--font-body); font-weight: 700; font-size: 14px; text-tran
   flex: 1; display: flex; overflow: hidden;
   min-height: calc(100vh - var(--topnav-h) - 120px);
 }
-/* graph-canvas-wrap: styles defined at bottom of file (MiroFish dot-pattern) */
+/* graph-canvas-wrap: styles defined at bottom of file */
 #graph-svg { display: block; }
 .graph-sidebar {
   width: 340px; background: var(--surface-low);
@@ -603,8 +611,10 @@ h3 { font-family: var(--font-body); font-weight: 700; font-size: 14px; text-tran
   background: var(--white);
   border: 1px solid rgba(198, 198, 198, 0.5);
   padding: 0;
-  min-width: 220px;
-  max-width: 300px;
+  min-width: 280px;
+  max-width: 380px;
+  max-height: 70vh;
+  overflow: auto;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
   pointer-events: auto;
 }
@@ -641,6 +651,7 @@ h3 { font-family: var(--font-body); font-weight: 700; font-size: 14px; text-tran
   font-size: 18px;
   font-weight: 700;
   line-height: 1.3;
+  overflow-wrap: anywhere;
 }
 
 .tree-tooltip-time {
@@ -658,6 +669,59 @@ h3 { font-family: var(--font-body); font-weight: 700; font-size: 14px; text-tran
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
+}
+
+.tree-tooltip-block {
+  padding: 0 14px 12px;
+}
+
+.tree-tooltip-label {
+  margin-bottom: 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.tree-tooltip-block p,
+.tree-tooltip-item-text {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--secondary);
+}
+
+.tree-tooltip-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.tree-tooltip-item {
+  padding: 8px 10px;
+  background: var(--surface-low);
+  border-left: 2px solid var(--accent);
+}
+
+.tree-tooltip-item-title {
+  margin-bottom: 4px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--on-surface);
+}
+
+.tree-tooltip-metrics {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.tree-tooltip-metrics span {
+  padding: 4px 8px;
+  background: var(--surface-low);
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--on-surface-variant);
 }
 
 /* Simulation tree scrollable */
@@ -738,7 +802,7 @@ h3 { font-family: var(--font-body); font-weight: 700; font-size: 14px; text-tran
 
 
 /* ═══════════════════════════════════════════════════════════════════
-   Graph Detail Panel (MiroFish-style overlay)
+   Graph Detail Panel
    ═══════════════════════════════════════════════════════════════════ */
 
 .graph-detail-panel {
@@ -865,7 +929,7 @@ h3 { font-family: var(--font-body); font-weight: 700; font-size: 14px; text-tran
   font-size: 12px;
 }
 
-.gd-impact-high { color: #FF4500; font-weight: 700; }
+.gd-impact-high { color: var(--accent); font-weight: 700; }
 .gd-impact-medium { color: #FF8F00; }
 .gd-impact-low { color: #2E7D32; }
 
@@ -1004,7 +1068,7 @@ h3 { font-family: var(--font-body); font-weight: 700; font-size: 14px; text-tran
 .gd-self-item-content .gd-value { font-size: 12px; }
 
 
-/* ── Graph Legend Panel (MiroFish-style) ── */
+/* ── Graph Legend Panel ── */
 .graph-legend-panel {
   position: absolute;
   bottom: 24px;
@@ -1121,14 +1185,16 @@ h3 { font-family: var(--font-body); font-weight: 700; font-size: 14px; text-tran
 }
 
 
-/* ── Graph canvas override: MiroFish dot-pattern background ── */
+/* ── Graph canvas background ── */
 .graph-canvas-wrap {
   flex: 1;
   position: relative;
   overflow: hidden;
-  background-color: #FAFAFA;
-  background-image: radial-gradient(#D0D0D0 1.5px, transparent 1.5px);
-  background-size: 24px 24px;
+  background-color: #F7FAFC;
+  background-image:
+    linear-gradient(to right, rgba(100, 116, 139, 0.12) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(100, 116, 139, 0.12) 1px, transparent 1px);
+  background-size: 32px 32px;
 }
 
 
@@ -1138,11 +1204,11 @@ h3 { font-family: var(--font-body); font-weight: 700; font-size: 14px; text-tran
 
 /* Counterfactual path card */
 .path-card-counterfactual {
-  border-left: 4px solid #9C27B0;
-  background: linear-gradient(135deg, var(--white) 0%, #F3E5F5 100%);
+  border-left: 4px solid var(--branch-accent);
+  background: linear-gradient(135deg, var(--white) 0%, var(--branch-soft) 100%);
 }
 .path-card-counterfactual:hover {
-  border-color: #7B1FA2;
+  border-color: var(--branch-accent);
 }
 
 /* Backtrack node list */
@@ -1165,13 +1231,13 @@ h3 { font-family: var(--font-body); font-weight: 700; font-size: 14px; text-tran
   transition: all 0.2s;
 }
 .bt-node-card:hover {
-  border-color: #9C27B0;
-  background: #F3E5F5;
+  border-color: var(--branch-accent);
+  background: var(--branch-soft);
 }
 .bt-node-card.bt-selected {
-  border-color: #9C27B0;
+  border-color: var(--branch-accent);
   border-width: 2px;
-  background: linear-gradient(135deg, #EDE7F6 0%, #F3E5F5 100%);
+  background: linear-gradient(135deg, #F5F3FF 0%, var(--branch-soft) 100%);
 }
 
 .bt-node-idx {
@@ -1187,7 +1253,7 @@ h3 { font-family: var(--font-body); font-weight: 700; font-size: 14px; text-tran
   color: var(--on-surface-variant);
 }
 .bt-selected .bt-node-idx {
-  background: #9C27B0;
+  background: var(--branch-accent);
   color: var(--white);
 }
 
@@ -1198,6 +1264,7 @@ h3 { font-family: var(--font-body); font-weight: 700; font-size: 14px; text-tran
   font-weight: 600;
   font-size: 14px;
   line-height: 1.2;
+  overflow-wrap: anywhere;
 }
 .bt-node-meta {
   font-family: var(--font-mono);

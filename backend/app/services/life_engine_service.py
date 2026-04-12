@@ -21,6 +21,7 @@ import json
 import copy
 import random
 import logging
+import re
 from typing import Optional
 from app.core.llm import get_llm_client, LLMClient
 from app.domain.models import (
@@ -29,6 +30,114 @@ from app.domain.models import (
 )
 
 logger = logging.getLogger(__name__)
+
+
+STATE_LABELS = {
+    "education": "学业",
+    "career": "职业",
+    "finance": "财务",
+    "health": "健康",
+    "mental": "心理",
+    "relationship": "关系",
+    "family_support": "家庭支持",
+    "social_capital": "社会资本",
+    "optionality": "选择空间",
+    "goal_alignment": "目标一致性",
+}
+
+
+def _compact_state_snapshot(state: dict | None) -> list[dict]:
+    if not state:
+        return []
+
+    ranked = sorted(
+        state.items(),
+        key=lambda item: abs(item[1] - 0.5) if isinstance(item[1], (int, float)) else 0,
+        reverse=True,
+    )[:4]
+    return [
+        {
+            "key": key,
+            "label": STATE_LABELS.get(key, key),
+            "value": round(float(value), 2),
+            "percent": int(round(float(value) * 100)),
+        }
+        for key, value in ranked
+        if isinstance(value, (int, float))
+    ]
+
+
+def _tree_event_detail(
+    event_type: str,
+    event_id: str,
+    parent: str | None,
+    label: str,
+    round_num: int,
+    time_label: str,
+    node_type: str,
+    description: str = "",
+    trigger_reason: str = "",
+    tendency: str = "",
+    state_snapshot: dict | None = None,
+    agent_actions: list[dict] | None = None,
+    source_path_id: str = "",
+    source_node_index: int | None = None,
+) -> dict:
+    actions = agent_actions or []
+    return {
+        "type": event_type,
+        "id": event_id,
+        "parent": parent,
+        "label": label,
+        "round": round_num,
+        "time_label": time_label,
+        "is_active": True,
+        "node_type": node_type,
+        "tendency": tendency,
+        "description": description,
+        "trigger_reason": trigger_reason,
+        "state_snapshot": state_snapshot or {},
+        "state_summary": _compact_state_snapshot(state_snapshot),
+        "agent_actions": actions[:4],
+        "source_path_id": source_path_id,
+        "source_node_index": source_node_index,
+    }
+
+
+def _resolve_source_tree_node_id(project_data: dict, source_path: dict, node_index: int) -> str | None:
+    source_nodes = source_path.get("nodes", [])
+    if 0 <= node_index < len(source_nodes):
+        node = source_nodes[node_index] or {}
+        tree_node_id = node.get("tree_node_id")
+        if tree_node_id:
+            return tree_node_id
+
+        title = node.get("title", "")
+        time_label = node.get("time_label", "")
+        for evt in reversed(project_data.get("_tree_events", [])):
+            if evt.get("type") != "add_node":
+                continue
+            if evt.get("time_label") == time_label and evt.get("label") == title:
+                return evt.get("id")
+
+    return None
+
+
+def _normalize_report_title(title: str) -> str:
+    cleaned = re.sub(r"[（(][^）)]*[）)]", "", (title or "").strip())
+    cleaned = cleaned.replace("《", "").replace("》", "").strip()
+    if not cleaned:
+        return "综合报告"
+
+    for separator in ("：", ":", "-", "—", "|", "（"):
+        if separator in cleaned:
+            cleaned = cleaned.split(separator)[0].strip()
+            break
+
+    if len(cleaned) > 14:
+        cleaned = cleaned[:14].rstrip()
+
+    return cleaned or "综合报告"
 
 
 # ═══════════════════════════════════════════════════════════════════
@@ -382,6 +491,43 @@ def generate_llm_paths(
     parameters = project_data.get("parameters", [])
     concern = profile.get("current_concern", "人生发展") if profile else "人生发展"
 
+    # Initialize root branch and emit the base node immediately so the frontend
+    # can render the reasoning tree before the first round finishes.
+    root_state = LifeStateSnapshot().model_dump()
+    root = BranchState(
+        branch_id="root",
+        parent_id="",
+        label="BASE",
+        state=root_state,
+        history=f"用户关注：{concern}",
+        nodes=[],
+        rounds_done=0,
+        tendency="balanced",
+        state_history=[dict(root_state)],
+    )
+
+    live_branches: list[BranchState] = [root]
+    finished_branches: list[BranchState] = []
+    tree_events: list[dict] = []
+    last_tree_node: dict[str, str] = {}
+
+    root_event = _tree_event_detail(
+        event_type="add_node",
+        event_id="root",
+        parent=None,
+        label="BASE",
+        round_num=0,
+        time_label="起点",
+        node_type="decision",
+        description="基础状态已载入，推演树从 BASE 节点开始生长。",
+        trigger_reason="系统初始化",
+        state_snapshot=root_state,
+    )
+    tree_events.append(root_event)
+    last_tree_node["root"] = "root"
+    if progress_callback:
+        progress_callback("tree_event", 2, "", root_event)
+
     # ── Step 1: Expand Parameters ──
     if progress_callback:
         progress_callback("parameter_expansion", 5, "正在用 AI 发散影响因素...")
@@ -414,39 +560,6 @@ def generate_llm_paths(
 
     # ── Step 3: Tree-based simulation ──
     selected_rounds = min(rounds, 20)
-
-    # Initialize root branch
-    root_state = LifeStateSnapshot().model_dump()
-    root = BranchState(
-        branch_id="root",
-        parent_id="",
-        label="BASE",
-        state=root_state,
-        history=f"用户关注：{concern}",
-        nodes=[],
-        rounds_done=0,
-        tendency="balanced",
-        state_history=[dict(root_state)],
-    )
-
-    live_branches: list[BranchState] = [root]
-    finished_branches: list[BranchState] = []
-    tree_events: list[dict] = []   # recorded for frontend tree viz
-
-    # Track the last emitted tree node ID per branch for correct parent chaining
-    last_tree_node: dict[str, str] = {}  # branch_id -> last tree node id
-
-    # Emit root node
-    tree_events.append({
-        "type": "add_node",
-        "id": "root",
-        "parent": None,
-        "label": "BASE_INIT",
-        "round": 0,
-        "time_label": "起点",
-        "is_active": True,
-    })
-    last_tree_node["root"] = "root"
 
     if progress_callback:
         progress_callback("simulating", 28,
@@ -486,26 +599,33 @@ def generate_llm_paths(
                 logger.error(f"Round {r+1} failed for branch {branch.branch_id}: {e}")
                 # Produce a fallback node and keep going
                 fallback_node_id = f"{branch.branch_id}_r{r+1}"
-                branch.nodes.append(PathNode(
+                fallback_node = PathNode(
+                    tree_node_id=fallback_node_id,
                     node_type="result",
                     title=f"阶段进展 ({time_label})",
                     description="推演引擎在此轮遇到问题，使用默认进展",
                     time_label=time_label,
                     trigger_reason="系统推演",
                     state_snapshot=LifeStateSnapshot(**branch.state),
-                ).model_dump())
+                )
+                branch.nodes.append(fallback_node.model_dump())
                 # Still emit tree event for fallback node
                 parent_node_id = last_tree_node.get(branch.branch_id, branch.branch_id)
-                tree_events.append({
-                    "type": "add_node",
-                    "id": fallback_node_id,
-                    "parent": parent_node_id,
-                    "label": f"阶段 {r+1}",
-                    "round": r + 1,
-                    "time_label": time_label,
-                    "is_active": True,
-                    "node_type": "result",
-                })
+                fallback_event = _tree_event_detail(
+                    event_type="add_node",
+                    event_id=fallback_node_id,
+                    parent=parent_node_id,
+                    label=fallback_node.title,
+                    round_num=r + 1,
+                    time_label=time_label,
+                    node_type="result",
+                    description=fallback_node.description,
+                    trigger_reason=fallback_node.trigger_reason,
+                    state_snapshot=fallback_node.state_snapshot.model_dump() if fallback_node.state_snapshot else {},
+                )
+                tree_events.append(fallback_event)
+                if progress_callback:
+                    progress_callback("tree_event", pct, "", fallback_event)
                 last_tree_node[branch.branch_id] = fallback_node_id
                 branch.rounds_done = r + 1
                 next_gen.append(branch)
@@ -526,7 +646,9 @@ def generate_llm_paths(
             # Record key event as node
             key_event = round_result.get("key_event")
             if key_event and key_event.get("title"):
+                new_node_id = f"{branch.branch_id}_r{r+1}"
                 node = PathNode(
+                    tree_node_id=new_node_id,
                     node_type=key_event.get("type", "result"),
                     title=key_event.get("title", ""),
                     description=key_event.get("description", ""),
@@ -537,19 +659,24 @@ def generate_llm_paths(
                 )
                 branch.nodes.append(node.model_dump())
 
-                new_node_id = f"{branch.branch_id}_r{r+1}"
                 parent_node_id = last_tree_node.get(branch.branch_id, branch.branch_id)
 
-                tree_events.append({
-                    "type": "add_node",
-                    "id": new_node_id,
-                    "parent": parent_node_id,
-                    "label": key_event.get("title", "")[:20],
-                    "round": r + 1,
-                    "time_label": time_label,
-                    "is_active": True,
-                    "node_type": key_event.get("type", "result"),
-                })
+                node_event = _tree_event_detail(
+                    event_type="add_node",
+                    event_id=new_node_id,
+                    parent=parent_node_id,
+                    label=node.title,
+                    round_num=r + 1,
+                    time_label=time_label,
+                    node_type=node.node_type,
+                    description=node.description,
+                    trigger_reason=node.trigger_reason,
+                    state_snapshot=node.state_snapshot.model_dump() if node.state_snapshot else {},
+                    agent_actions=[a.model_dump() for a in node.agent_actions],
+                )
+                tree_events.append(node_event)
+                if progress_callback:
+                    progress_callback("tree_event", pct, "", node_event)
                 last_tree_node[branch.branch_id] = new_node_id
 
             # ── Branch Decision ──
@@ -587,15 +714,22 @@ def generate_llm_paths(
                     )
                     next_gen.append(child)
 
-                    tree_events.append({
-                        "type": "branch",
-                        "id": child_id,
-                        "parent": branch_parent_id,
-                        "label": choice_label[:20],
-                        "round": r + 1,
-                        "time_label": time_label,
-                        "tendency": child_tendency,
-                    })
+                    branch_event = _tree_event_detail(
+                        event_type="branch",
+                        event_id=child_id,
+                        parent=branch_parent_id,
+                        label=choice_label,
+                        round_num=r + 1,
+                        time_label=time_label,
+                        node_type="branch",
+                        description=round_result.get("branch_reason", ""),
+                        trigger_reason=round_result.get("branch_reason", ""),
+                        tendency=child_tendency,
+                        state_snapshot=copy.deepcopy(branch.state),
+                    )
+                    tree_events.append(branch_event)
+                    if progress_callback:
+                        progress_callback("tree_event", pct, "", branch_event)
                     # FIXED: New branch's subsequent nodes should chain from the branch node itself
                     # Use branch_parent_id as the last tree node so the first child of this
                     # branch attaches to the correct parent
@@ -660,7 +794,7 @@ def _name_path(branch: BranchState, path_type: str) -> str:
     }
     base = type_names.get(path_type, f"Path: {path_type}")
     if branch.label and branch.label != "BASE":
-        base += f" ({branch.label[:15]})"
+        base += f" · {branch.label[:15]}"
     return base
 
 
@@ -785,7 +919,7 @@ REPORT_SYSTEM_PROMPT = """你是一个人生推演引擎的报告生成专家。
 
 **输出要求**：输出有效 JSON：
 {
-  "title": "报告标题",
+  "title": "简洁报告标题（不超过12个字）",
   "executive_summary": "200字以内的总结概述",
   "path_comparison": [
     {
@@ -844,7 +978,7 @@ def generate_report(project_data: dict) -> dict:
         max_tokens=4000,
     )
 
-    result.setdefault("title", "人生路径推演报告")
+    result["title"] = _normalize_report_title(result.get("title", ""))
     result.setdefault("executive_summary", "")
     result.setdefault("path_comparison", [])
     result.setdefault("critical_nodes", [])
@@ -1018,6 +1152,7 @@ def run_backtrack_simulation(
     # Determine the starting round number and time label from the branch node
     branch_node = inherited_nodes[-1] if inherited_nodes else {}
     branch_time = branch_node.get("time_label", "2026-Q1")
+    source_tree_node_id = _resolve_source_tree_node_id(project_data, source_path, node_index)
     
     # Parse time label to determine starting round
     start_round = node_index + 1
@@ -1030,15 +1165,24 @@ def run_backtrack_simulation(
     
     # Emit a backtrack root node
     bt_root_id = f"bt_{gen_id()}"
-    tree_events.append({
-        "type": "branch",
-        "id": bt_root_id,
-        "parent": None,  # Will be rendered as a standalone tree
-        "label": f"回溯: {description[:18]}" if description else "反事实分支",
-        "round": start_round,
-        "time_label": branch_time,
-        "tendency": "counterfactual",
-    })
+    root_event = _tree_event_detail(
+        event_type="branch",
+        event_id=bt_root_id,
+        parent=source_tree_node_id,
+        label=f"回溯: {description}" if description else "反事实分支",
+        round_num=start_round,
+        time_label=branch_time,
+        node_type="branch",
+        description=f"从原路径第 {node_index + 1} 个节点开始回溯，应用修改条件后生成的新分支。",
+        trigger_reason=description or "用户发起回溯推演",
+        tendency="counterfactual",
+        state_snapshot=current_state,
+        source_path_id=source_path.get("id", ""),
+        source_node_index=node_index,
+    )
+    tree_events.append(root_event)
+    if progress_callback:
+        progress_callback("tree_event", 5, "", root_event)
     
     last_node_id = bt_root_id
     new_nodes = list(inherited_nodes)
@@ -1074,7 +1218,9 @@ def run_backtrack_simulation(
         except Exception as e:
             logger.error(f"Backtrack round {r+1} failed: {e}")
             # Produce a fallback node
+            fallback_node_id = f"{bt_root_id}_r{r+1}"
             fallback_node = PathNode(
+                tree_node_id=fallback_node_id,
                 node_type="result",
                 title=f"回溯进展 ({time_label})",
                 description="回溯推演在此轮遇到问题，使用默认进展",
@@ -1083,6 +1229,24 @@ def run_backtrack_simulation(
                 state_snapshot=LifeStateSnapshot(**current_state),
             ).model_dump()
             new_nodes.append(fallback_node)
+            fallback_event = _tree_event_detail(
+                event_type="add_node",
+                event_id=fallback_node_id,
+                parent=last_node_id,
+                label=fallback_node.get("title", ""),
+                round_num=total_round,
+                time_label=time_label,
+                node_type="result",
+                description=fallback_node.get("description", ""),
+                trigger_reason=fallback_node.get("trigger_reason", ""),
+                state_snapshot=fallback_node.get("state_snapshot", {}),
+                source_path_id=source_path.get("id", ""),
+                source_node_index=node_index,
+            )
+            tree_events.append(fallback_event)
+            if progress_callback:
+                progress_callback("tree_event", pct, "", fallback_event)
+            last_node_id = fallback_node_id
             continue
         
         actions = round_result.get("actions", [])
@@ -1099,7 +1263,9 @@ def run_backtrack_simulation(
         # Record key event as node
         key_event = round_result.get("key_event")
         if key_event and key_event.get("title"):
+            new_node_id = f"{bt_root_id}_r{r+1}"
             node = PathNode(
+                tree_node_id=new_node_id,
                 node_type=key_event.get("type", "result"),
                 title=key_event.get("title", ""),
                 description=key_event.get("description", ""),
@@ -1110,17 +1276,24 @@ def run_backtrack_simulation(
             )
             new_nodes.append(node.model_dump())
             
-            new_node_id = f"{bt_root_id}_r{r+1}"
-            tree_events.append({
-                "type": "add_node",
-                "id": new_node_id,
-                "parent": last_node_id,
-                "label": key_event.get("title", "")[:20],
-                "round": total_round,
-                "time_label": time_label,
-                "is_active": True,
-                "node_type": key_event.get("type", "result"),
-            })
+            node_event = _tree_event_detail(
+                event_type="add_node",
+                event_id=new_node_id,
+                parent=last_node_id,
+                label=node.title,
+                round_num=total_round,
+                time_label=time_label,
+                node_type=node.node_type,
+                description=node.description,
+                trigger_reason=node.trigger_reason,
+                state_snapshot=node.state_snapshot.model_dump() if node.state_snapshot else {},
+                agent_actions=[a.model_dump() for a in node.agent_actions],
+                source_path_id=source_path.get("id", ""),
+                source_node_index=node_index,
+            )
+            tree_events.append(node_event)
+            if progress_callback:
+                progress_callback("tree_event", pct, "", node_event)
             last_node_id = new_node_id
     
     if progress_callback:

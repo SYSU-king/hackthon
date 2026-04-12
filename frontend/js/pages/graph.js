@@ -1,7 +1,7 @@
 /**
  * Graph Page — Interactive knowledge graph visualization
  * 
- * Adapted from MiroFish GraphPanel architecture:
+ * Interactive knowledge graph panel:
  * - D3.js force-directed layout with zoom/pan
  * - Draggable nodes with proper click vs drag detection
  * - Curved multi-edges between same node pairs
@@ -25,7 +25,7 @@ let _linkLabelsSelection = null;
 let _linkLabelBgSelection = null;
 let _expandedSelfLoops = new Set();
 
-// ── Color palette (from MiroFish) ──
+// ── Color palette ──
 const ENTITY_COLORS = [
   '#FF6B35', '#004E89', '#7B2D8E', '#1A936F', '#C5283D',
   '#E9724C', '#3498db', '#9b59b6', '#27ae60', '#f39c12',
@@ -183,7 +183,7 @@ function getAgentColor(type) {
 
 
 // ═══════════════════════════════════════════════════════════════════
-// D3 Force-Directed Graph (MiroFish architecture)
+// D3 Force-Directed Graph
 // ═══════════════════════════════════════════════════════════════════
 
 function renderD3Graph(nodesData, edgesData) {
@@ -242,7 +242,7 @@ function renderD3Graph(nodesData, edgesData) {
 
   const nodeIds = new Set(nodes.map(n => n.id));
 
-  // ── Process edges: handle multi-edges & self-loops (MiroFish approach) ──
+  // ── Process edges: handle multi-edges & self-loops ──
   const edgePairCount = {};
   const selfLoopEdges = {};
   const processedSelfLoopNodes = new Set();
@@ -535,12 +535,12 @@ function renderD3Graph(nodesData, edgesData) {
       linkGroup.selectAll('path').attr('stroke', '#C0C0C0').attr('stroke-width', 1.5);
       // Highlight selected node
       d3.select(event.target)
-        .attr('stroke', '#FF4500')
+        .attr('stroke', '#0F766E')
         .attr('stroke-width', 4)
         .attr('filter', 'url(#glow-strong)');
       // Highlight connected edges
       link.filter(l => l.source.id === d.id || l.target.id === d.id)
-        .attr('stroke', '#FF4500')
+        .attr('stroke', '#0F766E')
         .attr('stroke-width', 2.5);
 
       // Hide drag hint
@@ -637,7 +637,7 @@ function resetHighlights(linkGroup, node, linkLabelBg, linkLabels) {
 
 
 // ═══════════════════════════════════════════════════════════════════
-// Detail Panel (right overlay — MiroFish style)
+// Detail Panel (right overlay)
 // ═══════════════════════════════════════════════════════════════════
 
 function showDetailPanel(item) {

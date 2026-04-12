@@ -44,6 +44,22 @@ def test_simulate_project(client):
     assert last_data["path_count"] == 3
 
 
+
+def test_simulation_stream_contains_live_tree_event(client):
+    pid = _create_configured_project(client)
+    resp = client.post(f"/api/projects/{pid}/simulate", json={"rounds": 8, "time_unit": "quarter"})
+    assert resp.status_code == 200
+
+    events = [chunk.replace("data: ", "") for chunk in resp.text.strip().split("\n\n") if chunk.strip()]
+
+    import json
+    parsed = [json.loads(chunk) for chunk in events]
+    tree_events = [event for event in parsed if event["phase"] == "tree_event"]
+    assert tree_events
+    assert tree_events[0]["tree_event"]["id"] == "root"
+    assert parsed.index(tree_events[0]) < len(parsed) - 1
+    assert parsed[-1]["phase"] == "completed"
+
 def test_get_paths_after_simulation(client):
     pid = _create_configured_project(client)
     client.post(f"/api/projects/{pid}/simulate", json={"rounds": 8})
