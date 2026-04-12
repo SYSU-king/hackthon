@@ -9,7 +9,7 @@
  * - After completion: tab bar to switch between Tree View and Results
  */
 
-import { api } from '../api.js';
+import { api, ensureStreamingResponse } from '../api.js';
 import { navigateTo, state } from '../app.js';
 import { t } from '../i18n.js';
 
@@ -316,11 +316,13 @@ async function startSim(container) {
   const config = state.simConfig || { rounds: 12, timeUnit: 'quarter', agentCount: 6 };
 
   try {
-    const resp = await api.startSimulation(
-      state.projectId,
-      config.rounds,
-      config.timeUnit,
-      config.agentCount || 6
+    const resp = await ensureStreamingResponse(
+      await api.startSimulation(
+        state.projectId,
+        config.rounds,
+        config.timeUnit,
+        config.agentCount || 6
+      )
     );
     const reader = resp.body.getReader();
     const decoder = new TextDecoder();

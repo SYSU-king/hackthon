@@ -1,0 +1,15 @@
+{
+  "has_zst": {
+    "last_checked": "2026-04-11T13:52:08.243117Z",
+    "value": false
+  },
+  "mod": "Thu, 13 Feb 2025 20:40:14 GMT",
+  "etag": "W/\"67ae58ae-4c4af0\"",
+  "cache_control": "",
+  "blake2_256_nominal": "5d129406511af030846e8bf1d35430fc636b283d385188af8e4336e3fe3f3abb",
+  "blake2_256": "5d129406511af030846e8bf1d35430fc636b283d385188af8e4336e3fe3f3abb",
+  "url": "https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/win-64",
+  "size": 4999920,
+  "mtime_ns": 1775915529243399800,
+  "refresh_ns": 1775915529271526100
+}

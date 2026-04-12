@@ -3,9 +3,22 @@ from pathlib import Path
 from pydantic_settings import BaseSettings
 from dotenv import load_dotenv
 
-# Load .env from project root
+# Load .env files before settings initialization.
+# Priority rule:
+#   1) existing process env vars win
+#   2) current repo .env / backend/.env
+#   3) reference project env as compatibility fallback
 _project_root = Path(__file__).resolve().parent.parent.parent.parent
-load_dotenv(_project_root / ".env")
+_env_candidates = [
+    _project_root / ".env",
+    _project_root / "backend" / ".env",
+    _project_root / "参考项目" / "MiroFish" / ".env",
+]
+LOADED_ENV_FILES: list[str] = []
+for _env_file in _env_candidates:
+    if _env_file.exists():
+        load_dotenv(_env_file, override=False)
+        LOADED_ENV_FILES.append(str(_env_file))
 
 
 class Settings(BaseSettings):
@@ -16,6 +29,7 @@ class Settings(BaseSettings):
     LLM_API_KEY: str = os.getenv("LLM_API_KEY", "")
     LLM_BASE_URL: str = os.getenv("LLM_BASE_URL", "https://api.openai.com/v1")
     LLM_MODEL_NAME: str = os.getenv("LLM_MODEL_NAME", "gpt-4o-mini")
+    LLM_REASONING_EFFORT: str = os.getenv("LLM_REASONING_EFFORT", "medium")
 
     # Optional boost LLM (for parallel/faster requests)
     LLM_BOOST_API_KEY: str = os.getenv("LLM_BOOST_API_KEY", "")

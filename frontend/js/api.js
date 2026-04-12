@@ -18,6 +18,22 @@ async function request(method, path, body = null) {
   return resp.json();
 }
 
+async function parseErrorResponse(resp) {
+  const contentType = resp.headers.get('content-type') || '';
+  if (contentType.includes('application/json')) {
+    const err = await resp.json().catch(() => ({}));
+    return err.detail || err.message || JSON.stringify(err);
+  }
+
+  const text = await resp.text().catch(() => '');
+  return text || resp.statusText || `HTTP ${resp.status}`;
+}
+
+export async function ensureStreamingResponse(resp) {
+  if (resp.ok) return resp;
+  throw new Error(await parseErrorResponse(resp));
+}
+
 export const api = {
   // Health
   health: () => request('GET', '/api/health'),

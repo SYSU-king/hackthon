@@ -5,7 +5,7 @@
  * §14.4 可交互: User modifies params mid-simulation — re-derive new path
  */
 
-import { api } from '../api.js';
+import { api, ensureStreamingResponse } from '../api.js';
 import { navigateTo, state } from '../app.js';
 import { t, getStateLabel, STATE_KEYS } from '../i18n.js';
 
@@ -401,13 +401,15 @@ function renderBacktrackView(container, path) {
     if (progDiv) progDiv.style.display = 'block';
 
     try {
-      const resp = await api.backtrack(
-        state.projectId,
-        path.id,
-        backtrackNodeIndex,
-        modifications,
-        description,
-        rounds
+      const resp = await ensureStreamingResponse(
+        await api.backtrack(
+          state.projectId,
+          path.id,
+          backtrackNodeIndex,
+          modifications,
+          description,
+          rounds
+        )
       );
 
       const reader = resp.body.getReader();

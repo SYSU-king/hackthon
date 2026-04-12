@@ -1,0 +1,15 @@
+{
+  "has_zst": {
+    "last_checked": "2026-04-11T13:52:07.207915Z",
+    "value": false
+  },
+  "mod": "Wed, 08 Apr 2026 13:39:54 GMT",
+  "etag": "W/\"69d65aaa-156aa9\"",
+  "cache_control": "",
+  "blake2_256_nominal": "eabaaffc718ebda677111981a28b668b1ac30dc2265b8bd6040c5e482c71c788",
+  "blake2_256": "eabaaffc718ebda677111981a28b668b1ac30dc2265b8bd6040c5e482c71c788",
+  "url": "https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/noarch",
+  "size": 1403561,
+  "mtime_ns": 1775915527825693000,
+  "refresh_ns": 1775915527845127700
+}

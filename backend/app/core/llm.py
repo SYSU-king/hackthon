@@ -1,20 +1,21 @@
 """
-LLM Client — OpenAI SDK compatible wrapper.
-Follows MiroFish's LLMClient pattern with JSON mode graceful degradation.
+LLM Client — OpenAI-compatible HTTP wrapper.
+Uses direct Chat Completions requests so gateways like NewAPI receive the
+exact `/v1/chat/completions` JSON body defined by their docs.
 """
 
 import json
 import re
 import logging
 from typing import Optional, Dict, Any, List
-from openai import OpenAI
+import httpx
 from app.core.config import settings
 
 logger = logging.getLogger(__name__)
 
 
 class LLMClient:
-    """Unified LLM client using OpenAI SDK format."""
+    """Unified LLM client using direct OpenAI-compatible HTTP requests."""
 
     def __init__(
         self,
@@ -25,11 +26,10 @@ class LLMClient:
         self.api_key = api_key or settings.LLM_API_KEY
         self.base_url = base_url or settings.LLM_BASE_URL
         self.model = model or settings.LLM_MODEL_NAME
+        self.reasoning_effort = settings.LLM_REASONING_EFFORT or "medium"
 
         if not self.api_key:
             raise ValueError("LLM_API_KEY 未配置，请在 .env 文件中设置")
-
-        self.client = OpenAI(api_key=self.api_key, base_url=self.base_url)
 
     def chat(
         self,
@@ -50,28 +50,34 @@ class LLMClient:
         Returns:
             Model response text
         """
-        kwargs = {
+        payload: Dict[str, Any] = {
             "model": self.model,
             "messages": messages,
             "temperature": temperature,
-            "max_tokens": max_tokens,
+            "stream": False,
         }
 
+        token_field = self._token_field_for_model(self.model)
+        payload[token_field] = max_tokens
+
+        if self._supports_reasoning_effort(self.model):
+            payload["reasoning_effort"] = self.reasoning_effort
+
         if response_format:
-            kwargs["response_format"] = response_format
+            payload["response_format"] = response_format
 
         try:
-            response = self.client.chat.completions.create(**kwargs)
+            data = self._post_chat_completions(payload)
         except Exception as e:
             # If json_object mode is not supported, retry without it
             if response_format and "response_format" in str(e):
                 logger.warning("JSON mode not supported, falling back to plain text")
-                kwargs.pop("response_format", None)
-                response = self.client.chat.completions.create(**kwargs)
+                payload.pop("response_format", None)
+                data = self._post_chat_completions(payload)
             else:
                 raise
 
-        content = response.choices[0].message.content
+        content = self._extract_message_content(data)
         # Strip <think>...</think> blocks some models emit
         content = re.sub(r"<think>[\s\S]*?</think>", "", content).strip()
         return content
@@ -133,6 +139,91 @@ class LLMClient:
                 except json.JSONDecodeError:
                     pass
             raise ValueError(f"LLM 返回的 JSON 格式无效: {cleaned[:500]}")
+
+    def _post_chat_completions(self, payload: Dict[str, Any]) -> Dict[str, Any]:
+        """POST exact Chat Completions JSON body to an OpenAI-compatible gateway."""
+        url = self._chat_completions_url()
+        headers = {
+            "Authorization": f"Bearer {self.api_key}",
+            "Content-Type": "application/json",
+        }
+
+        logger.debug("POST %s with fields=%s", url, sorted(payload.keys()))
+
+        try:
+            with httpx.Client(timeout=120.0) as client:
+                response = client.post(url, headers=headers, json=payload)
+        except Exception as e:
+            raise RuntimeError(f"请求 LLM 接口失败: {e}") from e
+
+        if response.status_code >= 400:
+            detail = self._extract_error_message(response)
+            raise RuntimeError(f"LLM 接口错误 {response.status_code}: {detail}")
+
+        try:
+            return response.json()
+        except Exception as e:
+            raise RuntimeError(f"LLM 响应不是有效 JSON: {response.text[:500]}") from e
+
+    def _chat_completions_url(self) -> str:
+        """Normalize base_url to the exact chat completions endpoint."""
+        base = self.base_url.rstrip("/")
+        if base.endswith("/chat/completions"):
+            return base
+        if base.endswith("/v1"):
+            return f"{base}/chat/completions"
+        return f"{base}/v1/chat/completions"
+
+    @staticmethod
+    def _token_field_for_model(model: str) -> str:
+        """
+        NewAPI docs support both max_tokens and max_completion_tokens.
+        Use max_completion_tokens for reasoning-style models to avoid
+        compatibility issues with newer model families.
+        """
+        lowered = (model or "").lower()
+        reasoning_prefixes = ("gpt-5", "o1", "o3", "o4")
+        if lowered.startswith(reasoning_prefixes):
+            return "max_completion_tokens"
+        return "max_tokens"
+
+    @staticmethod
+    def _supports_reasoning_effort(model: str) -> bool:
+        lowered = (model or "").lower()
+        return lowered.startswith(("gpt-5", "o1", "o3", "o4"))
+
+    @staticmethod
+    def _extract_message_content(data: Dict[str, Any]) -> str:
+        choices = data.get("choices") or []
+        if not choices:
+            raise RuntimeError(f"LLM 响应缺少 choices: {json.dumps(data, ensure_ascii=False)[:500]}")
+
+        message = choices[0].get("message") or {}
+        content = message.get("content", "")
+        if isinstance(content, list):
+            parts = []
+            for item in content:
+                if isinstance(item, dict):
+                    parts.append(item.get("text", ""))
+                else:
+                    parts.append(str(item))
+            content = "".join(parts)
+
+        if content is None:
+            content = ""
+        return str(content)
+
+    @staticmethod
+    def _extract_error_message(response: httpx.Response) -> str:
+        try:
+            data = response.json()
+            if isinstance(data, dict):
+                if isinstance(data.get("error"), dict):
+                    return data["error"].get("message") or json.dumps(data["error"], ensure_ascii=False)
+                return data.get("message") or json.dumps(data, ensure_ascii=False)
+        except Exception:
+            pass
+        return response.text[:500]
 
 
 # Singleton instance
