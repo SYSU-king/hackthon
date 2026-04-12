@@ -18,7 +18,7 @@
 - 推演引擎层：负责人生图谱、智能体行动、状态变化、分支生成、记忆回写
 - 存储层：负责用户档案、路径版本、图谱数据、推演 checkpoint、历史记录
 
-推荐采用 `前端 React / Next.js + 后端 FastAPI + 异步任务队列 + PostgreSQL` 的结构。
+**MVP 实际采用**：`前端 Vite + Vanilla JS（SPA）+ 后端 FastAPI + 本地 JSON 文件存储`，无需数据库。
 
 ## 3. 前端规划
 
@@ -37,11 +37,12 @@
 
 ### 3.2 前端技术建议
 
-- `Next.js` 或 `React + Vite`
-- `TypeScript`
-- `Tailwind CSS` 或现有设计系统
-- 图谱渲染层优先复用 `MiroFish` 的图谱与动效代码
-- `SSE` 或 `WebSocket` 用于推演过程实时反馈
+- `Vite` 作为开发/构建工具
+- `Vanilla JavaScript`（ES Module）— 无框架依赖
+- 自定义 CSS 设计系统（基于 Stitch "Forensic Expert" 风格）
+- SVG 内联渲染路径树图谱
+- `SSE`（Server-Sent Events）用于推演过程实时反馈
+- **数据存储**：不使用数据库，所有数据以 JSON 文件形式存储在 `backend/data/projects/` 目录下
 
 ### 3.3 前端页面结构
 
@@ -294,18 +295,15 @@
 
 - `FastAPI`
 - `Pydantic`
-- `SQLAlchemy`
-- `PostgreSQL`
-- `Redis`
-- `Arq` / `Celery` 作为任务队列
-- `OpenAI SDK`
+- **本地 JSON 文件存储**（每个项目一个 JSON 文件，`backend/data/projects/{id}.json`）
+- `OpenAI SDK`（预留，LLM 推理调用）
 
 原因：
 
 - `FastAPI` 更适合异步任务和流式进度反馈
 - `Pydantic` 便于定义复杂的节点和状态模型
-- `PostgreSQL` 适合存结构化项目、路径、节点和 checkpoint
-- `Redis` 适合任务队列、缓存和实时进度
+- **无需安装数据库**，JSON 文件存储足以满足 MVP 阶段需求
+- 每个项目自包含一个 JSON 文件，便于调试、导出和分享，后续可迁移到 PostgreSQL
 
 ### 4.3 后端模块划分
 

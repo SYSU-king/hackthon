@@ -1,0 +1,11 @@
+.env
+venv/
+node_modules/
+__pycache__/
+*.pyc
+.pytest_cache/
+.DS_Store
+.idea/
+.vscode/
+参考项目/
+backend/storage/

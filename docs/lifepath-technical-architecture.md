@@ -23,10 +23,10 @@
 
 | 层级 | 职责 | 技术选型 |
 |------|------|----------|
-| 前端交互层 | 建模、图谱查看、路径浏览、节点修改 | Vue 3 + Vite + D3.js（与 MiroFish 对齐） |
-| 后端应用层 | API、项目管理、任务编排 | FastAPI + Pydantic + SQLAlchemy |
-| 推演引擎层 | 图谱、Agent、模拟、分支、记忆 | Python + OASIS（改造后） + Zep |
-| 存储层 | 用户档案、路径版本、图谱 | PostgreSQL + Zep Cloud（GraphRAG） |
+| 前端交互层 | 建模、图谱查看、路径浏览、节点修改 | Vite + Vanilla JS（SPA，hash 路由） |
+| 后端应用层 | API、项目管理、任务编排 | FastAPI + Pydantic |
+| 推演引擎层 | 图谱、Agent、模拟、分支、记忆 | Python + OASIS（改造后） + Zep（预留） |
+| 存储层 | 用户档案、路径版本、图谱 | **本地 JSON 文件存储**（每个项目一个 JSON 文件，`data/projects/{id}.json`） |
 
 ---
 
