@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>STRATEGY PROTOCOL | LIFEPATH-ENGINE</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Newsreader:ital,wght@0,700;0,800;1,700;1,800&amp;family=Space+Grotesk:wght@400;500;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-primary": "#ffdbd1",
+                    "tertiary": "#3a3c3c",
+                    "on-tertiary": "#e2e2e2",
+                    "error-container": "#ffdad6",
+                    "surface-variant": "#e2e2e2",
+                    "primary-fixed": "#b12d00",
+                    "outline": "#777777",
+                    "on-error-container": "#410002",
+                    "surface-bright": "#f9f9f9",
+                    "on-secondary-container": "#1b1b1b",
+                    "outline-variant": "#c6c6c6",
+                    "on-tertiary-fixed-variant": "#e2e2e2",
+                    "secondary-fixed": "#c6c6c6",
+                    "surface-container-high": "#e8e8e8",
+                    "on-secondary": "#ffffff",
+                    "on-error": "#ffffff",
+                    "on-tertiary-container": "#ffffff",
+                    "tertiary-container": "#737575",
+                    "secondary": "#5e5e5e",
+                    "inverse-surface": "#2f3131",
+                    "secondary-fixed-dim": "#ababab",
+                    "on-secondary-fixed-variant": "#3b3b3b",
+                    "on-primary-fixed-variant": "#ffdbd1",
+                    "surface-dim": "#dadada",
+                    "inverse-primary": "#ffb5a0",
+                    "background": "#f9f9f9",
+                    "surface-tint": "#b12d00",
+                    "on-secondary-fixed": "#1b1b1b",
+                    "primary-fixed-dim": "#872000",
+                    "surface-container-low": "#f3f3f3",
+                    "secondary-container": "#d4d4d4",
+                    "primary": "#000000",
+                    "error": "#ba1a1a",
+                    "on-primary-fixed": "#ffffff",
+                    "inverse-on-surface": "#f1f1f1",
+                    "surface-container": "#eeeeee",
+                    "tertiary-fixed-dim": "#454747",
+                    "primary-container": "#731a00",
+                    "surface-container-highest": "#e2e2e2",
+                    "on-background": "#1a1c1c",
+                    "on-primary-container": "#ffffff",
+                    "tertiary-fixed": "#5d5f5f",
+                    "on-surface-variant": "#474747",
+                    "on-tertiary-fixed": "#ffffff",
+                    "on-surface": "#1a1c1c",
+                    "surface-container-lowest": "#ffffff",
+                    "surface": "#f9f9f9"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0px",
+                    "lg": "0px",
+                    "xl": "0px",
+                    "full": "9999px"
+            },
+            "fontFamily": {
+                    "headline": ["Newsreader", "serif"],
+                    "body": ["Inter", "sans-serif"],
+                    "label": ["Space Grotesk", "monospace"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+            vertical-align: middle;
+        }
+        body { background-color: #f9f9f9; color: #1a1c1c; }
+        .ghost-border { border: 1px solid rgba(198, 198, 198, 0.2); }
+    </style>
+</head>
+<body class="font-body selection:bg-primary-fixed selection:text-white">
+<!-- TopNavBar -->
+<nav class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-14 bg-[#F9F9F9] dark:bg-[#000000] border-b border-[#E5E5E5] dark:border-[#222222]">
+<div class="font-serif font-black italic text-xl tracking-tighter text-[#000000] dark:text-[#F9F9F9]">
+            LIFEPATH-ENGINE [v1.0.4]
+        </div>
+<div class="flex gap-8">
+<a class="font-mono text-xs tracking-tight text-[#777777] dark:text-[#999999] hover:text-[#FF4500] transition-colors duration-150" href="#">SIMULATION</a>
+<a class="font-mono text-xs tracking-tight text-[#777777] dark:text-[#999999] hover:text-[#FF4500] transition-colors duration-150" href="#">AGENTS</a>
+<a class="font-mono text-xs tracking-tight text-[#FF4500] font-bold border-b-2 border-[#FF4500] pb-1" href="#">REPORTS</a>
+<a class="font-mono text-xs tracking-tight text-[#777777] dark:text-[#999999] hover:text-[#FF4500] transition-colors duration-150" href="#">SYSTEM</a>
+</div>
+<div class="flex items-center gap-4">
+<span class="font-mono text-[10px] uppercase text-[#777777]">LOGGED_IN: ADMIN-01</span>
+<span class="material-symbols-outlined text-primary text-xl" data-icon="search">search</span>
+</div>
+</nav>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-14 h-[calc(100vh-3.5rem)] w-64 z-40 flex flex-col py-4 bg-[#F3F3F3] dark:bg-[#111111] border-r border-[#E5E5E5] dark:border-[#222222]">
+<div class="px-6 mb-8">
+<div class="font-mono text-[10px] uppercase tracking-widest text-[#777777] mb-1">SYSTEM_ENTITY</div>
+<div class="font-serif font-bold text-lg">[ADMIN-01]</div>
+<div class="font-mono text-[10px] text-[#000000] dark:text-[#F9F9F9] flex items-center gap-2">
+<span class="w-1.5 h-1.5 bg-black"></span> STATUS: STABLE
+            </div>
+</div>
+<nav class="flex-1">
+<a class="text-[#777777] dark:text-[#999999] px-6 py-3 flex items-center gap-3 font-mono text-xs uppercase tracking-widest hover:bg-[#E5E5E5] transition-all duration-75" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="analytics">analytics</span> [DASHBOARD]
+            </a>
+<a class="text-[#777777] dark:text-[#999999] px-6 py-3 flex items-center gap-3 font-mono text-xs uppercase tracking-widest hover:bg-[#E5E5E5] transition-all duration-75" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="terminal">terminal</span> [AGENT_LOGS]
+            </a>
+<a class="bg-[#F9F9F9] dark:bg-[#000000] text-[#FF4500] border-l-4 border-[#FF4500] px-6 py-3 flex items-center gap-3 font-mono text-xs uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="biotech">biotech</span> [FORENSICS]
+            </a>
+<a class="text-[#777777] dark:text-[#999999] px-6 py-3 flex items-center gap-3 font-mono text-xs uppercase tracking-widest hover:bg-[#E5E5E5] transition-all duration-75" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="inventory_2">inventory_2</span> [ARCHIVE]
+            </a>
+<a class="text-[#777777] dark:text-[#999999] px-6 py-3 flex items-center gap-3 font-mono text-xs uppercase tracking-widest hover:bg-[#E5E5E5] transition-all duration-75" href="#">
+<span class="material-symbols-outlined text-lg" data-icon="settings">settings</span> [SETTINGS]
+            </a>
+</nav>
+<div class="px-6 border-t border-[#E5E5E5] dark:border-[#222222] pt-4">
+<a class="flex items-center gap-3 py-2 text-[#777777] font-mono text-[10px] hover:text-black" href="#">
+<span class="material-symbols-outlined text-base" data-icon="help">help</span> HELP_SUPPORT
+            </a>
+<a class="flex items-center gap-3 py-2 text-[#777777] font-mono text-[10px] hover:text-[#FF4500]" href="#">
+<span class="material-symbols-outlined text-base" data-icon="logout">logout</span> SESSION_TERMINATE
+            </a>
+</div>
+</aside>
+<!-- Main Canvas -->
+<main class="ml-64 mt-14 p-8 min-h-screen">
+<!-- Header Section -->
+<header class="mb-12 flex justify-between items-end">
+<div class="max-w-2xl">
+<div class="font-mono text-xs text-primary-fixed mb-2 tracking-[0.2em] font-bold">[SYSTEM_DIRECTIVE]</div>
+<h1 class="font-headline text-5xl font-extrabold tracking-tight text-primary">Strategy Protocol</h1>
+<p class="mt-4 text-secondary leading-relaxed max-w-xl">
+                    Engineered sequence for life-path optimization based on current environmental variables. All directives are calculated to maximize resource retention and operational longevity.
+                </p>
+</div>
+<div class="text-right">
+<div class="font-mono text-[10px] text-outline mb-1">HASH: 882-AF-0912</div>
+<div class="font-mono text-[10px] text-outline uppercase">TIMESTAMP: 2024.05.21_04:00_GMT</div>
+</div>
+</header>
+<!-- Strategy Grid -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-0 bg-surface-container border border-outline-variant/30">
+<!-- Column 1: Immediate Actions -->
+<section class="bg-surface-container-low p-6 border-r border-outline-variant/30">
+<div class="flex items-center justify-between mb-8">
+<h2 class="font-mono text-xs font-bold tracking-widest uppercase text-primary">Immediate Actions</h2>
+<span class="text-[10px] font-mono bg-primary text-white px-2 py-0.5">[PRIORITY_CRITICAL]</span>
+</div>
+<div class="space-y-6">
+<div class="bg-white p-5 ghost-border">
+<div class="flex items-start gap-4 mb-4">
+<span class="font-mono text-xl font-bold text-primary-fixed">01.</span>
+<div>
+<h3 class="font-bold text-sm uppercase tracking-tight">Liquid Asset Consolidation</h3>
+<div class="flex items-center gap-2 mt-1">
+<span class="w-1.5 h-1.5 bg-primary-fixed"></span>
+<span class="font-mono text-[10px] text-primary-fixed uppercase">Status: Action Required</span>
+</div>
+</div>
+</div>
+<p class="font-mono text-[11px] leading-relaxed text-secondary mb-6">
+                            Consolidate dispersed accounts into High-Yield Protocol primary vaults. Reduce external dependency on low-tier credit instruments.
+                        </p>
+<button class="w-full bg-primary-fixed text-white font-mono text-[10px] py-3 font-bold uppercase tracking-widest active:opacity-80 transition-opacity">
+                            Execute Protocol
+                        </button>
+</div>
+<div class="bg-white p-5 ghost-border">
+<div class="flex items-start gap-4 mb-4">
+<span class="font-mono text-xl font-bold text-primary-fixed">02.</span>
+<div>
+<h3 class="font-bold text-sm uppercase tracking-tight">Network Audit</h3>
+<div class="flex items-center gap-2 mt-1">
+<span class="w-1.5 h-1.5 bg-black"></span>
+<span class="font-mono text-[10px] text-black uppercase">Status: Scheduled</span>
+</div>
+</div>
+</div>
+<p class="font-mono text-[11px] leading-relaxed text-secondary">
+                            Identify and prune zero-value connections. Reinforce Tier-1 professional nodes through direct engagement directives.
+                        </p>
+</div>
+</div>
+</section>
+<!-- Column 2: 1-3 Month Preparation -->
+<section class="bg-surface p-6 border-r border-outline-variant/30">
+<div class="flex items-center justify-between mb-8">
+<h2 class="font-mono text-xs font-bold tracking-widest uppercase text-primary">Preparation (Q3)</h2>
+<span class="text-[10px] font-mono border border-outline px-2 py-0.5">[PHASE_TRANSITION]</span>
+</div>
+<div class="space-y-6">
+<div class="bg-white p-5 ghost-border">
+<div class="flex items-start gap-4 mb-4">
+<span class="font-mono text-xl font-bold text-black">03.</span>
+<div>
+<h3 class="font-bold text-sm uppercase tracking-tight">Skill Matrix Upgrade</h3>
+<div class="flex items-center gap-2 mt-1">
+<span class="w-1.5 h-1.5 bg-black"></span>
+<span class="font-mono text-[10px] text-black uppercase">Status: Pending Verification</span>
+</div>
+</div>
+</div>
+<div class="relative h-48 w-full mb-4">
+<img alt="Technical schematic showing skill integration pathways" class="w-full h-full object-cover filter grayscale" data-alt="Abstract technical interface with blue data points and circuit board patterns in a dark forensic laboratory aesthetic" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDGr8m1WX6-oa2SoBzrr7NmfqZV0uKZRIYELzmb6KrKgA4PbhCDfCJc_iAzoEo0WcZW9EjOZMyb8-_sT0lMMWCwRiBquHpN5nW-2mNPokTACIDAznnu2mxd8cZib9EXiUfCSyruVZX1MPo3HJ9TxT1S1Mp5naPPY4rqBqlGVRDIlogDfzaXDizEGeQkclMEsA44tUmmDWDuWCLf0acrnIA4a6-2o14JjPCrZDmj6Ws8V_zcQvHAbS4-cZZel6y7NTg6YfLDcRN-eQk"/>
+<div class="absolute inset-0 bg-black/10"></div>
+</div>
+<p class="font-mono text-[11px] leading-relaxed text-secondary mb-4">
+                            Initialization of Advanced Neural-Modeling certifications. Objective: 40% increase in market-value index for technical advisory roles.
+                        </p>
+<div class="flex gap-2">
+<span class="font-mono text-[9px] bg-surface-container px-2 py-1 uppercase text-outline">Certification</span>
+<span class="font-mono text-[9px] bg-surface-container px-2 py-1 uppercase text-outline">Neural_Ops</span>
+</div>
+</div>
+<div class="bg-white p-5 ghost-border">
+<div class="flex items-start gap-4 mb-4">
+<span class="font-mono text-xl font-bold text-black">04.</span>
+<div>
+<h3 class="font-bold text-sm uppercase tracking-tight">Geographic Relocation Audit</h3>
+<div class="flex items-center gap-2 mt-1">
+<span class="w-1.5 h-1.5 bg-[#E5E5E5]"></span>
+<span class="font-mono text-[10px] text-outline uppercase">Status: Data Gathering</span>
+</div>
+</div>
+</div>
+<p class="font-mono text-[11px] leading-relaxed text-secondary">
+                            Evaluate tax-favorable jurisdictions versus access to primary infrastructure hubs. Final report due EOM.
+                        </p>
+</div>
+</div>
+</section>
+<!-- Column 3: Long-term Resource Acquisition -->
+<section class="bg-surface-container-low p-6">
+<div class="flex items-center justify-between mb-8">
+<h2 class="font-mono text-xs font-bold tracking-widest uppercase text-primary">Resource Acquisition</h2>
+<span class="text-[10px] font-mono bg-[#E5E5E5] text-black px-2 py-0.5">[STRATEGIC_RESERVE]</span>
+</div>
+<div class="space-y-6">
+<div class="bg-white p-5 ghost-border">
+<div class="flex items-start gap-4 mb-4">
+<span class="font-mono text-xl font-bold text-black">05.</span>
+<div>
+<h3 class="font-bold text-sm uppercase tracking-tight">Institutional Leverage</h3>
+<div class="flex items-center gap-2 mt-1">
+<span class="w-1.5 h-1.5 bg-[#E5E5E5]"></span>
+<span class="font-mono text-[10px] text-outline uppercase">Status: Long-Term Target</span>
+</div>
+</div>
+</div>
+<p class="font-mono text-[11px] leading-relaxed text-secondary mb-6">
+                            Acquisition of equity stakes in foundational infrastructure startups. Focus on energy, computation, and biotech longevity.
+                        </p>
+<div class="border-l-2 border-primary-fixed pl-4 py-1">
+<div class="font-mono text-[10px] text-primary-fixed font-bold mb-1">ANALYST NOTE:</div>
+<div class="font-mono text-[10px] italic leading-tight text-secondary">"Hedge against inflationary currency collapse. Focus on hard-asset proxies."</div>
+</div>
+</div>
+<div class="bg-white p-5 ghost-border">
+<div class="flex items-start gap-4 mb-4">
+<span class="font-mono text-xl font-bold text-black">06.</span>
+<div>
+<h3 class="font-bold text-sm uppercase tracking-tight">Legacy Encryption Protocol</h3>
+<div class="flex items-center gap-2 mt-1">
+<span class="w-1.5 h-1.5 bg-black"></span>
+<span class="font-mono text-[10px] text-black uppercase">Status: Operational</span>
+</div>
+</div>
+</div>
+<p class="font-mono text-[11px] leading-relaxed text-secondary mb-4">
+                            Hardened cold-storage of biological and intellectual data points. Redundant nodes activated across safe jurisdictions.
+                        </p>
+<button class="w-full border border-outline text-primary font-mono text-[10px] py-3 font-bold uppercase tracking-widest active:bg-surface-container transition-colors">
+                            View Nodes
+                        </button>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer Metadata -->
+<footer class="mt-12 pt-6 border-t border-outline-variant/30 flex flex-col md:flex-row justify-between items-start gap-6">
+<div class="max-w-lg">
+<div class="font-mono text-[10px] text-outline uppercase tracking-widest mb-2">Technical Specification</div>
+<p class="font-mono text-[10px] leading-tight text-secondary">
+                    All suggestions are generated via the <span class="text-primary font-bold">LIFEPATH-ENGINE</span> core. Strategy Protocol output 0912-Alpha. User acknowledgement is required for all primary executions. Error tolerance set to 0.002%.
+                </p>
+</div>
+<div class="font-mono text-[10px] flex gap-8">
+<div>
+<div class="text-outline uppercase mb-1">SYSTEM_UPTIME</div>
+<div class="text-primary font-bold">99.982%</div>
+</div>
+<div>
+<div class="text-outline uppercase mb-1">ENGINE_LOAD</div>
+<div class="text-primary font-bold">0.12ms LATENCY</div>
+</div>
+<div>
+<div class="text-outline uppercase mb-1">AUTH_STRING</div>
+<div class="text-primary font-bold">X88-21-PRTCL</div>
+</div>
+</div>
+</footer>
+</main>
+<!-- Floating Action Element -->
+<div class="fixed bottom-8 right-8 z-50">
+<button class="bg-primary text-white p-4 shadow-xl active:scale-95 transition-all flex items-center gap-3">
+<span class="font-mono text-xs font-bold tracking-widest uppercase">Emergency Termination</span>
+<span class="material-symbols-outlined text-xl" data-icon="terminal">terminal</span>
+</button>
+</div>
+</body></html>

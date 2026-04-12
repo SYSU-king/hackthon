@@ -1,0 +1,2363 @@
+{
+  "generated_at": "2026-04-11T12:33:38.386920+00:00",
+  "profile": {
+    "name": "林",
+    "stage": "本科高年级",
+    "location": "上海",
+    "concern": "我应该优先冲刺读研，还是直接进入行业？",
+    "objective": "在选择权、收入爬坡和个人可持续性之间做权衡。",
+    "weights": {
+      "academics": 82,
+      "career": 76,
+      "city": 68,
+      "family": 54,
+      "wellbeing": 61,
+      "risk": 47
+    },
+    "risk_tolerance": 47,
+    "planning_horizon": "3年",
+    "initial_parameters": {
+      "major": "计算机科学",
+      "planning_window": "3-5年",
+      "core_tension": "读研与就业拉扯",
+      "city_preference": [
+        "上海",
+        "深圳"
+      ]
+    }
+  },
+  "graph_nodes": [
+    {
+      "id": "self",
+      "label": "当前自我",
+      "type": "subject",
+      "description": "决策主体，需要在读研上行空间、就业能力和可持续性之间取得平衡。",
+      "score": 84,
+      "group": "core",
+      "position": {
+        "x": 0.1,
+        "y": 0.42
+      },
+      "uuid": "node-self",
+      "name": "林",
+      "category": "subject",
+      "subtype": null,
+      "summary": "主角同时保留了读研和直接就业两条分支。",
+      "labels": [
+        "Self",
+        "DecisionOwner"
+      ],
+      "tags": [
+        "core",
+        "life-loop"
+      ],
+      "metrics": {
+        "optionality": 79,
+        "goal_alignment": 73
+      },
+      "details": {
+        "stage": "本科高年级",
+        "city": "上海"
+      },
+      "attributes": {
+        "risk_tolerance": 47,
+        "decision_style": "hedged"
+      },
+      "branch_ids": [
+        "main-track"
+      ],
+      "status": "active",
+      "phase": "intake",
+      "time_label": "第0学期",
+      "created_at": "2026-04-11T12:33:36.905773+00:00",
+      "updated_at": "2026-04-11T12:33:36.905773+00:00"
+    },
+    {
+      "id": "mentor",
+      "label": "导师代理",
+      "type": "relationship",
+      "description": "导师支持度较高，但前提是能持续看到可验证的产出质量。",
+      "score": 78,
+      "group": "support",
+      "position": {
+        "x": 0.28,
+        "y": 0.18
+      },
+      "uuid": "node-mentor",
+      "name": "实验室导师",
+      "category": "subject",
+      "subtype": null,
+      "summary": "推荐信质量是优先读研分支的核心解锁条件。",
+      "labels": [
+        "Mentor",
+        "RelationshipAgent"
+      ],
+      "tags": [
+        "support"
+      ],
+      "metrics": {
+        "education": 81,
+        "signal_quality": 76
+      },
+      "details": {
+        "support_mode": "推荐信",
+        "confidence_window": "下学期"
+      },
+      "attributes": {
+        "response_latency": "中等"
+      },
+      "branch_ids": [
+        "main-track",
+        "research-track"
+      ],
+      "status": "active",
+      "phase": "expansion",
+      "time_label": "第1学期",
+      "created_at": "2026-04-11T12:33:36.905773+00:00",
+      "updated_at": "2026-04-11T12:33:36.905773+00:00"
+    },
+    {
+      "id": "family",
+      "label": "家庭约束",
+      "type": "relationship",
+      "description": "家庭可以支持进取，但不确定性上升时压力也会同步放大。",
+      "score": 61,
+      "group": "constraint",
+      "position": {
+        "x": 0.28,
+        "y": 0.72
+      },
+      "uuid": "node-family",
+      "name": "家庭系统",
+      "category": "subject",
+      "subtype": null,
+      "summary": "现金流是否清晰，直接影响分支稳定性。",
+      "labels": [
+        "Family",
+        "Constraint"
+      ],
+      "tags": [
+        "pressure"
+      ],
+      "metrics": {
+        "family_support": 63,
+        "finance": 46
+      },
+      "details": {
+        "preferred_outcome": "进展可见"
+      },
+      "attributes": {
+        "support_floor": "中等"
+      },
+      "branch_ids": [
+        "main-track",
+        "stability-track"
+      ],
+      "status": "active",
+      "phase": "expansion",
+      "time_label": "第1学期",
+      "created_at": "2026-04-11T12:33:36.905773+00:00",
+      "updated_at": "2026-04-11T12:33:36.905773+00:00"
+    },
+    {
+      "id": "employer",
+      "label": "雇主市场",
+      "type": "institution",
+      "description": "高密度就业市场意味着更强的学习上行，也意味着更快的竞争节奏。",
+      "score": 74,
+      "group": "market",
+      "position": {
+        "x": 0.52,
+        "y": 0.2
+      },
+      "uuid": "node-employer",
+      "name": "AI 产品市场",
+      "category": "institution",
+      "subtype": null,
+      "summary": "高线城市岗位更奖励交付速度，而不只是学历深度。",
+      "labels": [
+        "Employer",
+        "InstitutionAgent"
+      ],
+      "tags": [
+        "market"
+      ],
+      "metrics": {
+        "career": 72,
+        "social_capital": 65
+      },
+      "details": {
+        "hot_roles": [
+          "AI 产品",
+          "数据",
+          "全栈"
+        ]
+      },
+      "attributes": {
+        "competition": "高"
+      },
+      "branch_ids": [
+        "hybrid-track",
+        "stability-track"
+      ],
+      "status": "active",
+      "phase": "expansion",
+      "time_label": "第1学期",
+      "created_at": "2026-04-11T12:33:36.905773+00:00",
+      "updated_at": "2026-04-11T12:33:36.905773+00:00"
+    },
+    {
+      "id": "city",
+      "label": "城市梯度",
+      "type": "environment",
+      "description": "城市会同时放大机会密度与生活成本压力。",
+      "score": 68,
+      "group": "market",
+      "position": {
+        "x": 0.56,
+        "y": 0.74
+      },
+      "uuid": "node-city",
+      "name": "上海机会场",
+      "category": "institution",
+      "subtype": null,
+      "summary": "在这座城市里，机会与消耗总是同时上升。",
+      "labels": [
+        "City",
+        "Environment"
+      ],
+      "tags": [
+        "cost",
+        "opportunity"
+      ],
+      "metrics": {
+        "career": 75,
+        "finance": 43
+      },
+      "details": {
+        "cities": [
+          "上海",
+          "深圳"
+        ]
+      },
+      "attributes": {
+        "burn_rate": "高"
+      },
+      "branch_ids": [
+        "hybrid-track"
+      ],
+      "status": "active",
+      "phase": "expansion",
+      "time_label": "第1学期",
+      "created_at": "2026-04-11T12:33:36.905773+00:00",
+      "updated_at": "2026-04-11T12:33:36.905773+00:00"
+    },
+    {
+      "id": "education-state",
+      "label": "教育状态",
+      "type": "state",
+      "description": "跟踪科研准备度、申请就绪度与学术信号强度。",
+      "score": 78,
+      "group": "state",
+      "position": {
+        "x": 0.46,
+        "y": 0.34
+      },
+      "uuid": "node-education-state",
+      "name": "教育维度",
+      "category": "state",
+      "subtype": null,
+      "summary": "教育维度足够强，因此读研分支仍值得保留。",
+      "labels": [
+        "State",
+        "EducationState"
+      ],
+      "tags": [],
+      "metrics": {
+        "education": 78
+      },
+      "details": {
+        "axis": "education"
+      },
+      "attributes": {
+        "trend": "上升"
+      },
+      "branch_ids": [
+        "main-track",
+        "research-track"
+      ],
+      "status": "active",
+      "phase": "state_update",
+      "time_label": "第1学期",
+      "created_at": "2026-04-11T12:33:36.905773+00:00",
+      "updated_at": "2026-04-11T12:33:36.972162+00:00"
+    },
+    {
+      "id": "finance-state",
+      "label": "财务状态",
+      "type": "state",
+      "description": "衡量资金跑道、成本压力，以及短期收入的紧迫度。",
+      "score": 44,
+      "group": "state",
+      "position": {
+        "x": 0.48,
+        "y": 0.58
+      },
+      "uuid": "node-finance-state",
+      "name": "现金跑道",
+      "category": "state",
+      "subtype": null,
+      "summary": "财务是当前制约读研分支的首要拖累项。",
+      "labels": [
+        "State",
+        "FinanceState"
+      ],
+      "tags": [],
+      "metrics": {
+        "finance": 44
+      },
+      "details": {
+        "axis": "finance"
+      },
+      "attributes": {
+        "trend": "脆弱"
+      },
+      "branch_ids": [
+        "main-track",
+        "stability-track",
+        "hybrid-track"
+      ],
+      "status": "active",
+      "phase": "state_update",
+      "time_label": "第1学期",
+      "created_at": "2026-04-11T12:33:36.905773+00:00",
+      "updated_at": "2026-04-11T12:33:36.972162+00:00"
+    },
+    {
+      "id": "mental-state",
+      "label": "心理状态",
+      "type": "state",
+      "description": "跟踪压力累积、恢复能力与可持续性风险。",
+      "score": 56,
+      "group": "state",
+      "position": {
+        "x": 0.48,
+        "y": 0.82
+      },
+      "uuid": "node-mental-state",
+      "name": "心理负荷",
+      "category": "state",
+      "subtype": null,
+      "summary": "虽然选择权被保留了下来，但注意力的持有成本已经真实出现。",
+      "labels": [
+        "State",
+        "MentalState"
+      ],
+      "tags": [],
+      "metrics": {
+        "mental": 56,
+        "health": 67
+      },
+      "details": {
+        "axis": "mental"
+      },
+      "attributes": {
+        "trend": "关注"
+      },
+      "branch_ids": [
+        "main-track"
+      ],
+      "status": "active",
+      "phase": "state_update",
+      "time_label": "第1学期",
+      "created_at": "2026-04-11T12:33:36.905773+00:00",
+      "updated_at": "2026-04-11T12:33:36.972162+00:00"
+    },
+    {
+      "id": "decision-core",
+      "label": "核心分叉",
+      "type": "decision",
+      "description": "调度器保留三条候选前沿，而不是过早收敛到单一答案。",
+      "score": 91,
+      "group": "core",
+      "position": {
+        "x": 0.72,
+        "y": 0.44
+      },
+      "uuid": "node-decision-core",
+      "name": "读研 / 就业分叉",
+      "category": "decision",
+      "subtype": null,
+      "summary": "这个节点支撑分支选择、反事实编辑与后续周期扩展。",
+      "labels": [
+        "Decision",
+        "BranchPoint"
+      ],
+      "tags": [
+        "closed-loop"
+      ],
+      "metrics": {
+        "branch_count": 3
+      },
+      "details": {
+        "decision_window": "未来 9 个月"
+      },
+      "attributes": {
+        "pruning_strategy": "保留前三"
+      },
+      "branch_ids": [
+        "main-track",
+        "research-track",
+        "hybrid-track",
+        "stability-track"
+      ],
+      "status": "active",
+      "phase": "branching",
+      "time_label": "第1学期",
+      "created_at": "2026-04-11T12:33:36.905773+00:00",
+      "updated_at": "2026-04-11T12:33:36.905773+00:00"
+    },
+    {
+      "id": "future-self",
+      "label": "未来自我",
+      "type": "goal",
+      "description": "代表那个重视复利成长、同时希望将遗憾控制在可接受范围内的未来自我。",
+      "score": 75,
+      "group": "goal",
+      "position": {
+        "x": 0.92,
+        "y": 0.44
+      },
+      "uuid": "node-future-self",
+      "name": "三年后的自己",
+      "category": "goal",
+      "subtype": null,
+      "summary": "这张图会把每条分支重新连回长期意义，而不只看短期效用。",
+      "labels": [
+        "Goal",
+        "FutureSelf"
+      ],
+      "tags": [
+        "meaning"
+      ],
+      "metrics": {
+        "goal_alignment": 75,
+        "optionality": 85
+      },
+      "details": {
+        "horizon": "3年"
+      },
+      "attributes": {
+        "priority": "复利增长"
+      },
+      "branch_ids": [
+        "main-track",
+        "research-track",
+        "hybrid-track",
+        "stability-track"
+      ],
+      "status": "active",
+      "phase": "advice",
+      "time_label": "第1学期",
+      "created_at": "2026-04-11T12:33:36.905773+00:00",
+      "updated_at": "2026-04-11T12:33:36.972162+00:00"
+    },
+    {
+      "id": "cycle-2-reflection",
+      "label": "第2轮反思",
+      "type": "reflection",
+      "description": "优先读研 正在继续推进，当前重点落在optionality，建议保持小步校准。",
+      "score": 100,
+      "group": "reflection",
+      "position": {
+        "x": 0.82,
+        "y": 0.4
+      },
+      "uuid": "node-cycle-2-reflection",
+      "name": "调度反思 2",
+      "category": "event",
+      "subtype": null,
+      "summary": "周期级反思节点会让前端中的图谱保持可解释。",
+      "labels": [
+        "反思",
+        "调度注释"
+      ],
+      "tags": [
+        "cycle",
+        "explainability"
+      ],
+      "metrics": {
+        "cycle": 2
+      },
+      "details": {
+        "selected_path": "research-first"
+      },
+      "attributes": {
+        "llm_mode": "fallback"
+      },
+      "branch_ids": [
+        "research-track"
+      ],
+      "status": "active",
+      "phase": "reflection",
+      "time_label": "第2学期",
+      "created_at": "2026-04-11T12:33:36.972162+00:00",
+      "updated_at": "2026-04-11T12:33:36.972162+00:00"
+    }
+  ],
+  "graph_edges": [
+    {
+      "id": "edge-self-mentor-support",
+      "source": "self",
+      "target": "mentor",
+      "relation": "activates",
+      "strength": 4,
+      "uuid": "edge-self-mentor-support",
+      "name": "asks_for_support",
+      "source_name": "林",
+      "target_name": "实验室导师",
+      "fact_type": "relationship",
+      "fact": "只有先获得明确的导师承诺，读研分支才会真正成立。",
+      "weight": 0.81,
+      "polarity": "positive",
+      "labels": [
+        "support",
+        "signal"
+      ],
+      "details": {
+        "why": "推荐信质量会直接影响读研结果"
+      },
+      "attributes": {
+        "interaction_mode": "直接沟通"
+      },
+      "episodes": [],
+      "branch_ids": [
+        "research-track"
+      ],
+      "multi_edge_key": "self::mentor",
+      "status": "active",
+      "allows_self_loop": true,
+      "created_at": "2026-04-11T12:33:36.905773+00:00",
+      "updated_at": "2026-04-11T12:33:36.905773+00:00"
+    },
+    {
+      "id": "edge-self-mentor-deadline",
+      "source": "self",
+      "target": "mentor",
+      "relation": "depends_on",
+      "strength": 3,
+      "uuid": "edge-self-mentor-deadline",
+      "name": "faces_deadline",
+      "source_name": "林",
+      "target_name": "实验室导师",
+      "fact_type": "constraint",
+      "fact": "如果可见产出错过下学期窗口，导师支持就会逐步衰减。",
+      "weight": 0.67,
+      "polarity": "mixed",
+      "labels": [
+        "deadline",
+        "multi-edge"
+      ],
+      "details": {
+        "window": "一个学期"
+      },
+      "attributes": {
+        "interaction_mode": "时机约束"
+      },
+      "episodes": [],
+      "branch_ids": [
+        "research-track"
+      ],
+      "multi_edge_key": "self::mentor",
+      "status": "active",
+      "allows_self_loop": true,
+      "created_at": "2026-04-11T12:33:36.905773+00:00",
+      "updated_at": "2026-04-11T12:33:36.905773+00:00"
+    },
+    {
+      "id": "edge-family-decision",
+      "source": "family",
+      "target": "decision-core",
+      "relation": "constrains",
+      "strength": 3,
+      "uuid": "edge-family-decision",
+      "name": "pressures_choice",
+      "source_name": "家庭系统",
+      "target_name": "读研 / 就业分叉",
+      "fact_type": "causal",
+      "fact": "当短期确定性过低时，家庭支持会明显收缩。",
+      "weight": 0.59,
+      "polarity": "negative",
+      "labels": [
+        "constraint"
+      ],
+      "details": {
+        "focus": "现金流"
+      },
+      "attributes": {},
+      "episodes": [],
+      "branch_ids": [
+        "main-track",
+        "stability-track"
+      ],
+      "multi_edge_key": null,
+      "status": "active",
+      "allows_self_loop": true,
+      "created_at": "2026-04-11T12:33:36.905773+00:00",
+      "updated_at": "2026-04-11T12:33:36.905773+00:00"
+    },
+    {
+      "id": "edge-mentor-decision",
+      "source": "mentor",
+      "target": "decision-core",
+      "relation": "enables",
+      "strength": 5,
+      "uuid": "edge-mentor-decision",
+      "name": "endorses_research",
+      "source_name": "实验室导师",
+      "target_name": "读研 / 就业分叉",
+      "fact_type": "causal",
+      "fact": "导师推荐信质量会直接解锁读研分支。",
+      "weight": 0.88,
+      "polarity": "positive",
+      "labels": [
+        "recommendation"
+      ],
+      "details": {
+        "branch": "research-first"
+      },
+      "attributes": {},
+      "episodes": [],
+      "branch_ids": [
+        "research-track"
+      ],
+      "multi_edge_key": null,
+      "status": "active",
+      "allows_self_loop": true,
+      "created_at": "2026-04-11T12:33:36.905773+00:00",
+      "updated_at": "2026-04-11T12:33:36.905773+00:00"
+    },
+    {
+      "id": "edge-employer-decision",
+      "source": "employer",
+      "target": "decision-core",
+      "relation": "pulls",
+      "strength": 4,
+      "uuid": "edge-employer-decision",
+      "name": "pulls_to_market",
+      "source_name": "AI 产品市场",
+      "target_name": "读研 / 就业分叉",
+      "fact_type": "causal",
+      "fact": "高密度就业市场会奖励即时执行能力和快速交付速度。",
+      "weight": 0.76,
+      "polarity": "positive",
+      "labels": [
+        "opportunity"
+      ],
+      "details": {
+        "branch": "hybrid-city"
+      },
+      "attributes": {},
+      "episodes": [],
+      "branch_ids": [
+        "hybrid-track",
+        "stability-track"
+      ],
+      "multi_edge_key": null,
+      "status": "active",
+      "allows_self_loop": true,
+      "created_at": "2026-04-11T12:33:36.905773+00:00",
+      "updated_at": "2026-04-11T12:33:36.905773+00:00"
+    },
+    {
+      "id": "edge-city-employer",
+      "source": "city",
+      "target": "employer",
+      "relation": "amplifies",
+      "strength": 3,
+      "uuid": "edge-city-employer",
+      "name": "amplifies_density",
+      "source_name": "上海机会场",
+      "target_name": "AI 产品市场",
+      "fact_type": "environment",
+      "fact": "城市密度既会提高机会可达性，也会同步抬升竞争压力。",
+      "weight": 0.63,
+      "polarity": "mixed",
+      "labels": [
+        "city",
+        "market"
+      ],
+      "details": {
+        "positive": "人脉网络",
+        "negative": "消耗速度"
+      },
+      "attributes": {},
+      "episodes": [],
+      "branch_ids": [
+        "hybrid-track"
+      ],
+      "multi_edge_key": null,
+      "status": "active",
+      "allows_self_loop": true,
+      "created_at": "2026-04-11T12:33:36.905773+00:00",
+      "updated_at": "2026-04-11T12:33:36.905773+00:00"
+    },
+    {
+      "id": "edge-finance-self-loop",
+      "source": "finance-state",
+      "target": "finance-state",
+      "relation": "feeds_back",
+      "strength": 4,
+      "uuid": "edge-finance-self-loop",
+      "name": "runway_feedback_loop",
+      "source_name": "现金跑道",
+      "target_name": "现金跑道",
+      "fact_type": "state_feedback",
+      "fact": "城市消耗越高，资金跑道越短，也就越需要尽快获得现金流。",
+      "weight": 0.79,
+      "polarity": "negative",
+      "labels": [
+        "self-loop",
+        "feedback"
+      ],
+      "details": {
+        "axis": "finance"
+      },
+      "attributes": {
+        "loop_type": "reinforcing"
+      },
+      "episodes": [
+        {
+          "id": "episode-finance-bootstrap",
+          "title": "已种下跑道风险",
+          "summary": "默认世界模型中已经包含财务反馈回路。",
+          "timestamp": "2026-04-11T12:33:36.905773+00:00",
+          "impact": "短期确定性承压",
+          "details": {
+            "cycle": 1
+          }
+        },
+        {
+          "id": "episode-finance-2",
+          "title": "第 2 轮财务反馈",
+          "summary": "优先读研 让财务压力在循环推进中持续保持可见。",
+          "timestamp": "2026-04-11T12:33:36.972162+00:00",
+          "impact": "财务 44",
+          "details": {
+            "cycle": 2,
+            "branch": "research-first"
+          }
+        }
+      ],
+      "branch_ids": [
+        "hybrid-track",
+        "stability-track"
+      ],
+      "multi_edge_key": null,
+      "status": "active",
+      "allows_self_loop": true,
+      "created_at": "2026-04-11T12:33:36.905773+00:00",
+      "updated_at": "2026-04-11T12:33:36.972162+00:00"
+    },
+    {
+      "id": "edge-mental-self-loop",
+      "source": "mental-state",
+      "target": "mental-state",
+      "relation": "feeds_back",
+      "strength": 3,
+      "uuid": "edge-mental-self-loop",
+      "name": "stress_feedback_loop",
+      "source_name": "心理负荷",
+      "target_name": "心理负荷",
+      "fact_type": "state_feedback",
+      "fact": "申请压力或城市压力都会递归式地压缩恢复带宽。",
+      "weight": 0.66,
+      "polarity": "negative",
+      "labels": [
+        "self-loop",
+        "recovery"
+      ],
+      "details": {
+        "axis": "mental"
+      },
+      "attributes": {
+        "loop_type": "reinforcing"
+      },
+      "episodes": [
+        {
+          "id": "episode-mental-bootstrap",
+          "title": "已确认压力回路",
+          "summary": "系统把身心状态作为有状态的分支约束来跟踪，而不是一条备注。",
+          "timestamp": "2026-04-11T12:33:36.905773+00:00",
+          "impact": "关注可持续性",
+          "details": {
+            "cycle": 1
+          }
+        },
+        {
+          "id": "episode-mental-2",
+          "title": "第 2 轮心理反馈",
+          "summary": "调度器把可持续性压力记录为一等状态迁移，而不是附属注释。",
+          "timestamp": "2026-04-11T12:33:36.972162+00:00",
+          "impact": "心理 56",
+          "details": {
+            "cycle": 2,
+            "branch": "research-first"
+          }
+        }
+      ],
+      "branch_ids": [
+        "main-track",
+        "research-track",
+        "hybrid-track"
+      ],
+      "multi_edge_key": null,
+      "status": "active",
+      "allows_self_loop": true,
+      "created_at": "2026-04-11T12:33:36.905773+00:00",
+      "updated_at": "2026-04-11T12:33:36.972162+00:00"
+    },
+    {
+      "id": "edge-decision-future",
+      "source": "decision-core",
+      "target": "future-self",
+      "relation": "branches_into",
+      "strength": 5,
+      "uuid": "edge-decision-future",
+      "name": "branches_into",
+      "source_name": "读研 / 就业分叉",
+      "target_name": "三年后的自己",
+      "fact_type": "causal",
+      "fact": "每条被保留的分支，都会在选择权、稳定性与长期意义三个维度上重新评估。",
+      "weight": 0.9,
+      "polarity": "positive",
+      "labels": [
+        "branching"
+      ],
+      "details": {
+        "retained_branches": 3
+      },
+      "attributes": {},
+      "episodes": [],
+      "branch_ids": [
+        "research-track",
+        "hybrid-track",
+        "stability-track"
+      ],
+      "multi_edge_key": null,
+      "status": "active",
+      "allows_self_loop": true,
+      "created_at": "2026-04-11T12:33:36.905773+00:00",
+      "updated_at": "2026-04-11T12:33:36.905773+00:00"
+    },
+    {
+      "id": "edge-decision-reflection-2",
+      "source": "decision-core",
+      "target": "cycle-2-reflection",
+      "relation": "interprets",
+      "strength": 4,
+      "uuid": "edge-decision-reflection-2",
+      "name": "produces_reflection",
+      "source_name": "读研 / 就业分叉",
+      "target_name": "调度反思 2",
+      "fact_type": "director_note",
+      "fact": "优先读研 正在继续推进，当前重点落在optionality，建议保持小步校准。",
+      "weight": 0.7,
+      "polarity": "mixed",
+      "labels": [
+        "explainability"
+      ],
+      "details": {
+        "cycle": 2
+      },
+      "attributes": {},
+      "episodes": [],
+      "branch_ids": [
+        "research-track"
+      ],
+      "multi_edge_key": null,
+      "status": "active",
+      "allows_self_loop": true,
+      "created_at": "2026-04-11T12:33:36.972162+00:00",
+      "updated_at": "2026-04-11T12:33:36.972162+00:00"
+    },
+    {
+      "id": "edge-counterfactual-research-first-rf-1-mentor_signal",
+      "source": "decision-core",
+      "target": "mentor",
+      "relation": "counterfactual",
+      "strength": 4,
+      "uuid": "edge-counterfactual-research-first-rf-1-mentor_signal",
+      "name": "counterfactual_edit",
+      "source_name": "读研 / 就业分叉",
+      "target_name": "导师承诺出具推荐",
+      "fact_type": "user_edit",
+      "fact": "导师信号 调整为 强",
+      "weight": 0.72,
+      "polarity": "mixed",
+      "labels": [
+        "counterfactual",
+        "multi-edge"
+      ],
+      "details": {
+        "note": "优先读研 已按导师信号调整为强，后续判断会同步重估风险与收益。",
+        "node_id": "rf-1",
+        "field_key": "mentor_signal",
+        "field_label": "导师信号"
+      },
+      "attributes": {},
+      "episodes": [],
+      "branch_ids": [
+        "research-track"
+      ],
+      "multi_edge_key": "decision-core::mentor",
+      "status": "active",
+      "allows_self_loop": true,
+      "created_at": "2026-04-11T12:33:38.386920+00:00",
+      "updated_at": "2026-04-11T12:33:38.386920+00:00"
+    }
+  ],
+  "agents": [
+    {
+      "id": "agent-self",
+      "name": "自我代理",
+      "role": "决策主体",
+      "stance": "优先保留选择权，但要把下行风险控制在可承受范围内。",
+      "influence": 92,
+      "focus": [
+        "技能复利",
+        "信号质量",
+        "执行耐力"
+      ],
+      "kind": "self",
+      "goals": [
+        "保留选择权",
+        "避免透支",
+        "保住长期上行"
+      ],
+      "constraints": [
+        "注意力有限"
+      ],
+      "memory_scope": [
+        "fact",
+        "state",
+        "tendency"
+      ],
+      "details": {
+        "decision_style": "dual-track"
+      }
+    },
+    {
+      "id": "agent-mentor",
+      "name": "关系代理",
+      "role": "学术推荐人",
+      "stance": "只要产出质量持续可见，就会支持科研路线继续增长。",
+      "influence": 73,
+      "focus": [
+        "科研产出",
+        "推荐信",
+        "实验室去向"
+      ],
+      "kind": "relationship",
+      "goals": [
+        "保护信号质量"
+      ],
+      "constraints": [
+        "推荐资源有限"
+      ],
+      "memory_scope": [
+        "fact",
+        "tendency"
+      ],
+      "details": {
+        "relationship": "mentor"
+      }
+    },
+    {
+      "id": "agent-family",
+      "name": "家庭代理",
+      "role": "约束放大器",
+      "stance": "接受进取，但会抵触过长的不确定周期。",
+      "influence": 59,
+      "focus": [
+        "现金流",
+        "地理距离",
+        "稳定性"
+      ],
+      "kind": "relationship",
+      "goals": [
+        "进展可见",
+        "下行可控"
+      ],
+      "constraints": [
+        "财务波动"
+      ],
+      "memory_scope": [
+        "state"
+      ],
+      "details": {
+        "relationship": "family"
+      }
+    },
+    {
+      "id": "agent-market",
+      "name": "机构代理",
+      "role": "机会压力源",
+      "stance": "更奖励快速入场和务实的交付速度。",
+      "influence": 77,
+      "focus": [
+        "作品集",
+        "实习转正",
+        "城市机会"
+      ],
+      "kind": "institution",
+      "goals": [
+        "让技能匹配市场需求"
+      ],
+      "constraints": [
+        "竞争密集"
+      ],
+      "memory_scope": [
+        "fact",
+        "state"
+      ],
+      "details": {
+        "institution": "market"
+      }
+    },
+    {
+      "id": "agent-director",
+      "name": "调度代理",
+      "role": "闭环调度器",
+      "stance": "只保留有信息量的分支，并把每个周期写回记忆层。",
+      "influence": 95,
+      "focus": [
+        "周期推进",
+        "分支裁剪",
+        "记忆回写"
+      ],
+      "kind": "director",
+      "goals": [
+        "维持一致性",
+        "保住反事实深度"
+      ],
+      "constraints": [
+        "分支爆炸"
+      ],
+      "memory_scope": [
+        "fact",
+        "state",
+        "tendency"
+      ],
+      "details": {
+        "time_mode": "semester"
+      }
+    }
+  ],
+  "simulation_events": [
+    {
+      "id": "event-1",
+      "phase": "intake",
+      "title": "画像已归一化",
+      "description": "问卷输入已被转换成稳定的人生模拟基线。",
+      "branch_id": null,
+      "impact": "1 个基础画像",
+      "timestamp": "2026-04-11T12:33:36.905773+00:00",
+      "actor_id": "agent-director",
+      "node_ids": [
+        "self"
+      ],
+      "memory_ids": [],
+      "details": {
+        "planning_horizon": "3年"
+      },
+      "llm_mode": "ready"
+    },
+    {
+      "id": "event-2",
+      "phase": "expansion",
+      "title": "人生图谱已扩展",
+      "description": "系统已把当前问题扩展为主体、机构、状态节点和分支决策点。",
+      "branch_id": null,
+      "impact": "10 个节点 / 8 条边",
+      "timestamp": "2026-04-11T12:33:36.905773+00:00",
+      "actor_id": "agent-director",
+      "node_ids": [
+        "mentor",
+        "family",
+        "employer",
+        "city",
+        "decision-core"
+      ],
+      "memory_ids": [],
+      "details": {
+        "graph_categories": [
+          "subject",
+          "institution",
+          "state",
+          "decision",
+          "goal"
+        ]
+      },
+      "llm_mode": "ready"
+    },
+    {
+      "id": "event-3",
+      "phase": "simulation",
+      "title": "代理已执行第一轮周期",
+      "description": "自我、关系、机构与调度代理共同推进了第一轮中期演化。",
+      "branch_id": null,
+      "impact": "第 1 轮完成",
+      "timestamp": "2026-04-11T12:33:36.905773+00:00",
+      "actor_id": "agent-director",
+      "node_ids": [
+        "self",
+        "mentor",
+        "family",
+        "decision-core"
+      ],
+      "memory_ids": [],
+      "details": {
+        "time_mode": "semester"
+      },
+      "llm_mode": "ready"
+    },
+    {
+      "id": "event-4",
+      "phase": "state_update",
+      "title": "状态快照已写入",
+      "description": "双轨决策提升了选择权，同时压缩了心理余裕，使第一条闭环真正成为有状态演化。",
+      "branch_id": null,
+      "impact": "1 个当前快照",
+      "timestamp": "2026-04-11T12:33:36.905773+00:00",
+      "actor_id": "agent-director",
+      "node_ids": [
+        "education-state",
+        "finance-state",
+        "mental-state"
+      ],
+      "memory_ids": [],
+      "details": {
+        "snapshot_id": "snapshot-cycle-1",
+        "deltas": {
+          "career": 2,
+          "mental": -2,
+          "social_capital": 2,
+          "optionality": 3,
+          "goal_alignment": 2
+        }
+      },
+      "llm_mode": "ready"
+    },
+    {
+      "id": "event-5",
+      "phase": "memory",
+      "title": "记忆层已更新",
+      "description": "事实、状态和倾向三层记忆已写回，后续周期会继承这些后果。",
+      "branch_id": null,
+      "impact": "3 条记忆记录",
+      "timestamp": "2026-04-11T12:33:36.905773+00:00",
+      "actor_id": "agent-director",
+      "node_ids": [
+        "self",
+        "decision-core"
+      ],
+      "memory_ids": [
+        "memory-fact-1",
+        "memory-state-1",
+        "memory-tendency-1"
+      ],
+      "details": {
+        "layers": [
+          "fact",
+          "state",
+          "tendency"
+        ]
+      },
+      "llm_mode": "ready"
+    },
+    {
+      "id": "event-6",
+      "phase": "branching",
+      "title": "已保留三条分支",
+      "description": "调度器将前沿裁剪为读研、城市混合线和稳定优先三条候选路径。",
+      "branch_id": null,
+      "impact": "3 个候选未来",
+      "timestamp": "2026-04-11T12:33:36.905773+00:00",
+      "actor_id": "agent-director",
+      "node_ids": [
+        "decision-core",
+        "future-self"
+      ],
+      "memory_ids": [],
+      "details": {
+        "active_branch": "research-track"
+      },
+      "llm_mode": "ready"
+    },
+    {
+      "id": "event-7",
+      "phase": "simulation",
+      "title": "调度器推进到下一轮",
+      "description": "优先读研 成为新学期的活跃分支。",
+      "branch_id": "research-track",
+      "impact": "第 2 轮",
+      "timestamp": "2026-04-11T12:33:36.972162+00:00",
+      "actor_id": "agent-director",
+      "node_ids": [
+        "decision-core",
+        "cycle-2-reflection"
+      ],
+      "memory_ids": [],
+      "details": {
+        "path_id": "research-first"
+      },
+      "llm_mode": "fallback"
+    },
+    {
+      "id": "event-8",
+      "phase": "state_update",
+      "title": "状态快照已刷新",
+      "description": "分支执行改变了当前状态向量，并同步更新了图中的状态节点。",
+      "branch_id": "research-track",
+      "impact": "snapshot-cycle-2",
+      "timestamp": "2026-04-11T12:33:36.972162+00:00",
+      "actor_id": "agent-director",
+      "node_ids": [
+        "education-state",
+        "finance-state",
+        "mental-state"
+      ],
+      "memory_ids": [],
+      "details": {
+        "deltas": {
+          "education": 4,
+          "career": 2,
+          "finance": -2,
+          "mental": -3,
+          "social_capital": 2,
+          "optionality": 3,
+          "goal_alignment": 2
+        }
+      },
+      "llm_mode": "fallback"
+    },
+    {
+      "id": "event-9",
+      "phase": "memory",
+      "title": "记忆回写已完成",
+      "description": "事实、状态和倾向记忆已为最新周期追加完成。",
+      "branch_id": "research-track",
+      "impact": "3 条新增记忆",
+      "timestamp": "2026-04-11T12:33:36.972162+00:00",
+      "actor_id": "agent-director",
+      "node_ids": [
+        "self",
+        "future-self"
+      ],
+      "memory_ids": [
+        "memory-fact-2",
+        "memory-state-2",
+        "memory-tendency-2"
+      ],
+      "details": {
+        "snapshot_id": "snapshot-cycle-2"
+      },
+      "llm_mode": "fallback"
+    },
+    {
+      "id": "event-10",
+      "phase": "branching",
+      "title": "路径重跑：优先读研",
+      "description": "已在 导师承诺出具推荐 应用“导师信号 = 强”的编辑，并重新生成后续解释。",
+      "branch_id": "research-track",
+      "impact": "置信度 95 / 风险 36",
+      "timestamp": "2026-04-11T12:33:38.386920+00:00",
+      "actor_id": "agent-director",
+      "node_ids": [
+        "mentor",
+        "education-state",
+        "decision-core"
+      ],
+      "memory_ids": [
+        "memory-counterfactual-7"
+      ],
+      "details": {
+        "field_key": "mentor_signal",
+        "field_label": "导师信号",
+        "value": "strong",
+        "display_value": "强"
+      },
+      "llm_mode": "fallback"
+    }
+  ],
+  "paths": [
+    {
+      "id": "research-first",
+      "title": "优先读研",
+      "thesis": "延后收入爬坡，以换取更大的长期选择权和学术杠杆。",
+      "archetype": "读研优先",
+      "confidence": 98,
+      "risk": 35,
+      "payoff": 100,
+      "summary": "当导师信号持续明确、记忆回写能让压力保持可见、且这条分支不掩盖财务压力时，它的综合收益最高。 优先读研 正在继续推进，当前重点落在optionality，建议保持小步校准。 已在 导师承诺出具推荐 将 导师信号 调整为 强。优先读研 已按导师信号调整为强，后续判断会同步重估风险与收益。",
+      "nodes": [
+        {
+          "id": "rf-1",
+          "title": "导师承诺出具推荐",
+          "type": "opportunity",
+          "time_label": "第1个月",
+          "summary": "一个明确的实验室信号，会让读研申请更具可信度。",
+          "deltas": [
+            {
+              "label": "学术",
+              "value": 14,
+              "axis": "education",
+              "rationale": null
+            },
+            {
+              "label": "风险",
+              "value": -4,
+              "axis": "goal_alignment",
+              "rationale": null
+            },
+            {
+              "label": "编辑抬升",
+              "value": 6,
+              "axis": "optionality",
+              "rationale": null
+            }
+          ],
+          "editable_fields": [
+            {
+              "key": "mentor_signal",
+              "label": "导师信号",
+              "value": "strong",
+              "field_type": "text",
+              "options": [
+                "弱",
+                "一般",
+                "强"
+              ],
+              "rationale": "推荐信质量是这条分支的核心解锁条件。"
+            }
+          ],
+          "graph_node_ids": [
+            "mentor",
+            "education-state",
+            "decision-core"
+          ],
+          "actors": [
+            "agent-self",
+            "agent-mentor"
+          ],
+          "phase": "simulation",
+          "details": {
+            "branch_trigger": "recommendation_quality"
+          }
+        },
+        {
+          "id": "rf-2",
+          "title": "申请周期压缩时间",
+          "type": "risk",
+          "time_label": "第3个月",
+          "summary": "随着申请负荷上升，睡眠和副线项目都会被进一步挤压。",
+          "deltas": [
+            {
+              "label": "身心状态",
+              "value": -11,
+              "axis": "mental",
+              "rationale": null
+            },
+            {
+              "label": "职业",
+              "value": 4,
+              "axis": "career",
+              "rationale": null
+            }
+          ],
+          "editable_fields": [
+            {
+              "key": "load",
+              "label": "申请负荷",
+              "value": "高",
+              "field_type": "text",
+              "options": [
+                "低",
+                "中",
+                "高"
+              ],
+              "rationale": null
+            }
+          ],
+          "graph_node_ids": [
+            "mental-state",
+            "decision-core"
+          ],
+          "actors": [
+            "agent-self",
+            "agent-director"
+          ],
+          "phase": "state_update",
+          "details": {
+            "state_loop": "stress_feedback"
+          }
+        },
+        {
+          "id": "rf-3",
+          "title": "录取结果打开专业化路径",
+          "type": "result",
+          "time_label": "第8个月",
+          "summary": "短期不确定性被转化成了更深的科研定位。",
+          "deltas": [
+            {
+              "label": "学术",
+              "value": 18,
+              "axis": "education",
+              "rationale": null
+            },
+            {
+              "label": "城市选择",
+              "value": 6,
+              "axis": "optionality",
+              "rationale": null
+            }
+          ],
+          "editable_fields": [
+            {
+              "key": "admit_quality",
+              "label": "录取质量",
+              "value": "顶级",
+              "field_type": "text",
+              "options": [
+                "中等",
+                "强",
+                "顶级"
+              ],
+              "rationale": null
+            }
+          ],
+          "graph_node_ids": [
+            "future-self",
+            "education-state"
+          ],
+          "actors": [
+            "agent-director"
+          ],
+          "phase": "branching",
+          "details": {
+            "future_window": "3年"
+          }
+        }
+      ],
+      "advice": {
+        "immediate": [
+          "在六周内锁定一个能对外展示里程碑的项目。",
+          "把导师支持转化为带明确时间点的推荐承诺。"
+        ],
+        "next_quarter": [
+          "申请同时并行推进一条实习对冲线。",
+          "每周跟踪精力状态；当健康负债变得不可见时，这条分支就会失效。"
+        ],
+        "risk_controls": [
+          "如果推荐信质量下滑，就提前设定转向截止点。",
+          "始终保留一个可直接投递的作品集版本。"
+        ],
+        "questions_to_track": [
+          "导师支持仍然具体吗，还是已经开始流于口头？",
+          "财务压力是否已经越过这条分支的承受线？"
+        ]
+      },
+      "score_breakdown": {
+        "optionality": 92,
+        "income": 58,
+        "stability": 67,
+        "growth": 89
+      },
+      "branch_id": "research-track",
+      "status": "active",
+      "horizon": "3年",
+      "focus_node_ids": [
+        "mentor",
+        "education-state",
+        "decision-core"
+      ],
+      "detail_fields": {
+        "dominant_agent": "导师",
+        "loop": "导师信号驱动决策",
+        "last_director_note": "优先读研 正在继续推进，当前重点落在optionality，建议保持小步校准。",
+        "last_cycle": 2,
+        "base_summary": "当导师信号持续明确、记忆回写能让压力保持可见、且这条分支不掩盖财务压力时，它的综合收益最高。 优先读研 正在继续推进，当前重点落在optionality，建议保持小步校准。",
+        "last_counterfactual_note": "优先读研 已按导师信号调整为强，后续判断会同步重估风险与收益。",
+        "last_edit": {
+          "node_id": "rf-1",
+          "field_key": "mentor_signal",
+          "field_label": "导师信号",
+          "value": "strong",
+          "display_value": "强"
+        }
+      },
+      "state_projection": {
+        "education": 86,
+        "career": 58,
+        "finance": 41,
+        "health": 67,
+        "mental": 52,
+        "relationship": 58,
+        "family_support": 63,
+        "social_capital": 63,
+        "optionality": 90,
+        "goal_alignment": 79
+      }
+    },
+    {
+      "id": "pragmatic-employment",
+      "title": "务实就业",
+      "thesis": "先选择一个稳定岗位，降低不确定性，再从更平稳的基座上优化执行质量。",
+      "archetype": "稳定优先",
+      "confidence": 83,
+      "risk": 34,
+      "payoff": 73,
+      "summary": "当家庭稳定和短期跑道需要明确答案时，这条分支最安全；但必须防止舒适感慢慢演变成低成长漂移。",
+      "nodes": [
+        {
+          "id": "pe-1",
+          "title": "接受本地稳定录用",
+          "type": "decision",
+          "time_label": "第1个月",
+          "summary": "一个低波动岗位会立刻提升确定性，也更符合家庭预期。",
+          "deltas": [
+            {
+              "label": "稳定性",
+              "value": 18,
+              "axis": "family_support",
+              "rationale": null
+            },
+            {
+              "label": "收入",
+              "value": 9,
+              "axis": "finance",
+              "rationale": null
+            }
+          ],
+          "editable_fields": [
+            {
+              "key": "location_choice",
+              "label": "地点选择",
+              "value": "本地",
+              "field_type": "text",
+              "options": [
+                "本地",
+                "区域",
+                "一线城市"
+              ],
+              "rationale": null
+            }
+          ],
+          "graph_node_ids": [
+            "family",
+            "finance-state",
+            "decision-core"
+          ],
+          "actors": [
+            "agent-family",
+            "agent-self"
+          ],
+          "phase": "simulation",
+          "details": {
+            "stability_gain": "高"
+          }
+        },
+        {
+          "id": "pe-2",
+          "title": "成长斜率需要刻意设计",
+          "type": "risk",
+          "time_label": "第5个月",
+          "summary": "如果把全部野心都换成舒适感，这条分支就会开始漂移。",
+          "deltas": [
+            {
+              "label": "成长",
+              "value": -7,
+              "axis": "career",
+              "rationale": null
+            },
+            {
+              "label": "身心状态",
+              "value": 6,
+              "axis": "mental",
+              "rationale": null
+            }
+          ],
+          "editable_fields": [
+            {
+              "key": "stretch_scope",
+              "label": "拉伸空间",
+              "value": "中等",
+              "field_type": "text",
+              "options": [
+                "低",
+                "中等",
+                "高"
+              ],
+              "rationale": null
+            }
+          ],
+          "graph_node_ids": [
+            "mental-state",
+            "employer"
+          ],
+          "actors": [
+            "agent-self",
+            "agent-director"
+          ],
+          "phase": "state_update",
+          "details": {
+            "drift_risk": "medium"
+          }
+        },
+        {
+          "id": "pe-3",
+          "title": "稳定基座支撑聚焦升级",
+          "type": "result",
+          "time_label": "第10个月",
+          "summary": "稳定执行会为下一次更有意识的转向腾出空间。",
+          "deltas": [
+            {
+              "label": "职业",
+              "value": 9,
+              "axis": "career",
+              "rationale": null
+            },
+            {
+              "label": "风险",
+              "value": -8,
+              "axis": "mental",
+              "rationale": null
+            }
+          ],
+          "editable_fields": [
+            {
+              "key": "upskill_lane",
+              "label": "升级通道",
+              "value": "活跃",
+              "field_type": "text",
+              "options": [
+                "停滞",
+                "活跃",
+                "可见"
+              ],
+              "rationale": null
+            }
+          ],
+          "graph_node_ids": [
+            "future-self",
+            "finance-state"
+          ],
+          "actors": [
+            "agent-self"
+          ],
+          "phase": "branching",
+          "details": {
+            "upgrade_window": "6-12个月"
+          }
+        }
+      ],
+      "advice": {
+        "immediate": [
+          "优先看直属管理者质量和团队跑道，而不是头衔光环。",
+          "谈出一定的职责所有权，让这条分支依然能积累技能复利。"
+        ],
+        "next_quarter": [
+          "利用低波动环境，在下班后打磨一个可持续差异化能力。",
+          "到第六个月时复盘：舒适是否正在变成停滞。"
+        ],
+        "risk_controls": [
+          "不要让短期缓解吞掉长期复利。",
+          "至少保留一条结构化再学习通道，并持续激活。"
+        ],
+        "questions_to_track": [
+          "这条稳定分支是否还保留了足够的选择权？",
+          "确定性是否已经开始压制野心，而不是支持它？"
+        ]
+      },
+      "score_breakdown": {
+        "optionality": 63,
+        "income": 80,
+        "stability": 91,
+        "growth": 69
+      },
+      "branch_id": "stability-track",
+      "status": "candidate",
+      "horizon": "3年",
+      "focus_node_ids": [
+        "family",
+        "finance-state",
+        "future-self"
+      ],
+      "detail_fields": {
+        "dominant_agent": "family",
+        "loop": "certainty_to_runway"
+      },
+      "state_projection": {
+        "education": 78,
+        "career": 59,
+        "finance": 51,
+        "health": 67,
+        "mental": 59,
+        "relationship": 58,
+        "family_support": 67,
+        "social_capital": 61,
+        "optionality": 82,
+        "goal_alignment": 76
+      }
+    },
+    {
+      "id": "hybrid-city",
+      "title": "城市跳跃混合线",
+      "thesis": "利用高密度城市岗位积累市场认知，同时保留继续深造的选择权。",
+      "archetype": "工作-学习混合",
+      "confidence": 76,
+      "risk": 58,
+      "payoff": 84,
+      "summary": "当城市消耗可控、交付成果能沉淀为未来选择权，而不是只换来疲惫时，这条分支的上限最高。",
+      "nodes": [
+        {
+          "id": "hc-1",
+          "title": "上海岗位录用落地",
+          "type": "opportunity",
+          "time_label": "第2个月",
+          "summary": "一个强平台团队提供了立刻进入市场核心位置的机会。",
+          "deltas": [
+            {
+              "label": "职业",
+              "value": 16,
+              "axis": "career",
+              "rationale": null
+            },
+            {
+              "label": "收入",
+              "value": 14,
+              "axis": "finance",
+              "rationale": null
+            }
+          ],
+          "editable_fields": [
+            {
+              "key": "offer_quality",
+              "label": "岗位质量",
+              "value": "强",
+              "field_type": "text",
+              "options": [
+                "弱",
+                "一般",
+                "强"
+              ],
+              "rationale": null
+            }
+          ],
+          "graph_node_ids": [
+            "employer",
+            "city",
+            "decision-core"
+          ],
+          "actors": [
+            "agent-market",
+            "agent-self"
+          ],
+          "phase": "simulation",
+          "details": {
+            "opportunity_density": "高"
+          }
+        },
+        {
+          "id": "hc-2",
+          "title": "城市成本压力上升",
+          "type": "risk",
+          "time_label": "第4个月",
+          "summary": "如果日常节奏不能尽快稳定，高消耗会同时侵蚀储蓄和精力。",
+          "deltas": [
+            {
+              "label": "身心状态",
+              "value": -8,
+              "axis": "mental",
+              "rationale": null
+            },
+            {
+              "label": "家庭支持",
+              "value": -5,
+              "axis": "family_support",
+              "rationale": null
+            }
+          ],
+          "editable_fields": [
+            {
+              "key": "cost_profile",
+              "label": "城市成本",
+              "value": "高",
+              "field_type": "text",
+              "options": [
+                "中",
+                "高",
+                "极高"
+              ],
+              "rationale": null
+            }
+          ],
+          "graph_node_ids": [
+            "finance-state",
+            "mental-state",
+            "city"
+          ],
+          "actors": [
+            "agent-family",
+            "agent-director"
+          ],
+          "phase": "state_update",
+          "details": {
+            "state_loop": "runway_feedback"
+          }
+        },
+        {
+          "id": "hc-3",
+          "title": "混合履历可信度复利增长",
+          "type": "reflection",
+          "time_label": "第9个月",
+          "summary": "这条分支会同时产出已落地的工作成果和可信的转向叙事。",
+          "deltas": [
+            {
+              "label": "职业",
+              "value": 13,
+              "axis": "career",
+              "rationale": null
+            },
+            {
+              "label": "选择权",
+              "value": 12,
+              "axis": "optionality",
+              "rationale": null
+            }
+          ],
+          "editable_fields": [
+            {
+              "key": "portfolio_signal",
+              "label": "作品集信号",
+              "value": "可见",
+              "field_type": "text",
+              "options": [
+                "弱",
+                "可见",
+                "强"
+              ],
+              "rationale": null
+            }
+          ],
+          "graph_node_ids": [
+            "future-self",
+            "employer"
+          ],
+          "actors": [
+            "agent-self",
+            "agent-director"
+          ],
+          "phase": "branching",
+          "details": {
+            "reflection_type": "counterfactual_ready"
+          }
+        }
+      ],
+      "advice": {
+        "immediate": [
+          "优先寻找有带教和真实交付成长曲线的岗位。",
+          "在优化表面薪资之前，先算清楚城市消耗率。"
+        ],
+        "next_quarter": [
+          "每周预留固定学习时间，让读研对冲保持真实存在。",
+          "把已交付成果同时用作晋升证明和未来申请材料。"
+        ],
+        "risk_controls": [
+          "避免在前 90 天就耗尽全部缓冲的岗位。",
+          "把住房和通勤成本压在压力阈值以下。"
+        ],
+        "questions_to_track": [
+          "城市密度带来的人脉增益，是否快过它消耗精力的速度？",
+          "资金跑道是否稳定到足以支撑真实的选择权？"
+        ]
+      },
+      "score_breakdown": {
+        "optionality": 85,
+        "income": 76,
+        "stability": 61,
+        "growth": 86
+      },
+      "branch_id": "hybrid-track",
+      "status": "candidate",
+      "horizon": "3年",
+      "focus_node_ids": [
+        "employer",
+        "city",
+        "finance-state"
+      ],
+      "detail_fields": {
+        "dominant_agent": "market",
+        "loop": "city_burn_to_runway"
+      },
+      "state_projection": {
+        "education": 78,
+        "career": 62,
+        "finance": 49,
+        "health": 65,
+        "mental": 54,
+        "relationship": 57,
+        "family_support": 63,
+        "social_capital": 66,
+        "optionality": 88,
+        "goal_alignment": 75
+      }
+    }
+  ],
+  "stitch": {
+    "project_id": "8477727617233002131",
+    "assets": [
+      {
+        "id": "0f67e2ca1d744bfe960622c66b13a8b7",
+        "name": "策略协议（技术）",
+        "kind": "screen",
+        "status": "missing_auth",
+        "image_path": null,
+        "html_path": null
+      },
+      {
+        "id": "70fef224eb49493a8f4f4a4dedf6fbfe",
+        "name": "模拟流程（技术）",
+        "kind": "screen",
+        "status": "missing_auth",
+        "image_path": null,
+        "html_path": null
+      },
+      {
+        "id": "1e03d2df82b941bf96acf793a03f4eec",
+        "name": "路径详情（技术）",
+        "kind": "screen",
+        "status": "missing_auth",
+        "image_path": null,
+        "html_path": null
+      },
+      {
+        "id": "b532765517ea4a6491f3b7f5a0362bf9",
+        "name": "落地页（技术）",
+        "kind": "screen",
+        "status": "missing_auth",
+        "image_path": null,
+        "html_path": null
+      },
+      {
+        "id": "asset-stub-assets-7524043e9a58414ba53b5625b54594e8-1775894506576",
+        "name": "设计系统",
+        "kind": "design_system",
+        "status": "missing_auth",
+        "image_path": null,
+        "html_path": null
+      }
+    ]
+  },
+  "current_cycle": 2,
+  "time_mode": "semester",
+  "active_branch_id": "research-track",
+  "current_state": {
+    "id": "snapshot-cycle-2",
+    "branch_id": "research-track",
+    "cycle_index": 2,
+    "phase": "state_update",
+    "time_label": "第2学期",
+    "axes": {
+      "education": 78,
+      "career": 55,
+      "finance": 44,
+      "health": 67,
+      "mental": 56,
+      "relationship": 58,
+      "family_support": 63,
+      "social_capital": 61,
+      "optionality": 85,
+      "goal_alignment": 75
+    },
+    "narrative": "优先读研 正在继续推进，当前重点落在optionality，建议保持小步校准。",
+    "deltas": {
+      "education": 4,
+      "career": 2,
+      "finance": -2,
+      "mental": -3,
+      "social_capital": 2,
+      "optionality": 3,
+      "goal_alignment": 2
+    },
+    "triggers": [
+      "research-first",
+      "director_cycle_advanced"
+    ],
+    "timestamp": "2026-04-11T12:33:36.972162+00:00"
+  },
+  "state_snapshots": [
+    {
+      "id": "snapshot-intake",
+      "branch_id": "main-track",
+      "cycle_index": 0,
+      "phase": "intake",
+      "time_label": "第0学期",
+      "axes": {
+        "education": 74,
+        "career": 51,
+        "finance": 46,
+        "health": 67,
+        "mental": 61,
+        "relationship": 58,
+        "family_support": 63,
+        "social_capital": 57,
+        "optionality": 79,
+        "goal_alignment": 71
+      },
+      "narrative": "初始参数已被归一化为一个中期人生模拟基线。",
+      "deltas": {},
+      "triggers": [
+        "profile_ingested",
+        "weights_normalized"
+      ],
+      "timestamp": "2026-04-11T12:33:36.905773+00:00"
+    },
+    {
+      "id": "snapshot-cycle-1",
+      "branch_id": "main-track",
+      "cycle_index": 1,
+      "phase": "state_update",
+      "time_label": "第1学期",
+      "axes": {
+        "education": 74,
+        "career": 53,
+        "finance": 46,
+        "health": 67,
+        "mental": 59,
+        "relationship": 58,
+        "family_support": 63,
+        "social_capital": 59,
+        "optionality": 82,
+        "goal_alignment": 73
+      },
+      "narrative": "系统选择了双轨对冲策略，在保留选择权的同时维持求职就绪状态。",
+      "deltas": {
+        "career": 2,
+        "mental": -2,
+        "social_capital": 2,
+        "optionality": 3,
+        "goal_alignment": 2
+      },
+      "triggers": [
+        "director_started_cycle",
+        "dual_track_selected"
+      ],
+      "timestamp": "2026-04-11T12:33:36.905773+00:00"
+    },
+    {
+      "id": "snapshot-cycle-2",
+      "branch_id": "research-track",
+      "cycle_index": 2,
+      "phase": "state_update",
+      "time_label": "第2学期",
+      "axes": {
+        "education": 78,
+        "career": 55,
+        "finance": 44,
+        "health": 67,
+        "mental": 56,
+        "relationship": 58,
+        "family_support": 63,
+        "social_capital": 61,
+        "optionality": 85,
+        "goal_alignment": 75
+      },
+      "narrative": "优先读研 正在继续推进，当前重点落在optionality，建议保持小步校准。",
+      "deltas": {
+        "education": 4,
+        "career": 2,
+        "finance": -2,
+        "mental": -3,
+        "social_capital": 2,
+        "optionality": 3,
+        "goal_alignment": 2
+      },
+      "triggers": [
+        "research-first",
+        "director_cycle_advanced"
+      ],
+      "timestamp": "2026-04-11T12:33:36.972162+00:00"
+    }
+  ],
+  "memories": [
+    {
+      "id": "memory-fact-1",
+      "layer": "fact",
+      "title": "双轨对冲已建立",
+      "summary": "第一轮周期后，调度器保留了读研、城市混合线和稳定就业三条分支。",
+      "branch_id": "main-track",
+      "related_node_ids": [
+        "decision-core",
+        "future-self"
+      ],
+      "data": {
+        "retained_branches": [
+          "research-track",
+          "hybrid-track",
+          "stability-track"
+        ]
+      },
+      "timestamp": "2026-04-11T12:33:36.905773+00:00"
+    },
+    {
+      "id": "memory-state-1",
+      "layer": "state",
+      "title": "状态向量已更新",
+      "summary": "选择权和目标一致性有所上升，但在维持多条分支同时存活的成本下，心理余裕被压缩了。",
+      "branch_id": "main-track",
+      "related_node_ids": [
+        "mental-state",
+        "education-state",
+        "finance-state"
+      ],
+      "data": {
+        "axes": {
+          "education": 74,
+          "career": 53,
+          "finance": 46,
+          "health": 67,
+          "mental": 59,
+          "relationship": 58,
+          "family_support": 63,
+          "social_capital": 59,
+          "optionality": 82,
+          "goal_alignment": 73
+        },
+        "deltas": {
+          "career": 2,
+          "mental": -2,
+          "social_capital": 2,
+          "optionality": 3,
+          "goal_alignment": 2
+        }
+      },
+      "timestamp": "2026-04-11T12:33:36.905773+00:00"
+    },
+    {
+      "id": "memory-tendency-1",
+      "layer": "tendency",
+      "title": "对冲式决策倾向被强化",
+      "summary": "当前自我仍倾向于保留期权价值，并尽量推迟不可逆承诺。",
+      "branch_id": "main-track",
+      "related_node_ids": [
+        "self",
+        "decision-core"
+      ],
+      "data": {
+        "tendency": "hedged_optionalist"
+      },
+      "timestamp": "2026-04-11T12:33:36.905773+00:00"
+    },
+    {
+      "id": "memory-fact-2",
+      "layer": "fact",
+      "title": "第 2 轮已推进",
+      "summary": "优先读研 成为第 2 轮的活跃分支。",
+      "branch_id": "research-track",
+      "related_node_ids": [
+        "decision-core",
+        "cycle-2-reflection"
+      ],
+      "data": {
+        "path_id": "research-first",
+        "cycle": 2
+      },
+      "timestamp": "2026-04-11T12:33:36.972162+00:00"
+    },
+    {
+      "id": "memory-state-2",
+      "layer": "state",
+      "title": "第 2 轮状态快照",
+      "summary": "最新状态快照已持久化，后续分支会继承它带来的后果。",
+      "branch_id": "research-track",
+      "related_node_ids": [
+        "education-state",
+        "finance-state",
+        "mental-state"
+      ],
+      "data": {
+        "axes": {
+          "education": 78,
+          "career": 55,
+          "finance": 44,
+          "health": 67,
+          "mental": 56,
+          "relationship": 58,
+          "family_support": 63,
+          "social_capital": 61,
+          "optionality": 85,
+          "goal_alignment": 75
+        },
+        "deltas": {
+          "education": 4,
+          "career": 2,
+          "finance": -2,
+          "mental": -3,
+          "social_capital": 2,
+          "optionality": 3,
+          "goal_alignment": 2
+        }
+      },
+      "timestamp": "2026-04-11T12:33:36.972162+00:00"
+    },
+    {
+      "id": "memory-tendency-2",
+      "layer": "tendency",
+      "title": "优先读研 的分支倾向被强化",
+      "summary": "优先读研 正在继续推进，当前重点落在optionality，建议保持小步校准。",
+      "branch_id": "research-track",
+      "related_node_ids": [
+        "self",
+        "future-self"
+      ],
+      "data": {
+        "focus_axis": "optionality"
+      },
+      "timestamp": "2026-04-11T12:33:36.972162+00:00"
+    },
+    {
+      "id": "memory-counterfactual-7",
+      "layer": "tendency",
+      "title": "优先读研 的反事实编辑",
+      "summary": "优先读研 已按导师信号调整为强，后续判断会同步重估风险与收益。",
+      "branch_id": "research-track",
+      "related_node_ids": [
+        "mentor",
+        "education-state",
+        "decision-core"
+      ],
+      "data": {
+        "field_key": "mentor_signal",
+        "field_label": "导师信号",
+        "value": "strong",
+        "display_value": "强",
+        "confidence_delta": 6
+      },
+      "timestamp": "2026-04-11T12:33:38.386920+00:00"
+    }
+  ],
+  "branches": [
+    {
+      "id": "research-track",
+      "title": "读研路径",
+      "thesis": "延后收入爬坡，以换取更大的长期选择权和学术杠杆。",
+      "kind": "main",
+      "status": "active",
+      "parent_branch_id": null,
+      "depth": 0,
+      "cycle_index": 2,
+      "horizon": "semester",
+      "state_snapshot_id": "snapshot-cycle-2",
+      "path_id": "research-first",
+      "confidence": 98,
+      "tags": [
+        "graduate-school",
+        "optionality"
+      ],
+      "notes": "优先读研 已按导师信号调整为强，后续判断会同步重估风险与收益。",
+      "focus_metrics": {
+        "optionality": 92,
+        "income": 58,
+        "stability": 67,
+        "growth": 89
+      }
+    },
+    {
+      "id": "hybrid-track",
+      "title": "混合路径",
+      "thesis": "利用高密度城市岗位积累市场认知，同时保留继续深造的选择权。",
+      "kind": "alternative",
+      "status": "candidate",
+      "parent_branch_id": null,
+      "depth": 0,
+      "cycle_index": 2,
+      "horizon": "semester",
+      "state_snapshot_id": "snapshot-cycle-2",
+      "path_id": "hybrid-city",
+      "confidence": 76,
+      "tags": [
+        "city",
+        "career-study"
+      ],
+      "notes": "之所以保留，是因为它是市场上行空间最大的对冲线。",
+      "focus_metrics": {
+        "optionality": 85,
+        "income": 76,
+        "stability": 61,
+        "growth": 86
+      }
+    },
+    {
+      "id": "stability-track",
+      "title": "稳定路径",
+      "thesis": "先选择一个稳定岗位，降低不确定性，再从更平稳的基座上优化执行质量。",
+      "kind": "conservative",
+      "status": "candidate",
+      "parent_branch_id": null,
+      "depth": 0,
+      "cycle_index": 2,
+      "horizon": "semester",
+      "state_snapshot_id": "snapshot-cycle-2",
+      "path_id": "pragmatic-employment",
+      "confidence": 83,
+      "tags": [
+        "runway",
+        "family"
+      ],
+      "notes": "之所以保留，是因为它对下行风险的控制明显更好。",
+      "focus_metrics": {
+        "optionality": 63,
+        "income": 80,
+        "stability": 91,
+        "growth": 69
+      }
+    }
+  ],
+  "graph_meta": {
+    "node_count": 11,
+    "edge_count": 11,
+    "branch_count": 3,
+    "self_loop_count": 2,
+    "multi_edge_group_count": 1,
+    "supports_self_loops": true,
+    "supports_multi_edges": true,
+    "node_categories": [
+      "decision",
+      "event",
+      "goal",
+      "institution",
+      "state",
+      "subject"
+    ],
+    "detail_fields": [
+      "details",
+      "attributes",
+      "episodes",
+      "metrics"
+    ]
+  },
+  "llm": {
+    "provider": "openai-compatible",
+    "mode": "fallback",
+    "base_url": "https://api.linhk.top/v1",
+    "model": "Qwen/Qwen3-32B-fast",
+    "configured": true,
+    "api_key_present": true,
+    "used_fallback": true,
+    "last_error": "HTTP Error 503: Service Unavailable",
+    "last_prompt_kind": "path_rerun",
+    "last_response_preview": "优先读研 已按导师信号调整为强，后续判断会同步重估风险与收益。"
+  }
+}

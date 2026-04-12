@@ -1,0 +1,198 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "人生路径引擎 [v1.0.4]" [ref=e6] [cursor=pointer]:
+        - /url: /
+      - navigation [ref=e7]:
+        - link "模拟总览" [ref=e8] [cursor=pointer]:
+          - /url: /simulation
+        - link "策略协议" [ref=e9] [cursor=pointer]:
+          - /url: /strategy
+        - link "系统首页" [ref=e10] [cursor=pointer]:
+          - /url: /
+    - generic [ref=e11]:
+      - button "推进一轮" [ref=e12] [cursor=pointer]
+      - button "刷新" [ref=e13] [cursor=pointer]
+      - button "重置" [ref=e14] [cursor=pointer]
+      - generic [ref=e15]:
+        - generic [ref=e16]: "节点: 882-x"
+        - generic [ref=e17]: 稳定
+  - complementary [ref=e18]:
+    - generic [ref=e19]:
+      - generic [ref=e20]: 林
+      - generic [ref=e21]:
+        - generic [ref=e22]: 系统实体
+        - generic [ref=e23]: "[林]"
+        - generic [ref=e24]: "状态: 稳定"
+    - navigation [ref=e25]:
+      - link "analytics [模拟看板]" [ref=e26] [cursor=pointer]:
+        - /url: /simulation
+        - generic [ref=e27]: analytics
+        - generic [ref=e28]: "[模拟看板]"
+      - link "terminal [策略日志]" [ref=e29] [cursor=pointer]:
+        - /url: /strategy
+        - generic [ref=e30]: terminal
+        - generic [ref=e31]: "[策略日志]"
+      - link "biotech [分支取证]" [ref=e32] [cursor=pointer]:
+        - /url: /paths/research-first
+        - generic [ref=e33]: biotech
+        - generic [ref=e34]: "[分支取证]"
+      - link "inventory_2 [系统归档]" [ref=e35] [cursor=pointer]:
+        - /url: /
+        - generic [ref=e36]: inventory_2
+        - generic [ref=e37]: "[系统归档]"
+  - main [ref=e38]:
+    - generic [ref=e39]:
+      - generic [ref=e40]:
+        - generic [ref=e41]: "分支: 读研路径"
+        - generic [ref=e42]: "节点数: 3"
+        - generic [ref=e43]: "关键分歧: +65"
+      - generic [ref=e44]:
+        - generic [ref=e45]:
+          - generic [ref=e46]: "当前分支: 读研路径"
+          - 'heading "路径分析: 优先读研" [level=1] [ref=e47]'
+          - paragraph [ref=e48]: 延后收入爬坡，以换取更大的长期选择权和学术杠杆。
+        - generic [ref=e49]:
+          - generic [ref=e50]: 置信度 98
+          - generic [ref=e51]: 风险 35
+          - generic [ref=e52]: 收益 100
+      - generic [ref=e53]:
+        - generic [ref=e54]:
+          - article [ref=e55]:
+            - heading "技术备忘" [level=2] [ref=e56]
+            - paragraph [ref=e57]: 当导师信号持续明确、记忆回写能让压力保持可见、且这条分支不掩盖财务压力时，它的综合收益最高。 优先读研 正在继续推进，当前重点落在选择权，建议保持小步校准。 已在 导师承诺出具推荐 将 导师信号 调整为 强。优先读研 已按导师信号调整为强，后续判断会同步重估风险与收益。
+            - generic [ref=e58]:
+              - generic [ref=e59]: 状态
+              - generic [ref=e60]: 激活
+              - generic [ref=e61]: 时间范围
+              - generic [ref=e62]: 3年
+              - generic [ref=e63]: 关注点
+              - generic [ref=e64]: 实验室导师、教育维度、读研 / 就业分叉
+            - generic [ref=e65]:
+              - generic [ref=e66]: 置信度 98
+              - generic [ref=e67]: 收益 100
+              - generic [ref=e68]: 风险 35
+              - generic [ref=e69]: 分歧 65
+          - article [ref=e70]:
+            - generic [ref=e71]: 第1个月
+            - heading "导师承诺出具推荐" [level=3] [ref=e72]
+            - paragraph [ref=e73]: 一个明确的实验室信号，会让读研申请更具可信度。
+            - generic [ref=e74]:
+              - generic [ref=e75]: 导师信号
+              - combobox "导师信号" [ref=e76]:
+                - option "弱" [selected]
+                - option "一般"
+                - option "强"
+              - button "重新推演分支" [ref=e77] [cursor=pointer]
+          - article [ref=e78]:
+            - generic [ref=e79]: 第3个月
+            - heading "申请周期压缩时间" [level=3] [ref=e80]
+            - paragraph [ref=e81]: 随着申请负荷上升，睡眠和副线项目都会被进一步挤压。
+            - generic [ref=e82]:
+              - generic [ref=e83]: 申请负荷
+              - combobox "申请负荷" [ref=e84]:
+                - option "低"
+                - option "中"
+                - option "高" [selected]
+              - button "重新推演分支" [ref=e85] [cursor=pointer]
+          - article [ref=e86]:
+            - generic [ref=e87]: 第8个月
+            - heading "录取结果打开专业化路径" [level=3] [ref=e88]
+            - paragraph [ref=e89]: 短期不确定性被转化成了更深的科研定位。
+            - generic [ref=e90]:
+              - generic [ref=e91]: 录取质量
+              - combobox "录取质量" [ref=e92]:
+                - option "中等"
+                - option "强"
+                - option "顶级" [selected]
+              - button "重新推演分支" [ref=e93] [cursor=pointer]
+        - generic [ref=e94]:
+          - generic [ref=e95]:
+            - generic [ref=e96]: 关键分歧
+            - strong [ref=e97]: 优先读研
+            - paragraph [ref=e98]: 该分支之所以仍被保留，是因为它的预期收益仍高于风险预算，同时还能保住下游选择权。
+          - generic [ref=e99]:
+            - generic [ref=e100]:
+              - generic [ref=e101]:
+                - generic [ref=e102]: "[分支几何] 读研路径"
+                - heading "优先读研" [level=2] [ref=e103]
+              - generic [ref=e104]:
+                - button "隐藏标签" [ref=e105] [cursor=pointer]
+                - button "最大化" [ref=e106] [cursor=pointer]
+                - button "视图居中" [ref=e107] [cursor=pointer]
+            - generic [ref=e108]:
+              - generic [ref=e109]:
+                - generic [ref=e110]: 构建状态
+                - strong [ref=e111]: 44% 已映射
+              - generic [ref=e112]:
+                - generic [ref=e113]: 视窗
+                - strong [ref=e114]: 104% 缩放
+              - generic [ref=e115]:
+                - generic [ref=e116]: 详情字段
+                - strong [ref=e117]: "4"
+            - generic [ref=e118]:
+              - generic [ref=e119]: 图谱支持自环、多重边曲率、点击高亮与阈值拖拽
+              - button "关闭" [ref=e120] [cursor=pointer]
+            - generic [ref=e121]:
+              - generic [ref=e122]:
+                - generic [ref=e123]: 节点 5
+                - generic [ref=e124]: 边 4
+                - generic [ref=e125]: 自环 1
+                - generic [ref=e126]: 多重边组 1
+              - generic [ref=e127]:
+                - generic [ref=e128]:
+                  - generic [ref=e129]: 决策
+                  - generic [ref=e131]: 目标
+                  - generic [ref=e133]: 状态
+                  - generic [ref=e135]: 主体
+                - img [ref=e137]:
+                  - generic [ref=e139]:
+                    - generic "实验室导师" [ref=e140]:
+                      - generic: "78"
+                      - generic: 实验室导师
+                    - generic "教育维度" [ref=e143]:
+                      - generic: "78"
+                      - generic: 教育维度
+                    - generic "心理负荷" [ref=e146]:
+                      - generic: "56"
+                      - generic: 心理负荷
+                    - generic "读研 / 就业分叉" [ref=e149]:
+                      - generic: "91"
+                      - generic: 读研 / 就业分叉
+              - complementary [ref=e152]:
+                - generic [ref=e153]: 选中详情
+                - paragraph [ref=e154]: 点击节点或边，查看指标与事件片段
+                - generic [ref=e155]:
+                  - generic [ref=e156]: 迷你地图
+                  - img [ref=e157]
+          - generic [ref=e167]:
+            - generic [ref=e168]: 下游日志
+            - article [ref=e169]:
+              - strong [ref=e170]: 优先读研 的反事实编辑
+              - paragraph [ref=e171]: 优先读研 已按导师信号调整为强，后续判断会同步重估风险与收益。
+            - article [ref=e172]:
+              - strong [ref=e173]: 优先读研 的分支倾向被强化
+              - paragraph [ref=e174]: 优先读研 正在继续推进，当前重点落在选择权，建议保持小步校准。
+            - article [ref=e175]:
+              - strong [ref=e176]: 第 2 轮状态快照
+              - paragraph [ref=e177]: 最新状态快照已持久化，后续分支会继承它带来的后果。
+            - article [ref=e178]:
+              - strong [ref=e179]: 第 2 轮已推进
+              - paragraph [ref=e180]: 优先读研 成为第 2 轮的活跃分支。
+          - generic [ref=e181]:
+            - generic [ref=e182]: 时序时间线
+            - generic [ref=e183]:
+              - generic [ref=e184]: 第1个月
+              - generic [ref=e186]: 导师承诺出具推荐
+            - generic [ref=e187]:
+              - generic [ref=e188]: 第3个月
+              - generic [ref=e190]: 申请周期压缩时间
+            - generic [ref=e191]:
+              - generic [ref=e192]: 第8个月
+              - generic [ref=e194]: 录取结果打开专业化路径
+            - link "返回实时模拟" [ref=e195] [cursor=pointer]:
+              - /url: /simulation
+          - generic [ref=e196]:
+            - generic [ref=e197]: 运行模式
+            - heading "本地回退" [level=3] [ref=e198]
+            - paragraph [ref=e199]: 优先读研 已按导师信号调整为强，后续判断会同步重估风险与收益。

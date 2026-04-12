@@ -1,0 +1,262 @@
+[     123ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:14336
+[  656731ms] [ERROR] Unable to preventDefault inside passive event listener invocation. @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:2113
+[  656749ms] [ERROR] Unable to preventDefault inside passive event listener invocation. @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:2113
+[  656764ms] [ERROR] Unable to preventDefault inside passive event listener invocation. @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:2113
+[  656779ms] [ERROR] Unable to preventDefault inside passive event listener invocation. @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:2113
+[  659698ms] [ERROR] Unable to preventDefault inside passive event listener invocation. @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:2113
+[  659712ms] [ERROR] Unable to preventDefault inside passive event listener invocation. @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:2113
+[  659727ms] [ERROR] Unable to preventDefault inside passive event listener invocation. @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:2113
+[  659746ms] [ERROR] Unable to preventDefault inside passive event listener invocation. @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:2113
+[  659759ms] [ERROR] Unable to preventDefault inside passive event listener invocation. @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:2113
+[  669193ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:14336
+[  818709ms] [ERROR] Unable to preventDefault inside passive event listener invocation. @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:2113
+[ 1528471ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:14336
+[ 1529898ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:14336
+[ 1621396ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:5173/src/lib/i18n.ts?t=1775904822137:0
+[ 1621396ms] [ERROR] [vite] Failed to reload /src/pages/StrategyPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:5173/@vite/client:509
+[ 1621397ms] [ERROR] [vite] Failed to reload /src/components/SystemChrome.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:5173/@vite/client:509
+[ 1621397ms] [ERROR] [vite] Failed to reload /src/pages/LandingPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:5173/@vite/client:509
+[ 1621397ms] [ERROR] [vite] Failed to reload /src/components/SimulationGraph.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:5173/@vite/client:509
+[ 1621397ms] [ERROR] [vite] Failed to reload /src/pages/SimulationPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:5173/@vite/client:509
+[ 2558603ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/src/components/SimulationGraph.tsx?t=1775905759336:0
+[ 2558604ms] [ERROR] [vite] Failed to reload /src/components/SimulationGraph.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:5173/@vite/client:509
+[ 2558610ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/src/components/SystemChrome.tsx?t=1775905759339:0
+[ 2558611ms] [ERROR] [vite] Failed to reload /src/components/SystemChrome.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:5173/@vite/client:509
+[ 2903673ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/src/pages/LandingPage.tsx?t=1775906104399:0
+[ 2903673ms] [ERROR] [vite] Failed to reload /src/pages/LandingPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:5173/@vite/client:509
+[ 2903685ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/src/pages/SimulationPage.tsx?t=1775906104419:0
+[ 2903685ms] [ERROR] [vite] Failed to reload /src/pages/SimulationPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:5173/@vite/client:509
+[ 2903702ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/src/pages/StrategyPage.tsx?t=1775906104421:0
+[ 2903702ms] [ERROR] [vite] Failed to reload /src/pages/StrategyPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:5173/@vite/client:509
+[ 2903713ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/src/pages/PathDetailPage.tsx?t=1775906104423:0
+[ 2903714ms] [ERROR] [vite] Failed to reload /src/pages/PathDetailPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:5173/@vite/client:509
+[ 3016252ms] [ERROR] [vite] Failed to reload /src/App.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:5173/@vite/client:509
+[ 3016264ms] Error: useDashboard must be used inside DashboardProvider
+    at useDashboard (http://127.0.0.1:5173/src/hooks/useDashboard.tsx?t=1775903465103:72:9)
+    at Shell (http://127.0.0.1:5173/src/App.tsx?t=1775904705741:15:67)
+    at Object.react_stack_bottom_frame (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:12867:12)
+    at renderWithHooks (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:4212:19)
+    at updateFunctionComponent (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:5568:16)
+    at beginWork (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:6139:20)
+    at runWithFiberInDEV (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:850:66)
+    at performUnitOfWork (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:8428:92)
+    at workLoopSync (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:8324:37)
+    at renderRootSync (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:8308:6)
+[ 3016264ms] [WARNING] %s
+
+%s
+ An error occurred in the <Shell> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:5173/@vite/client:509
+[ 3016265ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/src/pages/StrategyPage.tsx?t=1775906216980:0
+[ 3016269ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/src/pages/LandingPage.tsx?t=1775906216980:0
+[ 3016401ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/src/pages/SimulationPage.tsx?t=1775906216980:0
+[ 3016404ms] [ERROR] Failed to load resource: the server responded with a status of 500 (Internal Server Error) @ http://127.0.0.1:5173/src/pages/PathDetailPage.tsx?t=1775906216980:0
+[ 3137777ms] Error: useDashboard must be used inside DashboardProvider
+    at useDashboard (http://127.0.0.1:5173/src/hooks/useDashboard.tsx?t=1775906216980:72:9)
+    at Shell (http://127.0.0.1:5173/src/App.tsx?t=1775906338454:15:67)
+    at Object.react_stack_bottom_frame (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:12867:12)
+    at renderWithHooks (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:4212:19)
+    at updateFunctionComponent (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:5568:16)
+    at beginWork (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:6139:20)
+    at runWithFiberInDEV (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:850:66)
+    at performUnitOfWork (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:8428:92)
+    at workLoopSync (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:8324:37)
+    at renderRootSync (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:8308:6)
+[ 3137776ms] [WARNING] %s
+
+%s
+ An error occurred in the <Shell> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:5173/@vite/client:509
+[ 3149046ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:5173/src/components/SystemChrome.tsx?t=1775906349798:0
+[ 3149047ms] [ERROR] [vite] Failed to reload /src/components/SystemChrome.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:5173/@vite/client:509
+[ 3211308ms] Error: useDashboard must be used inside DashboardProvider
+    at useDashboard (http://127.0.0.1:5173/src/hooks/useDashboard.tsx?t=1775906216980:72:9)
+    at Shell (http://127.0.0.1:5173/src/App.tsx?t=1775906338454:15:67)
+    at Object.react_stack_bottom_frame (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:12867:12)
+    at renderWithHooks (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:4212:19)
+    at updateFunctionComponent (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:5568:16)
+    at beginWork (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:6139:20)
+    at runWithFiberInDEV (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:850:66)
+    at performUnitOfWork (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:8428:92)
+    at workLoopSync (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:8324:37)
+    at renderRootSync (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:8308:6)
+[ 3211307ms] [WARNING] %s
+
+%s
+ An error occurred in the <Shell> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:5173/@vite/client:509
+[ 3221909ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:5173/src/pages/LandingPage.tsx?t=1775906422661:0
+[ 3221909ms] [ERROR] [vite] Failed to reload /src/pages/LandingPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:5173/@vite/client:509
+[ 3317716ms] Error: useDashboard must be used inside DashboardProvider
+    at useDashboard (http://127.0.0.1:5173/src/hooks/useDashboard.tsx?t=1775906216980:72:9)
+    at Shell (http://127.0.0.1:5173/src/App.tsx?t=1775906338454:15:67)
+    at Object.react_stack_bottom_frame (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:12867:12)
+    at renderWithHooks (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:4212:19)
+    at updateFunctionComponent (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:5568:16)
+    at beginWork (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:6139:20)
+    at runWithFiberInDEV (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:850:66)
+    at performUnitOfWork (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:8428:92)
+    at workLoopSync (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:8324:37)
+    at renderRootSync (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:8308:6)
+[ 3317716ms] [WARNING] %s
+
+%s
+ An error occurred in the <Shell> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:5173/@vite/client:509
+[ 3329074ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:5173/src/pages/SimulationPage.tsx?t=1775906529826:0
+[ 3329074ms] [ERROR] [vite] Failed to reload /src/pages/SimulationPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:5173/@vite/client:509
+[ 3406128ms] Error: useDashboard must be used inside DashboardProvider
+    at useDashboard (http://127.0.0.1:5173/src/hooks/useDashboard.tsx?t=1775906216980:72:9)
+    at Shell (http://127.0.0.1:5173/src/App.tsx?t=1775906338454:15:67)
+    at Object.react_stack_bottom_frame (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:12867:12)
+    at renderWithHooks (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:4212:19)
+    at updateFunctionComponent (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:5568:16)
+    at beginWork (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:6139:20)
+    at runWithFiberInDEV (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:850:66)
+    at performUnitOfWork (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:8428:92)
+    at workLoopSync (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:8324:37)
+    at renderRootSync (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:8308:6)
+[ 3406128ms] [WARNING] %s
+
+%s
+ An error occurred in the <Shell> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:5173/@vite/client:509
+[ 3413639ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:5173/src/pages/StrategyPage.tsx?t=1775906614390:0
+[ 3413640ms] [ERROR] [vite] Failed to reload /src/pages/StrategyPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:5173/@vite/client:509
+[ 3502608ms] Error: useDashboard must be used inside DashboardProvider
+    at useDashboard (http://127.0.0.1:5173/src/hooks/useDashboard.tsx?t=1775906216980:72:9)
+    at Shell (http://127.0.0.1:5173/src/App.tsx?t=1775906338454:15:67)
+    at Object.react_stack_bottom_frame (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:12867:12)
+    at renderWithHooks (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:4212:19)
+    at updateFunctionComponent (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:5568:16)
+    at beginWork (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:6139:20)
+    at runWithFiberInDEV (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:850:66)
+    at performUnitOfWork (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:8428:92)
+    at workLoopSync (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:8324:37)
+    at renderRootSync (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:8308:6)
+[ 3502608ms] [WARNING] %s
+
+%s
+ An error occurred in the <Shell> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:5173/@vite/client:509
+[ 3509946ms] [ERROR] Failed to load resource: the server responded with a status of 404 (Not Found) @ http://127.0.0.1:5173/src/pages/PathDetailPage.tsx?t=1775906710697:0
+[ 3509946ms] [ERROR] [vite] Failed to reload /src/pages/PathDetailPage.tsx. This could be due to syntax errors or importing non-existent modules. (see errors above) @ http://127.0.0.1:5173/@vite/client:509
+[ 3604697ms] Error: useDashboard must be used inside DashboardProvider
+    at useDashboard (http://127.0.0.1:5173/src/hooks/useDashboard.tsx?t=1775906216980:72:9)
+    at Shell (http://127.0.0.1:5173/src/App.tsx?t=1775906338454:15:67)
+    at Object.react_stack_bottom_frame (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:12867:12)
+    at renderWithHooks (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:4212:19)
+    at updateFunctionComponent (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:5568:16)
+    at beginWork (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:6139:20)
+    at runWithFiberInDEV (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:850:66)
+    at performUnitOfWork (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:8428:92)
+    at workLoopSync (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:8324:37)
+    at renderRootSync (http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:8308:6)
+[ 3604696ms] [WARNING] %s
+
+%s
+ An error occurred in the <Shell> component. Consider adding an error boundary to your tree to customize error handling behavior.
+Visit https://react.dev/link/error-boundaries to learn more about error boundaries. @ http://127.0.0.1:5173/@vite/client:509
+[ 3635321ms] [INFO] %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:14336
+[ 5326413ms] [ERROR] Error: <path> attribute d: Expected number, "M NaN NaN C NaN Na…". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326414ms] [ERROR] Received NaN for the `%s` attribute. If this is expected, cast the value to a string. x @ http://127.0.0.1:5173/@vite/client:509
+[ 5326415ms] [ERROR] Received NaN for the `%s` attribute. If this is expected, cast the value to a string. y @ http://127.0.0.1:5173/@vite/client:509
+[ 5326415ms] [ERROR] Error: <rect> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326416ms] [ERROR] Error: <rect> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326416ms] [ERROR] Error: <text> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326416ms] [ERROR] Error: <text> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326417ms] [ERROR] Error: <path> attribute d: Expected number, "M NaN NaN C NaN Na…". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326417ms] [ERROR] Error: <rect> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326417ms] [ERROR] Error: <rect> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326417ms] [ERROR] Error: <text> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326418ms] [ERROR] Error: <text> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326418ms] [ERROR] Error: <path> attribute d: Expected number, "M NaN NaN Q NaN Na…". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326419ms] [ERROR] Error: <rect> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326419ms] [ERROR] Error: <rect> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326419ms] [ERROR] Error: <text> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326420ms] [ERROR] Error: <text> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326420ms] [ERROR] Error: <path> attribute d: Expected number, "M NaN NaN Q NaN Na…". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326420ms] [ERROR] Error: <rect> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326421ms] [ERROR] Error: <rect> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326421ms] [ERROR] Error: <text> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326422ms] [ERROR] Error: <text> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326422ms] [ERROR] Error: <path> attribute d: Expected number, "M NaN NaN L NaN Na…". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326423ms] [ERROR] Error: <rect> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326423ms] [ERROR] Error: <rect> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326423ms] [ERROR] Error: <text> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326424ms] [ERROR] Error: <text> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326424ms] [ERROR] Error: <path> attribute d: Expected number, "M NaN NaN Q NaN Na…". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326425ms] [ERROR] Error: <rect> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326425ms] [ERROR] Error: <rect> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326426ms] [ERROR] Error: <text> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326426ms] [ERROR] Error: <text> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326427ms] [ERROR] Error: <path> attribute d: Expected number, "M NaN NaN Q NaN Na…". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326427ms] [ERROR] Error: <rect> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326428ms] [ERROR] Error: <rect> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326428ms] [ERROR] Error: <text> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326428ms] [ERROR] Error: <text> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326428ms] [ERROR] Error: <path> attribute d: Expected number, "M NaN NaN Q NaN Na…". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326429ms] [ERROR] Error: <rect> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326429ms] [ERROR] Error: <rect> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326429ms] [ERROR] Error: <text> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326429ms] [ERROR] Error: <text> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326430ms] [ERROR] Error: <path> attribute d: Expected number, "M NaN NaN Q NaN Na…". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326430ms] [ERROR] Error: <rect> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326430ms] [ERROR] Error: <rect> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326430ms] [ERROR] Error: <text> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326431ms] [ERROR] Error: <text> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326431ms] [ERROR] Error: <path> attribute d: Expected number, "M NaN NaN L NaN Na…". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326431ms] [ERROR] Error: <rect> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326431ms] [ERROR] Error: <rect> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326432ms] [ERROR] Error: <text> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326432ms] [ERROR] Error: <text> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326432ms] [ERROR] Error: <path> attribute d: Expected number, "M NaN NaN L NaN Na…". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326433ms] [ERROR] Error: <rect> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326433ms] [ERROR] Error: <rect> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326433ms] [ERROR] Error: <text> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326433ms] [ERROR] Error: <text> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326434ms] [ERROR] Error: <path> attribute d: Expected number, "M NaN NaN L NaN Na…". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326434ms] [ERROR] Error: <rect> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326434ms] [ERROR] Error: <rect> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326434ms] [ERROR] Error: <text> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326435ms] [ERROR] Error: <text> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326435ms] [ERROR] Error: <path> attribute d: Expected number, "M NaN NaN L NaN Na…". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326436ms] [ERROR] Error: <rect> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326436ms] [ERROR] Error: <rect> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326436ms] [ERROR] Error: <text> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326437ms] [ERROR] Error: <text> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326437ms] [ERROR] Error: <path> attribute d: Expected number, "M NaN NaN L NaN Na…". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326437ms] [ERROR] Error: <rect> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326437ms] [ERROR] Error: <rect> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326438ms] [ERROR] Error: <text> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326438ms] [ERROR] Error: <text> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326438ms] [ERROR] Error: <path> attribute d: Expected number, "M NaN NaN L NaN Na…". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326439ms] [ERROR] Error: <rect> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326439ms] [ERROR] Error: <rect> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326440ms] [ERROR] Error: <text> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326440ms] [ERROR] Error: <text> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326441ms] [ERROR] Error: <path> attribute d: Expected number, "M NaN NaN L NaN Na…". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326441ms] [ERROR] Error: <rect> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326442ms] [ERROR] Error: <rect> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326442ms] [ERROR] Error: <text> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326443ms] [ERROR] Error: <text> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326443ms] [ERROR] Error: <path> attribute d: Expected number, "M NaN NaN L NaN Na…". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326443ms] [ERROR] Error: <rect> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326443ms] [ERROR] Error: <rect> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326444ms] [ERROR] Error: <text> attribute x: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5326444ms] [ERROR] Error: <text> attribute y: Expected length, "NaN". @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:1231
+[ 5671465ms] [ERROR] Unable to preventDefault inside passive event listener invocation. @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:2113
+[ 5671490ms] [ERROR] Unable to preventDefault inside passive event listener invocation. @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:2113
+[ 5671533ms] [ERROR] Unable to preventDefault inside passive event listener invocation. @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:2113
+[ 5672003ms] [ERROR] Unable to preventDefault inside passive event listener invocation. @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:2113
+[ 5672038ms] [ERROR] Unable to preventDefault inside passive event listener invocation. @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:2113
+[ 5672080ms] [ERROR] Unable to preventDefault inside passive event listener invocation. @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:2113
+[ 5678418ms] [ERROR] Unable to preventDefault inside passive event listener invocation. @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:2113
+[ 5678506ms] [ERROR] Unable to preventDefault inside passive event listener invocation. @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:2113
+[ 5689929ms] [ERROR] Unable to preventDefault inside passive event listener invocation. @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:2113
+[ 5689950ms] [ERROR] Unable to preventDefault inside passive event listener invocation. @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:2113
+[ 5689966ms] [ERROR] Unable to preventDefault inside passive event listener invocation. @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:2113
+[ 5689980ms] [ERROR] Unable to preventDefault inside passive event listener invocation. @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:2113
+[ 5689994ms] [ERROR] Unable to preventDefault inside passive event listener invocation. @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:2113
+[ 5690006ms] [ERROR] Unable to preventDefault inside passive event listener invocation. @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:2113
+[ 5691352ms] [ERROR] Unable to preventDefault inside passive event listener invocation. @ http://127.0.0.1:5173/node_modules/.vite/deps/react-dom_client.js?v=b9b7768c:2113

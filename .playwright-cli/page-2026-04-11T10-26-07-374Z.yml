@@ -1,0 +1,104 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "LIFEPATH-ENGINE [v1.0.4]" [ref=e6] [cursor=pointer]:
+        - /url: /
+      - navigation [ref=e7]:
+        - link "simulation" [ref=e8] [cursor=pointer]:
+          - /url: /simulation
+        - link "reports" [ref=e9] [cursor=pointer]:
+          - /url: /strategy
+        - link "system" [ref=e10] [cursor=pointer]:
+          - /url: /
+    - generic [ref=e11]:
+      - button "run cycle" [ref=e12] [cursor=pointer]
+      - button "refresh" [ref=e13] [cursor=pointer]
+      - button "reset" [ref=e14] [cursor=pointer]
+      - generic [ref=e15]:
+        - generic [ref=e16]: "node: 882-x"
+        - generic [ref=e17]: stable
+  - main [ref=e18]:
+    - generic [ref=e19]:
+      - generic [ref=e20]:
+        - generic [ref=e21]:
+          - generic [ref=e22]: "[prologue_01]"
+          - heading "Life is not a destination. It's a variable." [level=1] [ref=e23]:
+            - text: Life is not a destination.
+            - text: It's a variable.
+          - paragraph [ref=e24]: Use Stitch's technical layout as the shell, then drive it with a local life-simulation engine that loops through profile intake, graph mutation, agent action, state writeback and branch expansion.
+          - generic [ref=e25]:
+            - link "modeling questionnaire" [ref=e26] [cursor=pointer]:
+              - /url: /simulation
+            - link "inspect protocol" [ref=e27] [cursor=pointer]:
+              - /url: /strategy
+          - generic [ref=e28]:
+            - generic [ref=e29]: Senior Undergraduate
+            - generic [ref=e30]: Shanghai
+            - generic [ref=e31]: time sync active
+          - generic [ref=e32]:
+            - generic [ref=e33]: command_palette
+            - generic [ref=e34]: "branch: Research Track"
+            - generic [ref=e35]: "runtime: configured"
+            - generic [ref=e36]: "assets: 5"
+        - generic [ref=e37]:
+          - img [ref=e39]:
+            - generic [ref=e45]: "branch_a: optimal"
+            - generic [ref=e46]: current_path
+            - generic [ref=e47]: "branch_b: degraded"
+          - generic [ref=e48]:
+            - generic [ref=e49]: system log
+            - strong [ref=e50]: Research Track
+            - paragraph [ref=e51]: Runtime discovered; director notes will be generated on the next cycle.
+      - generic [ref=e52]:
+        - article [ref=e53]:
+          - generic [ref=e54]: "01.0"
+          - heading "Parameterization" [level=2] [ref=e55]
+          - paragraph [ref=e56]: The intake profile is normalized into state vectors, graph nodes, agent roles and editable path checkpoints.
+        - article [ref=e57]:
+          - generic [ref=e58]: "02.0"
+          - heading "Path Branching" [level=2] [ref=e59]
+          - paragraph [ref=e60]: The engine keeps multiple futures alive and ranks them by confidence, payoff, risk and metric projections.
+        - article [ref=e61]:
+          - generic [ref=e62]: "03.0"
+          - heading "Memory Writeback" [level=2] [ref=e63]
+          - paragraph [ref=e64]: Each cycle appends state, fact and tendency memory so later branches inherit accumulated consequences.
+      - generic [ref=e65]:
+        - article [ref=e66]:
+          - generic [ref=e67]: method index
+          - heading "Technical Index" [level=3] [ref=e68]
+          - paragraph [ref=e69]: Intake, branch ranking, memory writeback, counterfactual edits and report generation are treated as one continuous operating protocol.
+          - generic [ref=e70]:
+            - generic [ref=e71]: "[01] profile ingest"
+            - generic [ref=e72]: "[02] graph mutation"
+            - generic [ref=e73]: "[03] agent council"
+            - generic [ref=e74]: "[04] branch retention"
+        - article [ref=e75]:
+          - generic [ref=e76]: system log
+          - heading "Latest Director Note" [level=3] [ref=e77]
+          - paragraph [ref=e78]: Runtime discovered; director notes will be generated on the next cycle.
+          - generic [ref=e79]:
+            - generic [ref=e80]: cycle 1
+            - generic [ref=e81]: provider openai-compatible
+            - generic [ref=e82]: api key present
+      - generic [ref=e83]:
+        - article [ref=e84]:
+          - generic [ref=e85]: active branch
+          - heading "Research First" [level=3] [ref=e86]
+          - paragraph [ref=e87]: Best when mentor signal remains explicit, memory writeback keeps stress visible, and the branch does not hide finance pressure.
+          - generic [ref=e88]:
+            - generic [ref=e89]: confidence 86
+            - generic [ref=e90]: payoff 91
+            - generic [ref=e91]: risk 41
+        - article [ref=e92]:
+          - generic [ref=e93]: source of truth
+          - heading "Stitch UI + Local Engine" [level=3] [ref=e94]
+          - paragraph [ref=e95]: Frontend layout follows the downloaded Stitch screens, while data persists locally and the backend remains database-free.
+          - generic [ref=e96]:
+            - generic [ref=e97]: Strategy Protocol (Technical)
+            - generic [ref=e98]: Simulation Process (Technical)
+            - generic [ref=e99]: Path Detail (Technical)
+            - generic [ref=e100]: Landing Page (Technical)
+      - generic [ref=e101]:
+        - generic [ref=e102]: lifepath-engine / local-state / no-db
+        - generic [ref=e103]: project 8477727617233002131
+        - generic [ref=e104]: design system synced from Stitch export

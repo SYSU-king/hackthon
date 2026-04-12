@@ -1,0 +1,47 @@
+{
+  "projectId": "8477727617233002131",
+  "fetchedAt": "2026-04-11T08:41:49.645Z",
+  "designSystemId": "asset-stub-assets-7524043e9a58414ba53b5625b54594e8-1775894506576",
+  "screens": [
+    {
+      "id": "0f67e2ca1d744bfe960622c66b13a8b7",
+      "slug": "strategy-protocol",
+      "name": "Strategy Protocol (Technical)",
+      "projectId": "8477727617233002131",
+      "htmlUrl": "https://contribution.usercontent.google.com/download?c=CgthaWRhX2NvZGVmeBJ7Eh1hcHBfY29tcGFuaW9uX2dlbmVyYXRlZF9maWxlcxpaCiVodG1sX2E2OTY1NzE4NDEzYTQ2MWRiODJhNzY1MjEzZjA3ZmZlEgsSBxC5uLf_uwcYAZIBIwoKcHJvamVjdF9pZBIVQhM4NDc3NzI3NjE3MjMzMDAyMTMx&filename=&opi=89354086",
+      "imageUrl": "https://lh3.googleusercontent.com/aida/ADBb0ugy8uGtFuMrnt58qMbaGyLs88cafT5xdpPZHmIGg0X71fGPK2L5BjOVUO4mDWL0KHx78bo1pxzTFlv1Yu1GzOV0oCbJcBv9Ja1nAlG303CzfM7srU-5Wjc3No5dQub54n17GeMThQV94x27UxetrRaZEDM97xZey6zx0iqpmVG3ZHIJRwqfpC_U116pgMMewta6QU08XCGHA8sc2rR9h86-Nh22izRx3Jshouq4zPU-xn4LQiTDRcJGC-k",
+      "htmlFile": "assets/stitch/html/strategy-protocol.html",
+      "imageFile": "assets/stitch/images/strategy-protocol.png"
+    },
+    {
+      "id": "b532765517ea4a6491f3b7f5a0362bf9",
+      "slug": "landing-page",
+      "name": "Landing Page (Technical)",
+      "projectId": "8477727617233002131",
+      "htmlUrl": "https://contribution.usercontent.google.com/download?c=CgthaWRhX2NvZGVmeBJ7Eh1hcHBfY29tcGFuaW9uX2dlbmVyYXRlZF9maWxlcxpaCiVodG1sXzRjNzIyOTBjMzM5NDQ1MDE5YmJjNjJiMjE1YmJmMmNlEgsSBxC5uLf_uwcYAZIBIwoKcHJvamVjdF9pZBIVQhM4NDc3NzI3NjE3MjMzMDAyMTMx&filename=&opi=89354086",
+      "imageUrl": "https://lh3.googleusercontent.com/aida/ADBb0uj-FA2FBq5sT9cDoFBiD-DzU5sf4PLh5SoiKRK0JoUQ1N_YsQSqAq7OzwDuhXpj7AKRPH-GdeA3asw1cWSHcwC9yXydSzSa2OqBzGm0FqLdv1AlsLLextmF5GsBFKDe4cvFUDn0WiSeRFztYNOjbA11k-fCICv2QxkqExDDjRjGK9BrT6v8hBgnmZrGHQWInwR5FZHIE-e2lHfms4t60zSLtqMkQ0aC-3HbF_E8P_FQnlaXlDfMxhXcS1k",
+      "htmlFile": "assets/stitch/html/landing-page.html",
+      "imageFile": "assets/stitch/images/landing-page.png"
+    },
+    {
+      "id": "1e03d2df82b941bf96acf793a03f4eec",
+      "slug": "path-detail",
+      "name": "Path Detail (Technical)",
+      "projectId": "8477727617233002131",
+      "htmlUrl": "https://contribution.usercontent.google.com/download?c=CgthaWRhX2NvZGVmeBJ7Eh1hcHBfY29tcGFuaW9uX2dlbmVyYXRlZF9maWxlcxpaCiVodG1sXzI1YTMzZDBlODRiNjQ5NjJiMjNjNzY3MmIzNjBiZDczEgsSBxC5uLf_uwcYAZIBIwoKcHJvamVjdF9pZBIVQhM4NDc3NzI3NjE3MjMzMDAyMTMx&filename=&opi=89354086",
+      "imageUrl": "https://lh3.googleusercontent.com/aida/ADBb0uinY8t140RezI6Dgny-vCc-VuLmjMAbUTp6FGDjzvIOIW2CF0Kf7KVz96E5Juo74HQURHAvyRjrnkGuo57b9_O2CkqdqAnIv5jI7qf78eYFYM6-muNMNm3Cn2jfbwTWk169QtbiWDZUGqT-94EmBixlZniTPThL4_JOhVNEOX1vVuy9lVdW4tAkNnmFIgcTseNmvLENtJyKgju_PBK2aGzJv-dihDpxLysWmWAdPFSmYzDecedhNGPf-ak",
+      "htmlFile": "assets/stitch/html/path-detail.html",
+      "imageFile": "assets/stitch/images/path-detail.png"
+    },
+    {
+      "id": "70fef224eb49493a8f4f4a4dedf6fbfe",
+      "slug": "simulation-process",
+      "name": "Simulation Process (Technical)",
+      "projectId": "8477727617233002131",
+      "htmlUrl": "https://contribution.usercontent.google.com/download?c=CgthaWRhX2NvZGVmeBJ7Eh1hcHBfY29tcGFuaW9uX2dlbmVyYXRlZF9maWxlcxpaCiVodG1sX2Y4ZTY4MmY5OTQ0NzRhOGY4ODJlMGQxZjBmN2QxMWJiEgsSBxC5uLf_uwcYAZIBIwoKcHJvamVjdF9pZBIVQhM4NDc3NzI3NjE3MjMzMDAyMTMx&filename=&opi=89354086",
+      "imageUrl": "https://lh3.googleusercontent.com/aida/ADBb0uh0PeT9CkrBQujPAevBjUVT9NIepYTA3J3EORsyxoy3el1H0mrXC-kgKQXdixTZcYXqYtZynmQ4GZAotpAc7-SuHLf1mltIxCsPpgeIUUlHqLui49-eBrETJ6uu6PltGkie4lQYUVOt8b5STfWYdpwpksc0smNwY3MoQJVtW_mvhD6kn35RMQzK8539XhZ0wr5NaI40Xrv_IulgCrab8LnKKysg89SBb7bG1ZeKi-AuoKzMWiMOlwk6iw",
+      "htmlFile": "assets/stitch/html/simulation-process.html",
+      "imageFile": "assets/stitch/images/simulation-process.png"
+    }
+  ]
+}

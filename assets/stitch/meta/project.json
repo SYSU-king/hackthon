@@ -1,0 +1,289 @@
+{
+  "createTime": "2026-04-11T07:52:29.945794Z",
+  "designTheme": {
+    "bodyFont": "INTER",
+    "colorMode": "DARK",
+    "colorVariant": "FIDELITY",
+    "customColor": "#0A192F",
+    "designMd": "```markdown\n# Design System Strategy: The Synthetic Oracle\n\n## 1. Overview & Creative North Star\nThe Creative North Star for this design system is **\"The Synthetic Oracle.\"** \n\nWe are moving away from the \"SaaS dashboard\" aesthetic and toward a high-end, strategic simulation environment. This system is designed to facilitate deep focus and rational decision-making by treating data as a living, navigable landscape. We achieve a \"premium editorial\" feel through intentional asymmetry, extreme typographic contrast, and a rejection of traditional UI scaffolding. \n\nInstead of boxes inside boxes, we use **Tonal Depth** and **Atmospheric Layering**. The layout should feel like a sophisticated heads-up display (HUD) projected onto a glass pane—precise, futuristic, and authoritative.\n\n---\n\n## 2. Colors & Atmospheric Layering\nThe palette is rooted in the depth of the void (`surface: #041329`) and the precision of high-frequency light (`primary: #38debb`).\n\n### The \"No-Line\" Rule\n**Explicit Instruction:** Designers are prohibited from using 1px solid borders for sectioning. Structural boundaries must be defined solely through:\n1.  **Background Shifts:** Transitioning from `surface` to `surface-container-low`.\n2.  **Negative Space:** Using the spacing scale to create \"islands\" of information.\n3.  **Luminance Contrast:** A card is defined by its subtle glow or blur, not its outline.\n\n### Surface Hierarchy & Nesting\nTreat the UI as a series of physical layers. \n- **Base Layer:** `surface-dim` (#041329) for the furthest background.\n- **Section Layer:** `surface-container-low` (#0d1c32) for broad content areas.\n- **Interactive Layer:** `surface-container-highest` (#27354c) for active cards and modals.\n\n### The \"Glass & Gradient\" Rule\nTo capture the simulation vibe, floating elements must utilize **Glassmorphism**. \n- **Effect:** Apply `backdrop-blur: 12px` and a background of `on-surface` at 5% opacity.\n- **Signature Textures:** Use a subtle linear gradient (45deg) from `primary` (#38debb) to `on-primary-container` (#009379) for main CTAs. This creates a \"pulse\" of energy that flat hex codes cannot replicate.\n\n---\n\n## 3. Typography: The Editorial Engine\nWe use a dual-font approach to balance technical precision with high-end editorial authority.\n\n*   **Display & Headlines (Space Grotesk):** This is our \"rational-futuristic\" voice. Use `display-lg` (3.5rem) with tight letter-spacing (-0.02em) for simulation titles. The geometric nature of Space Grotesk provides the \"Engine\" feel.\n*   **Body & Data (Inter):** Inter is used for its high legibility in information-heavy contexts. Use `body-sm` (0.75rem) for data density, ensuring line heights are generous (1.5+) to prevent visual fatigue.\n*   **The Gold Accent:** Use `tertiary` (#e7c433) exclusively for critical \"Aha!\" moments or high-value simulation nodes. It should be used sparingly, like gold leaf on a blueprint.\n\n---\n\n## 4. Elevation & Depth\nWe eschew the standard Material \"drop shadow\" in favor of **Tonal Layering**.\n\n*   **The Layering Principle:** Place `surface-container-lowest` cards on a `surface-container-low` section. The slight shift in deep navy creates a soft, natural lift.\n*   **Ambient Shadows:** For floating modals, use a \"Cyan-Tinted Shadow.\" \n    *   *Values:* `0px 20px 40px rgba(0, 107, 88, 0.08)`. This mimics the glow of the screen rather than a physical shadow.\n*   **The \"Ghost Border\" Fallback:** If a divider is mandatory for accessibility, use `outline-variant` (#44474d) at **15% opacity**. It should be felt, not seen.\n*   **Grid Integration:** The background should feature a subtle `outline` (#8f9097) grid at 5% opacity, reinforcing the \"simulation\" aesthetic.\n\n---\n\n## 5. Components & Interface Nodes\n\n### Interactive Nodes (The Signature Component)\nThe \"LifePath\" nodes are the heart of the system. \n- **Style:** Circular elements using `primary-container` with a `primary` 1px Ghost Border. \n- **State:** On hover, the node should expand and trigger a `tertiary` glow.\n\n### Buttons: High-Precision Triggers\n- **Primary:** Gradient fill (`primary` to `on-primary-container`), `round-sm` (0.125rem) for a sharp, technical look. No rounded pills.\n- **Secondary:** Ghost style. Transparent background, `outline-variant` at 20% opacity. Text in `primary-fixed-dim`.\n\n### Cards: Glass Panes\n- **Rule:** Forbid divider lines. \n- **Structure:** Separate header and body using a `surface-container-highest` background for the header and `surface-container` for the body. Use vertical whitespace (1.5rem+) as the primary separator.\n\n### Input Fields: Monolithic\n- **Style:** Minimalist. Only a bottom border (Ghost Border style). When focused, the bottom border \"charges\" with a `primary` color transition from left to right.\n\n### Path Lines (Data Viz)\n- **Style:** Use SVG paths with `stroke-dasharray`. Animate the dash to simulate \"flow\" from one life event to the next. Use `secondary` (#bcc6e6) for past paths and `primary` (#38debb) for projected futures.\n\n---\n\n## 6. Do’s and Don’ts\n\n### Do:\n- **Embrace Asymmetry:** Offset your data columns. A perfectly centered layout feels like a template; a slightly weighted layout feels custom-engineered.\n- **Layer Your Backgrounds:** Combine a subtle gradient with a 10% opacity \"micro-particle\" noise texture.\n- **Use \"Data-Ink\" Ratio:** Every pixel should serve a purpose. If a line doesn't convey data, delete it and use space instead.\n\n### Don’t:\n- **NO PURPLE:** Do not allow any hue between 260° and 300° to enter the workspace. It breaks the \"rational\" cyan/navy/gold spectrum.\n- **No Heavy Borders:** Never use a 100% opaque border to separate content. It ruins the \"Synthetic Oracle\" transparency.\n- **No Default Shadows:** Avoid standard black shadows. They feel \"dirty\" against the deep navy palette. Use cyan-tinted ambient glows.\n- **No Large Radius:** Keep `roundedness` at `sm` (0.125rem) or `none` for technical components. Avoid the \"bubbly\" consumer app look.\n\n---\n\n**Director’s Final Note:** This design system is about the tension between the vastness of a \"Life Path\" (the deep navy backgrounds) and the precision of human choice (the cyan nodes). Every screen should feel like a piece of high-end equipment—expensive, accurate, and visionary.```",
+    "font": "SPACE_GROTESK",
+    "headlineFont": "SPACE_GROTESK",
+    "labelFont": "INTER",
+    "namedColors": {
+      "background": "#041329",
+      "error": "#ffb4ab",
+      "error_container": "#93000a",
+      "inverse_on_surface": "#233148",
+      "inverse_primary": "#006b58",
+      "inverse_surface": "#d6e3ff",
+      "on_background": "#d6e3ff",
+      "on_error": "#690005",
+      "on_error_container": "#ffdad6",
+      "on_primary": "#00382d",
+      "on_primary_container": "#009379",
+      "on_primary_fixed": "#002019",
+      "on_primary_fixed_variant": "#005142",
+      "on_secondary": "#263049",
+      "on_secondary_container": "#aab4d4",
+      "on_secondary_fixed": "#101b33",
+      "on_secondary_fixed_variant": "#3c4661",
+      "on_surface": "#d6e3ff",
+      "on_surface_variant": "#c5c6cd",
+      "on_tertiary": "#3b2f00",
+      "on_tertiary_container": "#4d3e00",
+      "on_tertiary_fixed": "#221b00",
+      "on_tertiary_fixed_variant": "#554500",
+      "outline": "#8f9097",
+      "outline_variant": "#44474d",
+      "primary": "#38debb",
+      "primary_container": "#001e17",
+      "primary_fixed": "#5ffbd6",
+      "primary_fixed_dim": "#38debb",
+      "secondary": "#bcc6e6",
+      "secondary_container": "#3c4661",
+      "secondary_fixed": "#d9e2ff",
+      "secondary_fixed_dim": "#bcc6e6",
+      "surface": "#041329",
+      "surface_bright": "#2c3951",
+      "surface_container": "#112036",
+      "surface_container_high": "#1c2a41",
+      "surface_container_highest": "#27354c",
+      "surface_container_low": "#0d1c32",
+      "surface_container_lowest": "#010e24",
+      "surface_dim": "#041329",
+      "surface_tint": "#38debb",
+      "surface_variant": "#27354c",
+      "tertiary": "#e7c433",
+      "tertiary_container": "#caa911",
+      "tertiary_fixed": "#ffe174",
+      "tertiary_fixed_dim": "#e7c433"
+    },
+    "overrideNeutralColor": "#0A192F",
+    "overridePrimaryColor": "#64FFDA",
+    "overrideSecondaryColor": "#8892B0",
+    "overrideTertiaryColor": "#F4D03F",
+    "roundness": "ROUND_FOUR",
+    "spacingScale": 1
+  },
+  "deviceType": "DESKTOP",
+  "metadata": {
+    "userRole": "OWNER"
+  },
+  "name": "projects/8477727617233002131",
+  "origin": "STITCH",
+  "projectType": "TEXT_TO_UI_PRO",
+  "screenInstances": [
+    {
+      "height": 1504,
+      "id": "0148c077d78e4c199b31cbd9b05bd0af",
+      "sourceScreen": "projects/8477727617233002131/screens/0148c077d78e4c199b31cbd9b05bd0af",
+      "width": 1280,
+      "x": 5056
+    },
+    {
+      "height": 1320,
+      "id": "0418c907e31d4da39e0170f50eeb3aa4",
+      "sourceScreen": "projects/8477727617233002131/screens/0418c907e31d4da39e0170f50eeb3aa4",
+      "width": 1280,
+      "x": 2368
+    },
+    {
+      "height": 1230,
+      "id": "0f67e2ca1d744bfe960622c66b13a8b7",
+      "sourceScreen": "projects/8477727617233002131/screens/0f67e2ca1d744bfe960622c66b13a8b7",
+      "width": 1280,
+      "x": 5056,
+      "y": 7187
+    },
+    {
+      "height": 1087,
+      "id": "1e03d2df82b941bf96acf793a03f4eec",
+      "sourceScreen": "projects/8477727617233002131/screens/1e03d2df82b941bf96acf793a03f4eec",
+      "width": 1280,
+      "x": 3712,
+      "y": 7187
+    },
+    {
+      "height": 1024,
+      "id": "23e6aa82705745329194459fc0427f18",
+      "sourceScreen": "projects/8477727617233002131/screens/23e6aa82705745329194459fc0427f18",
+      "width": 1280,
+      "x": 5056,
+      "y": 4121
+    },
+    {
+      "height": 2103,
+      "id": "25db1a38e3b24db9960dbc22e43fe8f4",
+      "sourceScreen": "projects/8477727617233002131/screens/25db1a38e3b24db9960dbc22e43fe8f4",
+      "width": 1280,
+      "x": 9088
+    },
+    {
+      "height": 1032,
+      "id": "26c6c70afa9d4022afdf0932f91198cd",
+      "sourceScreen": "projects/8477727617233002131/screens/26c6c70afa9d4022afdf0932f91198cd",
+      "width": 1280,
+      "x": 6400
+    },
+    {
+      "height": 1024,
+      "id": "28f77ab3037d47599b88a780a1fdfc76",
+      "sourceScreen": "projects/8477727617233002131/screens/28f77ab3037d47599b88a780a1fdfc76",
+      "width": 1280,
+      "x": 6400,
+      "y": 4121
+    },
+    {
+      "height": 1481,
+      "id": "4c693f16a3214a1b9f9cffb7bc383813",
+      "sourceScreen": "projects/8477727617233002131/screens/4c693f16a3214a1b9f9cffb7bc383813",
+      "width": 1280,
+      "x": 14464,
+      "y": 4121
+    },
+    {
+      "height": 1024,
+      "id": "597d024589bc458693c69e474c5ed4d9",
+      "sourceScreen": "projects/8477727617233002131/screens/597d024589bc458693c69e474c5ed4d9",
+      "width": 1280,
+      "x": 10432
+    },
+    {
+      "height": 1201,
+      "id": "679243905d6a4b83982e96cf2949608a",
+      "sourceScreen": "projects/8477727617233002131/screens/679243905d6a4b83982e96cf2949608a",
+      "width": 1280,
+      "x": 3712,
+      "y": 4121
+    },
+    {
+      "height": 1024,
+      "id": "70fef224eb49493a8f4f4a4dedf6fbfe",
+      "sourceScreen": "projects/8477727617233002131/screens/70fef224eb49493a8f4f4a4dedf6fbfe",
+      "width": 1280,
+      "x": 2368,
+      "y": 7187
+    },
+    {
+      "height": 3865,
+      "id": "72f6bfdde57b4f2b98c5653a34d6a700",
+      "sourceScreen": "projects/8477727617233002131/screens/72f6bfdde57b4f2b98c5653a34d6a700",
+      "width": 1280,
+      "x": 1024
+    },
+    {
+      "height": 1738,
+      "id": "76a4d9d12a6c4d04b707037662888ef1",
+      "sourceScreen": "projects/8477727617233002131/screens/76a4d9d12a6c4d04b707037662888ef1",
+      "width": 1280,
+      "x": 13120
+    },
+    {
+      "height": 1024,
+      "id": "8b6f3cd8576242beaba7e06c2a16349e",
+      "sourceScreen": "projects/8477727617233002131/screens/8b6f3cd8576242beaba7e06c2a16349e",
+      "width": 1280,
+      "x": 10432,
+      "y": 4121
+    },
+    {
+      "height": 1360,
+      "id": "901e0fe50f734ca898d44063bdb96c59",
+      "sourceScreen": "projects/8477727617233002131/screens/901e0fe50f734ca898d44063bdb96c59",
+      "width": 1280,
+      "x": 11776
+    },
+    {
+      "height": 1024,
+      "id": "94f31e40addb4678ab3dcb5aacb54e3b",
+      "sourceScreen": "projects/8477727617233002131/screens/94f31e40addb4678ab3dcb5aacb54e3b",
+      "width": 1280,
+      "x": 7744,
+      "y": 4121
+    },
+    {
+      "height": 1024,
+      "id": "a01788bd58b94e7a9edfde69073d5790",
+      "sourceScreen": "projects/8477727617233002131/screens/a01788bd58b94e7a9edfde69073d5790",
+      "width": 1280,
+      "x": 7744
+    },
+    {
+      "height": 1513,
+      "id": "af23bc2032cb44888a824ce98538c7d5",
+      "sourceScreen": "projects/8477727617233002131/screens/af23bc2032cb44888a824ce98538c7d5",
+      "width": 1280,
+      "x": 9088,
+      "y": 4121
+    },
+    {
+      "height": 540,
+      "id": "assets-299c8d0a810a4f4a94fcdf2a9762706e-1775894080501",
+      "sourceAsset": "assets/299c8d0a810a4f4a94fcdf2a9762706e",
+      "type": "DESIGN_SYSTEM_INSTANCE",
+      "width": 960,
+      "y": 4121
+    },
+    {
+      "height": 540,
+      "id": "assets-7524043e9a58414ba53b5625b54594e8-1775894506576",
+      "sourceAsset": "assets/7524043e9a58414ba53b5625b54594e8",
+      "type": "DESIGN_SYSTEM_INSTANCE",
+      "width": 960,
+      "y": 7187
+    },
+    {
+      "height": 540,
+      "id": "assets-7db8d419afc84fe39ce34c8430a1d298-1775893960520",
+      "sourceAsset": "assets/7db8d419afc84fe39ce34c8430a1d298",
+      "type": "DESIGN_SYSTEM_INSTANCE",
+      "width": 960
+    },
+    {
+      "height": 2704,
+      "id": "b532765517ea4a6491f3b7f5a0362bf9",
+      "sourceScreen": "projects/8477727617233002131/screens/b532765517ea4a6491f3b7f5a0362bf9",
+      "width": 1280,
+      "x": 1024,
+      "y": 7187
+    },
+    {
+      "height": 1111,
+      "id": "b65d8e0033ea4edbb041f755d20fa68e",
+      "sourceScreen": "projects/8477727617233002131/screens/b65d8e0033ea4edbb041f755d20fa68e",
+      "width": 1280,
+      "x": 3712
+    },
+    {
+      "height": 1351,
+      "id": "c6e7d1a9e72d488f9d52f2e0db4917ce",
+      "sourceScreen": "projects/8477727617233002131/screens/c6e7d1a9e72d488f9d52f2e0db4917ce",
+      "width": 1280,
+      "x": 13120,
+      "y": 4121
+    },
+    {
+      "height": 2810,
+      "id": "c92e52ad035a4a54952eb82d4f76abbf",
+      "sourceScreen": "projects/8477727617233002131/screens/c92e52ad035a4a54952eb82d4f76abbf",
+      "width": 1280,
+      "x": 1024,
+      "y": 4121
+    },
+    {
+      "height": 1381,
+      "id": "ce66170669f542deb8de876fa673ca58",
+      "sourceScreen": "projects/8477727617233002131/screens/ce66170669f542deb8de876fa673ca58",
+      "width": 1280,
+      "x": 2368,
+      "y": 4121
+    }
+  ],
+  "thumbnailScreenshot": {
+    "downloadUrl": "https://lh3.googleusercontent.com/aida/ADBb0uhLW07ILKCSUmcpiSLBgD8gjkM-Q4vwSacvFpppwVOrwHfyo3UvMeFhF9GHjProvUkjKaY4t0npYN6A6wLPUiogEUE55truaiRh8g6-wsElqGSapRD8TL7G9QaUwDm2XGqsP0S6SE0Sn0Yq--sNWsFl3cOSDqUdQlWe70wU5IzeYeAkMlUCNe9eo07ZVZtvYMwXbxY_6H8NAw1zHyIUwRlzr8dvgX7QD9SBAFmIGBrxbrSeP3ggUWMenQY",
+    "name": "projects/8477727617233002131/files/28e4ebfed8d44d43a93daa416f6a6715"
+  },
+  "title": "人生路径推演",
+  "updateTime": "2026-04-11T08:03:43.887459Z",
+  "visibility": "PRIVATE"
+}

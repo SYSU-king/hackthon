@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,wght@0,400..800;1,400..800&amp;family=Inter:wght@100..900&amp;family=Space+Grotesk:wght@300..700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary": "#ffdbd1",
+                        "tertiary": "#3a3c3c",
+                        "on-tertiary": "#e2e2e2",
+                        "error-container": "#ffdad6",
+                        "surface-variant": "#e2e2e2",
+                        "primary-fixed": "#b12d00",
+                        "outline": "#777777",
+                        "on-error-container": "#410002",
+                        "surface-bright": "#f9f9f9",
+                        "on-secondary-container": "#1b1b1b",
+                        "outline-variant": "#c6c6c6",
+                        "on-tertiary-fixed-variant": "#e2e2e2",
+                        "secondary-fixed": "#c6c6c6",
+                        "surface-container-high": "#e8e8e8",
+                        "on-secondary": "#ffffff",
+                        "on-error": "#ffffff",
+                        "on-tertiary-container": "#ffffff",
+                        "tertiary-container": "#737575",
+                        "secondary": "#5e5e5e",
+                        "inverse-surface": "#2f3131",
+                        "secondary-fixed-dim": "#ababab",
+                        "on-secondary-fixed-variant": "#3b3b3b",
+                        "on-primary-fixed-variant": "#ffdbd1",
+                        "surface-dim": "#dadada",
+                        "inverse-primary": "#ffb5a0",
+                        "background": "#f9f9f9",
+                        "surface-tint": "#b12d00",
+                        "on-secondary-fixed": "#1b1b1b",
+                        "primary-fixed-dim": "#872000",
+                        "surface-container-low": "#f3f3f3",
+                        "secondary-container": "#d4d4d4",
+                        "primary": "#000000",
+                        "error": "#ba1a1a",
+                        "on-primary-fixed": "#ffffff",
+                        "inverse-on-surface": "#f1f1f1",
+                        "surface-container": "#eeeeee",
+                        "tertiary-fixed-dim": "#454747",
+                        "primary-container": "#731a00",
+                        "surface-container-highest": "#e2e2e2",
+                        "on-background": "#1a1c1c",
+                        "on-primary-container": "#ffffff",
+                        "tertiary-fixed": "#5d5f5f",
+                        "on-surface-variant": "#474747",
+                        "on-tertiary-fixed": "#ffffff",
+                        "on-surface": "#1a1c1c",
+                        "surface-container-lowest": "#ffffff",
+                        "surface": "#f9f9f9"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0px",
+                        "lg": "0px",
+                        "xl": "0px",
+                        "full": "0px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Newsreader"],
+                        "body": ["Inter"],
+                        "label": ["Space Grotesk"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .grid-bg {
+            background-image: linear-gradient(#e5e5e5 1px, transparent 1px), linear-gradient(90deg, #e5e5e5 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+    </style>
+</head>
+<body class="bg-background text-primary font-body">
+<!-- TopNavBar -->
+<header class="fixed top-0 left-0 w-full z-50 flex justify-between items-center px-6 h-14 bg-[#F9F9F9] dark:bg-[#000000] border-b border-[#E5E5E5] dark:border-[#222222]">
+<div class="flex items-center gap-8">
+<span class="font-serif font-black italic text-xl tracking-tighter text-[#000000] dark:text-[#F9F9F9]">LIFEPATH-ENGINE [v1.0.4]</span>
+<nav class="hidden md:flex items-center gap-6">
+<a class="text-[#FF4500] font-bold border-b-2 border-[#FF4500] pb-1 font-mono text-[10px] uppercase tracking-tight" href="#">SIMULATION</a>
+<a class="text-[#777777] dark:text-[#999999] hover:text-[#FF4500] transition-colors duration-150 font-mono text-[10px] uppercase tracking-tight" href="#">AGENTS</a>
+<a class="text-[#777777] dark:text-[#999999] hover:text-[#FF4500] transition-colors duration-150 font-mono text-[10px] uppercase tracking-tight" href="#">REPORTS</a>
+<a class="text-[#777777] dark:text-[#999999] hover:text-[#FF4500] transition-colors duration-150 font-mono text-[10px] uppercase tracking-tight" href="#">SYSTEM</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<div class="relative">
+<span class="material-symbols-outlined absolute left-2 top-1/2 -translate-y-1/2 text-xs text-outline">search</span>
+<input class="bg-surface-container-low border-none font-label text-[10px] pl-8 pr-4 py-1 w-48 focus:ring-1 focus:ring-surface-tint" placeholder="QUERY_ID..." type="text"/>
+</div>
+<span class="material-symbols-outlined text-xl">account_circle</span>
+</div>
+</header>
+<!-- SideNavBar -->
+<aside class="fixed left-0 top-14 h-[calc(100vh-3.5rem)] w-64 z-40 flex flex-col py-4 bg-[#F3F3F3] dark:bg-[#111111] border-r border-[#E5E5E5] dark:border-[#222222]">
+<div class="px-6 mb-8">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 bg-primary flex items-center justify-center text-on-primary font-headline italic font-bold">A</div>
+<div>
+<div class="font-serif font-bold text-lg leading-none">[ADMIN-01]</div>
+<div class="font-label text-[10px] tracking-widest text-[#777777]">STATUS: STABLE</div>
+</div>
+</div>
+</div>
+<nav class="flex-1">
+<a class="text-[#777777] dark:text-[#999999] px-4 py-3 flex items-center gap-3 font-mono text-xs uppercase tracking-widest hover:bg-[#E5E5E5] dark:hover:bg-[#222222] transition-all duration-75" href="#">
+<span class="material-symbols-outlined text-sm">analytics</span> [DASHBOARD]
+            </a>
+<a class="bg-[#F9F9F9] dark:bg-[#000000] text-[#FF4500] border-l-4 border-[#FF4500] px-4 py-3 flex items-center gap-3 font-mono text-xs uppercase tracking-widest transition-all duration-75" href="#">
+<span class="material-symbols-outlined text-sm">terminal</span> [AGENT_LOGS]
+            </a>
+<a class="text-[#777777] dark:text-[#999999] px-4 py-3 flex items-center gap-3 font-mono text-xs uppercase tracking-widest hover:bg-[#E5E5E5] dark:hover:bg-[#222222] transition-all duration-75" href="#">
+<span class="material-symbols-outlined text-sm">biotech</span> [FORENSICS]
+            </a>
+<a class="text-[#777777] dark:text-[#999999] px-4 py-3 flex items-center gap-3 font-mono text-xs uppercase tracking-widest hover:bg-[#E5E5E5] dark:hover:bg-[#222222] transition-all duration-75" href="#">
+<span class="material-symbols-outlined text-sm">inventory_2</span> [ARCHIVE]
+            </a>
+<a class="text-[#777777] dark:text-[#999999] px-4 py-3 flex items-center gap-3 font-mono text-xs uppercase tracking-widest hover:bg-[#E5E5E5] dark:hover:bg-[#222222] transition-all duration-75" href="#">
+<span class="material-symbols-outlined text-sm">settings</span> [SETTINGS]
+            </a>
+</nav>
+<div class="mt-auto border-t border-outline-variant/20 pt-4">
+<a class="text-[#777777] px-4 py-2 flex items-center gap-3 font-mono text-xs uppercase tracking-widest hover:text-primary transition-all" href="#">
+<span class="material-symbols-outlined text-sm">help</span> HELP
+            </a>
+<a class="text-[#777777] px-4 py-2 flex items-center gap-3 font-mono text-xs uppercase tracking-widest hover:text-error transition-all" href="#">
+<span class="material-symbols-outlined text-sm">logout</span> LOGOUT
+            </a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 mt-14 p-0 min-h-[calc(100vh-3.5rem)] flex flex-col relative overflow-hidden">
+<div class="flex-1 flex overflow-hidden">
+<!-- Simulation Graph Panel -->
+<section class="flex-1 bg-surface grid-bg relative overflow-hidden cursor-crosshair">
+<div class="absolute top-4 left-6 z-10 flex flex-col gap-1">
+<span class="font-label text-[10px] text-outline">[SYS-882] SIMULATION_VIEWPORT</span>
+<h1 class="font-headline text-3xl font-bold italic tracking-tight">Life-Path Tree: Alpha-9</h1>
+</div>
+<div class="absolute inset-0 flex items-center justify-center">
+<svg class="opacity-80" height="100%" width="100%">
+<!-- Root Node -->
+<line stroke="#000000" stroke-width="1.5" x1="50%" x2="50%" y1="90%" y2="70%"></line>
+<rect fill="#000000" height="24" width="80" x="calc(50% - 40px)" y="90%"></rect>
+<text dominant-baseline="hanging" fill="#ffffff" font-family="Space Grotesk" font-size="10" text-anchor="middle" x="50%" y="91.5%">BASE_INIT</text>
+<!-- Level 1 Branches -->
+<line stroke="#000000" stroke-width="1" x1="50%" x2="30%" y1="70%" y2="50%"></line>
+<line stroke="#000000" stroke-width="1" x1="50%" x2="70%" y1="70%" y2="50%"></line>
+<!-- Nodes -->
+<g>
+<rect fill="#F3F3F3" height="24" stroke="#C6C6C6" stroke-width="1" width="80" x="calc(30% - 40px)" y="48%"></rect>
+<text dominant-baseline="hanging" fill="#000000" font-family="Space Grotesk" font-size="10" text-anchor="middle" x="30%" y="49.5%">EDU_PATH_01</text>
+</g>
+<g>
+<rect fill="#F3F3F3" height="24" stroke="#C6C6C6" stroke-width="1" width="80" x="calc(70% - 40px)" y="48%"></rect>
+<text dominant-baseline="hanging" fill="#000000" font-family="Space Grotesk" font-size="10" text-anchor="middle" x="70%" y="49.5%">TRD_PATH_02</text>
+</g>
+<!-- Level 2 Branches -->
+<line stroke="#000000" stroke-dasharray="2,2" stroke-width="1" x1="30%" x2="20%" y1="48%" y2="25%"></line>
+<line stroke="#FF4500" stroke-width="2" x1="30%" x2="40%" y1="48%" y2="25%"></line>
+<!-- Active Node Highlight -->
+<g>
+<rect fill="#FF4500" height="28" width="90" x="calc(40% - 45px)" y="23%"></rect>
+<text dominant-baseline="hanging" fill="#ffffff" font-family="Space Grotesk" font-size="10" font-weight="bold" text-anchor="middle" x="40%" y="24.5%">ACTIVE_NODE: X-4</text>
+<rect fill="#000000" height="12" width="90" x="calc(40% - 45px)" y="15%"></rect>
+<text dominant-baseline="hanging" fill="#FF4500" font-family="Space Grotesk" font-size="8" text-anchor="middle" x="40%" y="16.5%">PROCESSING...</text>
+</g>
+<g>
+<rect fill="#F3F3F3" height="24" stroke="#C6C6C6" stroke-width="1" width="80" x="calc(20% - 40px)" y="23%"></rect>
+<text dominant-baseline="hanging" fill="#777777" font-family="Space Grotesk" font-size="10" text-anchor="middle" x="20%" y="24.5%">PR_ABORTED</text>
+</g>
+</svg>
+</div>
+<div class="absolute bottom-4 right-6 bg-surface-container-highest/90 backdrop-blur-md border border-outline-variant p-4 w-64 shadow-sm">
+<div class="font-label text-[10px] text-outline mb-2">COORD_MAP</div>
+<div class="h-32 bg-surface-dim relative border border-outline-variant overflow-hidden">
+<div class="absolute top-1/4 left-1/4 w-12 h-8 border border-primary-fixed"></div>
+<img class="w-full h-full object-cover grayscale opacity-30" data-alt="abstract top-down view of complex digital architecture map with grid lines and technical data overlays" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBwPSKWAm0l_0T4Ib11NdG2lgaEaKc0872La-42CBSnLV6Vu9aFJnzpjmfkjpAXpSw69zt1MV45hTvZwNIlMEE4B_WqSS8pQPtrPBq60Xnr_hWwhWjpYUG2iQORF3I5WcZyi-r7wA7z2VwzxuQEy9gfRkXZ1jCTxsOshIAspVl3e_moLiHjdIblH-gHByqvK1C576qjRmKsNewoaA7ZiCH5KQ7prD8zGH_s-2A_KjHuhHrzRRcIiH26lRtKM_vf3iQdeTCW2WC__SY"/>
+</div>
+</div>
+</section>
+<!-- Event Stream / Console Log Panel -->
+<aside class="w-80 bg-surface-container-low border-l border-outline-variant flex flex-col">
+<div class="p-4 border-b border-outline-variant bg-surface">
+<div class="flex items-center justify-between mb-1">
+<span class="font-label text-xs font-bold uppercase tracking-tighter">EVENT_STREAM</span>
+<div class="w-2 h-2 bg-primary-fixed"></div>
+</div>
+<div class="font-label text-[10px] text-outline">SESSION_ID: LP-E_8122-0X</div>
+</div>
+<div class="flex-1 overflow-y-auto font-label text-[11px] p-4 space-y-3">
+<div class="border-l-2 border-primary-fixed pl-3 py-1">
+<span class="text-outline">[14:02:11.08]</span>
+<p class="text-primary font-bold">[SYSTEM] Node Alpha-9 branch initialized.</p>
+</div>
+<div class="pl-3 py-1 text-on-surface-variant">
+<span class="text-outline">[14:02:10.45]</span>
+<p>QUERY_REQUEST: Analyzing EDU_PATH_01 probability...</p>
+</div>
+<div class="pl-3 py-1 text-on-surface-variant">
+<span class="text-outline">[14:01:58.21]</span>
+<p>LOG: Agent entropy set to 0.042 (STABLE)</p>
+</div>
+<div class="pl-3 py-1 text-on-surface-variant">
+<span class="text-outline">[14:01:45.00]</span>
+<p>BOOT: LifePath core kernel 1.0.4 loaded.</p>
+</div>
+<div class="pl-3 py-1 text-on-surface-variant">
+<span class="text-outline">[14:01:44.89]</span>
+<p>BOOT: Checking environment constraints...</p>
+</div>
+<div class="border-l-2 border-primary-fixed pl-3 py-1 bg-surface-container-high">
+<span class="text-outline">[14:02:15.12]</span>
+<p class="text-primary-fixed font-bold">[COMMIT] New probability node X-4 created.</p>
+</div>
+<div class="pl-3 py-1 text-on-surface-variant">
+<span class="text-outline">[14:02:16.44]</span>
+<p>LOG: Branching factor: 2.15x</p>
+</div>
+</div>
+<div class="p-4 bg-primary text-on-primary">
+<div class="flex items-center gap-2 mb-2">
+<span class="material-symbols-outlined text-sm">info</span>
+<span class="font-label text-[10px] tracking-widest uppercase">System Metrics</span>
+</div>
+<div class="grid grid-cols-2 gap-4 font-mono text-[10px]">
+<div>
+<span class="block opacity-60">CPU_LOAD</span>
+<span>44.2%</span>
+</div>
+<div>
+<span class="block opacity-60">MEM_UTIL</span>
+<span>8.12GB</span>
+</div>
+</div>
+</div>
+</aside>
+</div>
+<!-- Time Progression Bar -->
+<footer class="h-20 bg-surface border-t border-outline-variant flex items-center px-6 gap-8">
+<div class="flex items-center gap-2">
+<button class="w-10 h-10 bg-primary flex items-center justify-center text-on-primary hover:bg-primary-fixed transition-colors">
+<span class="material-symbols-outlined">pause</span>
+</button>
+<button class="w-10 h-10 border border-outline flex items-center justify-center text-primary hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">skip_next</span>
+</button>
+</div>
+<div class="flex-1 flex flex-col gap-2">
+<div class="flex justify-between font-label text-[10px] text-outline px-1">
+<span>YEAR_0</span>
+<span>YEAR_10</span>
+<span>YEAR_20</span>
+<span>YEAR_30</span>
+<span>YEAR_40</span>
+<span>YEAR_50</span>
+<span>YEAR_60</span>
+<span>YEAR_70</span>
+<span>YEAR_80</span>
+</div>
+<div class="h-6 bg-surface-container-low border border-outline-variant relative group">
+<div class="absolute inset-y-0 left-0 bg-primary-fixed/20 w-[42%] border-r border-primary-fixed"></div>
+<div class="absolute inset-0 flex">
+<div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+<div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+<div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+<div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+<div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+<div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+<div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+<div class="flex-1 border-r border-outline-variant/30 h-full"></div>
+</div>
+<div class="absolute left-[42%] -top-1 bottom-1 w-0.5 bg-primary-fixed">
+<div class="absolute -top-3 left-1/2 -translate-x-1/2 font-label text-[10px] text-primary-fixed font-bold">2038.4</div>
+</div>
+</div>
+</div>
+<div class="w-48 text-right">
+<div class="font-label text-[10px] text-outline">CURRENT_STATE</div>
+<div class="font-headline font-bold italic text-lg leading-none">MID-LIFE PIVOT [Q2]</div>
+</div>
+</footer>
+</main>
+<!-- Contextual FAB -->
+<button class="fixed bottom-24 right-8 w-14 h-14 bg-primary-fixed text-white flex items-center justify-center shadow-xl hover:scale-105 active:scale-95 transition-transform z-50">
+<span class="material-symbols-outlined text-3xl">add</span>
+</button>
+</body></html>
