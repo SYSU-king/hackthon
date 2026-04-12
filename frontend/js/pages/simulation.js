@@ -586,6 +586,10 @@ function bindTreeViewportControls() {
   document.getElementById('tree-zoom-reset')?.addEventListener('click', () => resetTreeViewport(true));
 }
 
+function isTreeNodeTarget(target) {
+  return typeof target?.closest === 'function' && !!target.closest('[data-node-id]');
+}
+
 function bindTreeViewportInteractions(svg) {
   if (!svg || svg.dataset.viewportBound === 'true') return;
   svg.dataset.viewportBound = 'true';
@@ -600,6 +604,7 @@ function bindTreeViewportInteractions(svg) {
 
   svg.addEventListener('pointerdown', (event) => {
     if (event.button !== 0) return;
+    if (isTreeNodeTarget(event.target)) return;
     _treeViewport.dragPointerId = event.pointerId;
     _treeViewport.dragStartClientX = event.clientX;
     _treeViewport.dragStartClientY = event.clientY;
