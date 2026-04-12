@@ -2,6 +2,7 @@
  * LifePath Engine — Main Application Router
  */
 
+import { renderAbout } from './pages/about.js';
 import { renderLanding } from './pages/landing.js';
 import { renderOnboarding } from './pages/onboarding.js';
 import { renderParameters } from './pages/parameters.js';
@@ -12,7 +13,7 @@ import { t, toggleLang } from './i18n.js';
 
 // ── Global State ──
 export const state = {
-  currentPage: 'landing',
+  currentPage: 'about',
   projectId: null,
   project: null,
   simComplete: false,
@@ -27,6 +28,7 @@ export const state = {
 
 // ── Router ──
 const routes = {
+  about: renderAbout,
   landing: renderLanding,
   onboarding: renderOnboarding,
   parameters: renderParameters,
@@ -85,7 +87,7 @@ function isSimulationInProgress() {
 }
 
 function isPageAvailable(page) {
-  if (page === 'landing') return true;
+  if (page === 'about' || page === 'landing') return true;
   if (!state.projectId) return false;
   if (page === 'simulation') {
     return ['profiled', 'configured', 'simulating', 'completed'].includes(state.project?.status || '');
@@ -148,6 +150,7 @@ function render() {
 
 function updateNavLinks() {
   const navKeys = {
+    about: 'nav_about',
     landing: 'nav_simulation',
     simulation: 'nav_system',
     graph: 'nav_graph',
@@ -171,7 +174,7 @@ function updateLangButton() {
 }
 
 function handleHash() {
-  const hash = window.location.hash.slice(1) || 'landing';
+  const hash = window.location.hash.slice(1) || 'about';
   if (routes[hash]) {
     if (shouldLockNavigation(hash)) {
       if (window.location.hash !== '#simulation') {
