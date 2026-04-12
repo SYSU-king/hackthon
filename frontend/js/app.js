@@ -20,6 +20,7 @@ export const state = {
   simulationTab: 'tree',
   resultsView: 'overview',
   selectedPathId: null,
+  selectedNodeIndex: 0,
   backtrackNodeIndex: null,
   treeEvents: [],
 };
@@ -63,6 +64,7 @@ export function hydrateProjectState(project, overrides = {}) {
   state.simulationTab = overrides.simulationTab || 'tree';
   state.resultsView = overrides.resultsView || 'overview';
   state.selectedPathId = overrides.selectedPathId || null;
+  state.selectedNodeIndex = overrides.selectedNodeIndex ?? 0;
   state.backtrackNodeIndex = null;
   resetTreeEvents(project._tree_events || []);
   Object.assign(state, overrides);
@@ -73,6 +75,7 @@ export function resetSessionState() {
   state.simulationTab = 'tree';
   state.resultsView = 'overview';
   state.selectedPathId = null;
+  state.selectedNodeIndex = 0;
   state.backtrackNodeIndex = null;
   resetTreeEvents([]);
 }

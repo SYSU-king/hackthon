@@ -92,7 +92,9 @@ function setField(field, value) {
   }
 }
 
-function renderRadioGrid(options, field, selectedValue) {
+function renderRadioGrid(options, field, selectedValue, { allowCustom = false, customPlaceholder = '输入自定义内容' } = {}) {
+  const optionValues = options.map(option => option.value);
+  const customValue = selectedValue && !optionValues.includes(selectedValue) ? selectedValue : '';
   return `
     <div class="radio-grid">
       ${options.map(o => `
@@ -101,6 +103,12 @@ function renderRadioGrid(options, field, selectedValue) {
           ${o.desc ? `<div class="radio-card-desc">${o.desc}</div>` : ''}
         </div>
       `).join('')}
+      ${allowCustom ? `
+        <div class="radio-card ${customValue ? 'selected' : ''}" data-custom-card="true" data-field="${field}">
+          <div class="radio-card-title">自定义输入</div>
+          <input class="form-input radio-custom-input" data-field="${field}" value="${customValue}" placeholder="${customPlaceholder}" style="margin-top:8px;background:var(--white);" />
+        </div>
+      ` : ''}
     </div>
   `;
 }
@@ -223,7 +231,7 @@ function renderStepContent() {
       return `
         <h2 style="font-family:var(--font-headline);font-size:32px;font-weight:700;margin-bottom:8px;">${step.title}</h2>
         <p class="text-secondary mb-24">选择最接近你的性格类型</p>
-        ${renderRadioGrid(OPTIONS.personality, 'personality_type', formData.personality_type)}
+        ${renderRadioGrid(OPTIONS.personality, 'personality_type', formData.personality_type, { allowCustom: true, customPlaceholder: '如：ENFJ / INFJ / 其他人格标签' })}
       `;
     case 'education':
       return `
@@ -239,7 +247,7 @@ function renderStepContent() {
         <p class="text-secondary mb-24">家庭约束和支持会显著改变路径分叉。</p>
         <div class="form-group">
           <label class="form-label">家庭经济状况</label>
-          ${renderRadioGrid(['优越', '中等', '一般', '困难'].map(v => ({ value: v, label: v })), 'family_economy', formData.family_economy)}
+          ${renderRadioGrid(['优越', '中等', '一般', '困难'].map(v => ({ value: v, label: v })), 'family_economy', formData.family_economy, { allowCustom: true, customPlaceholder: '如：家庭有房贷压力 / 现金流紧张' })}
         </div>
         <div class="form-group mt-24">
           <label class="form-label">家庭期望</label>
@@ -249,7 +257,8 @@ function renderStepContent() {
               : ['考公/体制内', '留在本省', '高薪优先', '自由选择', '读博深造']
             ).map(v => ({ value: v, label: v })),
             'family_expectation',
-            formData.family_expectation
+            formData.family_expectation,
+            { allowCustom: true, customPlaceholder: '如：支持出国 / 支持 gap / 希望尽早结婚' }
           )}
         </div>
       `;
@@ -259,11 +268,11 @@ function renderStepContent() {
         <p class="text-secondary mb-24">${isWorkingStage() ? '职业路线、转型方式、海外机会和风险承受度会直接影响回溯分支。' : '职业方向、继续深造、海外申请与风险偏好会影响后续推演走向。'}</p>
         <div class="form-group">
           <label class="form-label">职业方向偏好</label>
-          ${renderRadioGrid(OPTIONS.career, 'career_preference', formData.career_preference)}
+          ${renderRadioGrid(OPTIONS.career, 'career_preference', formData.career_preference, { allowCustom: true, customPlaceholder: '如：申请海外大学 / NGO / 艺术创作 / 医疗方向' })}
         </div>
         <div class="form-group mt-24">
           <label class="form-label">风险偏好</label>
-          ${renderRadioGrid(OPTIONS.risk, 'risk_preference', formData.risk_preference)}
+          ${renderRadioGrid(OPTIONS.risk, 'risk_preference', formData.risk_preference, { allowCustom: true, customPlaceholder: '如：阶段性激进 / 对出国冒险更开放' })}
         </div>
       `;
     case 'concern':
@@ -361,11 +370,42 @@ export function renderOnboarding(container) {
 function attachInteractiveHandlers(container) {
   container.querySelectorAll('.radio-card').forEach(card => {
     card.addEventListener('click', () => {
+      if (card.dataset.customCard === 'true') {
+        card.querySelector('.radio-custom-input')?.focus();
+        return;
+      }
       const field = card.dataset.field;
       const value = card.dataset.value;
       setField(field, value);
       document.getElementById('step-content').innerHTML = renderStepContent();
       attachInteractiveHandlers(container);
+    });
+  });
+
+  function syncCustomCardState(field, value) {
+    container.querySelectorAll(`.radio-card[data-field="${field}"]`).forEach(card => {
+      if (card.dataset.customCard === 'true') {
+        card.classList.toggle('selected', !!value.trim());
+      } else if (card.dataset.value) {
+        card.classList.toggle('selected', card.dataset.value === value);
+      }
+    });
+  }
+
+  container.querySelectorAll('.radio-custom-input').forEach(input => {
+    input.addEventListener('click', (e) => e.stopPropagation());
+    input.addEventListener('focus', () => {
+      syncCustomCardState(input.dataset.field, input.value);
+    });
+    input.addEventListener('input', () => {
+      setField(input.dataset.field, input.value);
+      syncCustomCardState(input.dataset.field, input.value);
+    });
+    input.addEventListener('blur', () => {
+      const normalized = input.value.trim();
+      setField(input.dataset.field, normalized);
+      input.value = normalized;
+      syncCustomCardState(input.dataset.field, normalized);
     });
   });
 }

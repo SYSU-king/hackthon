@@ -45,6 +45,58 @@ function prependBacktrackEvent(listEl, event) {
   listEl.prepend(wrapper);
 }
 
+const futureSelfSessions = new Map();
+
+function getFutureSelfSessionKey(pathId, nodeIndex) {
+  return `${pathId}:${nodeIndex}`;
+}
+
+function getFutureSelfSession(pathId, nodeIndex) {
+  const key = getFutureSelfSessionKey(pathId, nodeIndex);
+  if (!futureSelfSessions.has(key)) {
+    futureSelfSessions.set(key, {
+      agent: null,
+      messages: [],
+      loading: false,
+    });
+  }
+  return futureSelfSessions.get(key);
+}
+
+function renderFutureSelfChat(pathId, node, nodeIndex) {
+  const session = getFutureSelfSession(pathId, nodeIndex);
+  const messages = session.messages.length
+    ? session.messages.map(msg => `
+      <div style="padding:10px 12px;background:${msg.role === 'assistant' ? 'var(--surface-low)' : 'var(--white)'};border-left:2px solid ${msg.role === 'assistant' ? 'var(--accent)' : 'var(--outline-variant)'};margin-bottom:8px;">
+        <div class="mono-xs" style="margin-bottom:6px;color:${msg.role === 'assistant' ? 'var(--accent)' : 'var(--outline)'};">${msg.role === 'assistant' ? '未来的你' : '你'}</div>
+        <div style="font-size:13px;line-height:1.7;color:var(--secondary);white-space:pre-wrap;">${msg.content}</div>
+      </div>
+    `).join('')
+    : `<div class="mono-xs text-muted">和这个节点上的未来的你聊聊。系统会只加载该节点之前的历史，不会读取之后的剧情。</div>`;
+
+  return `
+    <div class="card mb-24" style="border-left:3px solid var(--accent);">
+      <div class="flex justify-between items-center mb-12" style="gap:12px;flex-wrap:wrap;">
+        <div>
+          <h3 style="margin-bottom:4px;">和未来的自己对话</h3>
+          <div class="mono-xs text-muted">${node.time_label} · ${node.title}</div>
+        </div>
+        <span class="tag tag-accent">[FUTURE_SELF_AGENT]</span>
+      </div>
+      ${session.agent ? `<div class="mono-xs text-accent mb-12">${session.agent.name} · ${session.agent.persona || ''}</div>` : ''}
+      <div id="future-self-messages">${messages}</div>
+      <div class="form-group mt-16" style="margin-bottom:0;">
+        <textarea class="form-textarea" id="future-self-input" placeholder="向这个节点上的未来的你提问，例如：如果我现在坚持申请海外大学，真正的代价是什么？" style="min-height:88px;"></textarea>
+      </div>
+      <div class="flex justify-end mt-12">
+        <button class="btn btn-accent" id="btn-future-self-send" ${session.loading ? 'disabled style="opacity:0.5;"' : ''}>
+          ${session.loading ? '思考中...' : '发送给未来的你'}
+        </button>
+      </div>
+    </div>
+  `;
+}
+
 function getSelectedPath(paths = []) {
   if (!state.selectedPathId) return null;
   return paths.find(path => path.id === state.selectedPathId) || null;
@@ -177,7 +229,9 @@ function renderMiniStats(finalState) {
 
 function renderDetail(container, path) {
   const nodes = path.nodes || [];
-  const activeNode = nodes[0];
+  const activeIndex = Math.min(Math.max(state.selectedNodeIndex || 0, 0), Math.max(nodes.length - 1, 0));
+  state.selectedNodeIndex = activeIndex;
+  const activeNode = nodes[activeIndex];
 
   container.innerHTML = `
     <div class="detail-header">
@@ -197,7 +251,7 @@ function renderDetail(container, path) {
         <h2 style="margin-bottom:16px;">[${t('detail_node_seq')}]</h2>
         <div id="node-list">
           ${nodes.map((n, i) => `
-            <div class="node-card ${i === 0 ? 'active' : ''}" data-index="${i}">
+            <div class="node-card ${i === activeIndex ? 'active' : ''}" data-index="${i}">
               <div class="node-type" style="color:${NODE_TYPE_COLORS[n.node_type] || 'var(--outline)'};">${n.node_type}</div>
               <div class="node-title">${n.title}</div>
               <div class="node-time">${n.time_label}</div>
@@ -217,7 +271,7 @@ function renderDetail(container, path) {
 
       <!-- Main: Node Detail + State Chart -->
       <div class="detail-main" id="node-detail-container">
-        ${activeNode ? renderNodeDetail(activeNode, 0, nodes.length) : '<p class="p-32 text-muted">No nodes</p>'}
+        ${activeNode ? renderNodeDetail(path.id, activeNode, activeIndex, nodes.length) : '<p class="p-32 text-muted">No nodes</p>'}
       </div>
     </div>
   `;
@@ -234,9 +288,15 @@ function renderDetail(container, path) {
       container.querySelectorAll('.node-card').forEach(c => c.classList.remove('active'));
       card.classList.add('active');
       const idx = parseInt(card.dataset.index);
-      document.getElementById('node-detail-container').innerHTML = renderNodeDetail(nodes[idx], idx, nodes.length);
+      state.selectedNodeIndex = idx;
+      document.getElementById('node-detail-container').innerHTML = renderNodeDetail(path.id, nodes[idx], idx, nodes.length);
+      bindFutureSelfChat(container, path, nodes[idx], idx);
     });
   });
+
+  if (activeNode) {
+    bindFutureSelfChat(container, path, activeNode, activeIndex);
+  }
 
   // Story button
   container.querySelector('#btn-story').addEventListener('click', () => {
@@ -257,7 +317,7 @@ function renderDetail(container, path) {
   });
 }
 
-function renderNodeDetail(node, index, total) {
+function renderNodeDetail(pathId, node, index, total) {
   const stateData = node.state_snapshot || {};
   const actions = node.agent_actions || [];
   return `
@@ -314,8 +374,40 @@ function renderNodeDetail(node, index, total) {
           `;
         }).join('')}
       </div>
+
+      ${renderFutureSelfChat(pathId, node, index)}
     </div>
   `;
+}
+
+function bindFutureSelfChat(container, path, node, nodeIndex) {
+  const sendBtn = document.getElementById('btn-future-self-send');
+  const input = document.getElementById('future-self-input');
+  if (!sendBtn || !input) return;
+
+  sendBtn.addEventListener('click', async () => {
+    const message = input.value.trim();
+    if (!message) return;
+
+    const session = getFutureSelfSession(path.id, nodeIndex);
+    session.messages.push({ role: 'user', content: message });
+    session.loading = true;
+    document.getElementById('node-detail-container').innerHTML = renderNodeDetail(path.id, node, nodeIndex, (path.nodes || []).length);
+    bindFutureSelfChat(container, path, node, nodeIndex);
+
+    try {
+      const history = session.messages.slice(0, -1).map(msg => ({ role: msg.role, content: msg.content }));
+      const resp = await api.futureSelfChat(state.projectId, path.id, nodeIndex, message, history);
+      session.agent = resp.agent || session.agent;
+      session.messages.push({ role: 'assistant', content: resp.reply || '未来的你暂时没有回答。' });
+    } catch (e) {
+      session.messages.push({ role: 'assistant', content: `未来的你暂时失联：${e.message}` });
+    } finally {
+      session.loading = false;
+      document.getElementById('node-detail-container').innerHTML = renderNodeDetail(path.id, node, nodeIndex, (path.nodes || []).length);
+      bindFutureSelfChat(container, path, node, nodeIndex);
+    }
+  });
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -830,6 +922,7 @@ async function renderStory(container, path) {
           <p class="text-secondary mt-8">AI generated life story for "${path.name}"</p>
         </div>
         <div class="flex gap-8">
+          <button class="btn btn-accent" id="btn-regenerate-story">[重新生成]</button>
           <button class="btn btn-ghost" id="btn-back-detail-from-story">[← ${t('btn_back')}]</button>
         </div>
       </div>
@@ -845,9 +938,20 @@ async function renderStory(container, path) {
     renderResults(container);
   });
 
+  document.getElementById('btn-regenerate-story').addEventListener('click', () => {
+    loadStoryContent(container, true);
+  });
+
+  loadStoryContent(container, false);
+}
+
+async function loadStoryContent(container, regenerate = false) {
   const storyContainer = document.getElementById('story-content');
+  if (!storyContainer) return;
+  storyContainer.innerHTML = `<div class="p-48 text-center mono-xs pulse">${regenerate ? '正在重新生成剧本...' : t('story_generating')}</div>`;
+
   try {
-    const res = await api.getStory(state.projectId, state.selectedPathId);
+    const res = await api.getStory(state.projectId, state.selectedPathId, regenerate);
     let storyText = res.story || res;
     // Basic formatting for presentation
     storyText = storyText.split('\\n').join('<br/>')
@@ -865,6 +969,7 @@ async function renderStory(container, path) {
     
     storyContainer.innerHTML = `
       <div class="fade-in card" style="padding: 48px; background: var(--white); box-shadow: 0 4px 24px rgba(0,0,0,0.02); max-width: 800px; margin: 0 auto;">
+        <div class="mono-xs text-muted mb-16">${res.cached ? '[已保存缓存]' : '[刚刚重新生成]'}</div>
         <p style="font-size:16px; line-height: 2; color: var(--on-surface); text-indent: 2em; letter-spacing: 0.5px; font-family: var(--font-headline);">
           ${storyText}
         </p>

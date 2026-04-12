@@ -53,6 +53,11 @@ class AdviceRequest(BaseModel):
     feedback: str = "satisfied"  # satisfied / unsatisfied
 
 
+class FutureSelfChatRequest(BaseModel):
+    message: str = Field(min_length=1, description="User message to future self")
+    history: list[dict] = Field(default_factory=list, description="Prior chat turns in [{role, content}] format")
+
+
 # ── Backtracking / Counterfactual ──
 class BacktrackRequest(BaseModel):
     """Request to modify a node's parameters and re-derive from that point."""

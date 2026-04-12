@@ -4,9 +4,9 @@ IMPORTANT: This module ONLY uses the LLM-powered engine. No mock/demo data.
 All simulation, advice, and report generation is done via real AI calls.
 """
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Body
 from fastapi.responses import StreamingResponse
-from app.domain.schemas import SimulationStart, AdviceRequest, BacktrackRequest
+from app.domain.schemas import SimulationStart, AdviceRequest, BacktrackRequest, FutureSelfChatRequest
 from app.core.db import load_project, save_project
 from app.core.config import settings
 from datetime import datetime
@@ -307,7 +307,7 @@ def get_advice(project_id: str, path_id: str, body: AdviceRequest):
 
 
 @router.post("/paths/{path_id}/story")
-def get_story(project_id: str, path_id: str):
+def get_story(project_id: str, path_id: str, body: dict = Body(default={})):
     data = load_project(project_id)
     if not data:
         raise HTTPException(status_code=404, detail="Project not found")
@@ -315,14 +315,37 @@ def get_story(project_id: str, path_id: str):
     if not settings.LLM_API_KEY:
         raise HTTPException(status_code=500, detail="LLM_API_KEY 未配置，无法生成 AI 故事。")
 
+    regenerate = bool(body.get("regenerate", False))
+
     for p in data.get("paths", []):
         if p["id"] == path_id:
-            # 暂时去掉缓存，使得每次点击按钮都采用最新 prompt 重新生成
+            if p.get("story") and not regenerate:
+                return {"story": p["story"], "cached": True}
             from app.services.life_engine_service import generate_llm_story
             story = generate_llm_story(p, data.get("profile", {}))
             p["story"] = story
             save_project(data)
-            return {"story": story}
+            return {"story": story, "cached": False}
+
+    raise HTTPException(status_code=404, detail="Path not found")
+
+
+@router.post("/paths/{path_id}/nodes/{node_index}/future-self-chat")
+def future_self_chat(project_id: str, path_id: str, node_index: int, body: FutureSelfChatRequest):
+    data = load_project(project_id)
+    if not data:
+        raise HTTPException(status_code=404, detail="Project not found")
+
+    if not settings.LLM_API_KEY:
+        raise HTTPException(status_code=500, detail="LLM_API_KEY 未配置，无法生成未来自我对话。")
+
+    for p in data.get("paths", []):
+        if p["id"] == path_id:
+            nodes = p.get("nodes", [])
+            if node_index < 0 or node_index >= len(nodes):
+                raise HTTPException(status_code=400, detail="Node index out of range")
+            from app.services.life_engine_service import chat_with_future_self
+            return chat_with_future_self(data, p, node_index, body.message, body.history)
 
     raise HTTPException(status_code=404, detail="Path not found")
 

@@ -1207,6 +1207,25 @@ ADVICE_SYSTEM_PROMPT = """你是一个人生路径推演引擎的建议专家。
 }"""
 
 
+FUTURE_SELF_CHAT_SYSTEM_PROMPT = """你要扮演“未来的你”这个 agent，与用户在某个推演节点上对话。
+
+严格约束：
+1. 你只能基于该节点及其之前的全部信息回答，不得引用该节点之后的剧情细节。
+2. 你的身份是从这个节点向前延展出的“未来的你”，语气要像更成熟、更有复盘能力的自己。
+3. 不要自称具体姓名，不要编造额外人物或未出现的经历。
+4. 回答要结合节点状态、之前的事件链、主参数变化和当前压力源。
+
+输出有效 JSON：
+{
+  "agent": {
+    "name": "未来的你",
+    "persona": "一句话描述这个未来自我的气质和立场",
+    "stance": "supportive/neutral/challenging"
+  },
+  "reply": "给用户的回复"
+}"""
+
+
 def generate_llm_story(path_data: dict, profile: dict) -> str:
     """Generate a cohesive narrative story based on the path simulation."""
     llm = get_llm_client()
@@ -1241,6 +1260,87 @@ def generate_llm_story(path_data: dict, profile: dict) -> str:
             {"role": "user", "content": user_msg}
         ]
     )
+
+
+def chat_with_future_self(project_data: dict, path_data: dict, node_index: int, message: str, history: list[dict] | None = None) -> dict:
+    """Chat with a future-self agent grounded in node-local historical context."""
+    llm = get_llm_client()
+
+    profile = project_data.get("profile", {}) or {}
+    parameters = project_data.get("parameters", [])
+    agents = project_data.get("agents", [])
+    concern = profile.get("current_concern", "人生发展") if profile else "人生发展"
+    nodes = path_data.get("nodes", [])[:node_index + 1]
+    node = nodes[-1] if nodes else {}
+    layered_context = _bootstrap_context_from_nodes(profile, parameters, concern, agents, nodes)
+
+    current_state = json.dumps(node.get("state_snapshot", {}), ensure_ascii=False, indent=2)
+    current_parameters = _render_current_parameters(layered_context)
+    prior_chain = "\n".join(
+        f"- {item.get('time_label', '?')}｜{item.get('title', '')}｜{(item.get('description', '') or '')[:80]}"
+        for item in nodes
+    ) or "- 暂无历史节点"
+
+    transcript = []
+    for turn in history or []:
+        role = turn.get("role", "user")
+        content = (turn.get("content") or "").strip()
+        if role in {"user", "assistant"} and content:
+            transcript.append({"role": role, "content": content})
+
+    user_msg = f"""## 目标节点
+时间：{node.get('time_label', '?')}
+标题：{node.get('title', '未命名节点')}
+类型：{node.get('node_type', 'result')}
+触发原因：{node.get('trigger_reason', '')}
+
+## 该节点之前的完整轨迹
+{prior_chain}
+
+## 分层上下文
+{layered_context.get('background', '')}
+
+## 长期记忆
+{_render_long_term_memory(layered_context)}
+
+## 近期细节
+{_render_recent_details(layered_context)}
+
+## 当前主参数
+{current_parameters}
+
+## 当前状态
+{current_state}
+
+## 用户这次提问
+{message}
+
+请让“未来的你”基于以上信息回答。"""
+
+    result = llm.chat_json(
+        messages=[
+            {"role": "system", "content": FUTURE_SELF_CHAT_SYSTEM_PROMPT},
+            *transcript,
+            {"role": "user", "content": user_msg},
+        ],
+        temperature=0.5,
+        max_tokens=2000,
+    )
+
+    agent = result.get("agent", {}) or {}
+    agent["name"] = "未来的你"
+    agent.setdefault("persona", "从该节点向前成长出来、带着复盘感的未来自我。")
+    agent.setdefault("stance", "supportive")
+
+    return {
+        "agent": agent,
+        "reply": result.get("reply", "").strip() or "未来的你此刻还没组织好语言，但你已经看到了问题真正卡住的位置。",
+        "node": {
+            "index": node_index,
+            "title": node.get("title", ""),
+            "time_label": node.get("time_label", ""),
+        },
+    }
 
 
 def generate_llm_advice(path_data: dict, profile: dict, feedback: str = "satisfied") -> dict:

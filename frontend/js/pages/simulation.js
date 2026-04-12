@@ -1113,11 +1113,25 @@ function showTreeNodeTooltipAtNode(node) {
         </div>
       </div>
     ` : ''}
+    ${node.source_path_id ? `
+      <div class="tree-tooltip-block">
+        <button class="btn btn-accent" id="tooltip-future-self" style="width:100%;justify-content:center;">和未来的自己对话</button>
+      </div>
+    ` : ''}
   `;
 
   document.getElementById('tooltip-close')?.addEventListener('click', (e) => {
     e.stopPropagation();
     hideTreeNodeTooltip();
+  });
+
+  document.getElementById('tooltip-future-self')?.addEventListener('click', (e) => {
+    e.stopPropagation();
+    navigateTo('results', {
+      resultsView: 'detail',
+      selectedPathId: node.source_path_id,
+      selectedNodeIndex: node.source_node_index ?? 0,
+    });
   });
 }
 

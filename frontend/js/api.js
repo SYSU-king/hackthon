@@ -80,8 +80,12 @@ export const api = {
     request('POST', `/api/projects/${projectId}/paths/${pathId}/advice`, { feedback }),
 
   // Story
-  getStory: (projectId, pathId) =>
-    request('POST', `/api/projects/${projectId}/paths/${pathId}/story`),
+  getStory: (projectId, pathId, regenerate = false) =>
+    request('POST', `/api/projects/${projectId}/paths/${pathId}/story`, { regenerate }),
+
+  // Future self chat
+  futureSelfChat: (projectId, pathId, nodeIndex, message, history = []) =>
+    request('POST', `/api/projects/${projectId}/paths/${pathId}/nodes/${nodeIndex}/future-self-chat`, { message, history }),
 
   // Graph & Agents
   getGraph: (projectId) => request('GET', `/api/projects/${projectId}/graph`),
