@@ -1198,6 +1198,42 @@ ADVICE_SYSTEM_PROMPT = """你是一个人生路径推演引擎的建议专家。
 }"""
 
 
+def generate_llm_story(path_data: dict, profile: dict) -> str:
+    """Generate a cohesive narrative story based on the path simulation."""
+    llm = get_llm_client()
+    
+    path_name = path_data.get("name", "")
+    nodes_desc = "\n".join([
+        f"时间：{n.get('time_label', '')} | 事件：{n.get('title', '')} | 详情：{n.get('description', '')}"
+        for n in path_data.get("nodes", [])[:15]
+    ])
+    
+    profile_text = _format_profile(profile)
+    
+    user_msg = f"""请你根据以下推演数据，用类似村上春树的视角和笔触，写一段大概500字的人生经历故事。
+
+## 主角背景
+{profile_text}
+
+## 核心路径：{path_name}
+
+## 真实推演节点
+{nodes_desc}
+
+写作要求：
+1. 视角与语调：用第二人称“你”。带着轻微的疏离感、内省的都市疲惫感，以及对日常微小事物的凝视（比如深夜的冷水、车窗外的雾霾、西九龙的高铁闸机等）。
+2. 将数据节点文学化：将上面干瘪的事件（如融资、离职、缺钱、家庭矛盾）化平淡内敛但具有重量的叙述。不要刻意煽情，即使是很严重的事情（比如现金流断裂、激烈争吵），也用一种带有宿命感、抽离冷静的调子写出来。
+3. 主核：表现出那股“在巨大的城市齿轮中，你像一个走钢丝的人，不断用杠杆撬动现实，但杠杆的重量也一直压在你的肩头”的宿命质感。
+4. 篇幅与格式：约500字左右。直接输出分好自然段的纯文本，不要加任何多余的开场白或者 Markdown 代码标签。"""
+
+    return llm.chat(
+        messages=[
+            {"role": "system", "content": "你是一位深受村上春树风格影响的都市小说家。你擅长用冷静、克制而富有意象的笔触，将琐碎残酷的现实翻译成充满质感的内心独白。"},
+            {"role": "user", "content": user_msg}
+        ]
+    )
+
+
 def generate_llm_advice(path_data: dict, profile: dict, feedback: str = "satisfied") -> dict:
     """Generate LLM-powered advice for a specific path."""
     llm = get_llm_client()

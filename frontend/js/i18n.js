@@ -95,6 +95,9 @@ const translations = {
     detail_trigger: '触发原因',
     detail_state_snapshot: '状态快照',
     btn_get_advice: '获取 AI 建议',
+    btn_get_story: '生成人生故事',
+    story_title: '人生剧本',
+    story_generating: '正在编撰您的故事...',
 
     // Advice
     advice_title: '策略规划',
@@ -212,6 +215,9 @@ const translations = {
     detail_trigger: 'Trigger Reason',
     detail_state_snapshot: 'State Snapshot',
     btn_get_advice: 'Get AI Advice',
+    btn_get_story: 'Generate Story',
+    story_title: 'Life Story',
+    story_generating: 'Writing your story...',
 
     advice_title: 'Strategy Protocol',
     advice_desc: 'AI-powered advice for "{path}"',

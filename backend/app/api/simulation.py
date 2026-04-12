@@ -306,6 +306,27 @@ def get_advice(project_id: str, path_id: str, body: AdviceRequest):
     raise HTTPException(status_code=404, detail="Path not found")
 
 
+@router.post("/paths/{path_id}/story")
+def get_story(project_id: str, path_id: str):
+    data = load_project(project_id)
+    if not data:
+        raise HTTPException(status_code=404, detail="Project not found")
+
+    if not settings.LLM_API_KEY:
+        raise HTTPException(status_code=500, detail="LLM_API_KEY 未配置，无法生成 AI 故事。")
+
+    for p in data.get("paths", []):
+        if p["id"] == path_id:
+            # 暂时去掉缓存，使得每次点击按钮都采用最新 prompt 重新生成
+            from app.services.life_engine_service import generate_llm_story
+            story = generate_llm_story(p, data.get("profile", {}))
+            p["story"] = story
+            save_project(data)
+            return {"story": story}
+
+    raise HTTPException(status_code=404, detail="Path not found")
+
+
 # ── Report endpoint ──
 
 @router.get("/report")

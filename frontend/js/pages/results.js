@@ -74,6 +74,8 @@ export async function renderResults(container) {
     renderDetail(container, selectedPath);
   } else if (currentView === 'advice' && selectedPath) {
     renderAdvice(container, selectedPath);
+  } else if (currentView === 'story' && selectedPath) {
+    renderStory(container, selectedPath);
   } else if (currentView === 'report') {
     renderReport(container, paths);
   } else if (currentView === 'backtrack' && selectedPath) {
@@ -203,6 +205,9 @@ function renderDetail(container, path) {
           `).join('')}
         </div>
         <div class="mt-24" style="display:flex;flex-direction:column;gap:8px;">
+          <button class="btn btn-accent btn-full" id="btn-story" style="background:var(--secondary);color:white;">
+            <span class="material-symbols-outlined icon-sm">auto_awesome</span> [${t('btn_get_story')}]
+          </button>
           <button class="btn btn-accent btn-full" id="btn-advice">[${t('btn_get_advice')}]</button>
           <button class="btn btn-primary btn-full" id="btn-backtrack" style="background:var(--branch-accent);">
             <span class="material-symbols-outlined icon-sm">undo</span> [回溯推演]
@@ -231,6 +236,12 @@ function renderDetail(container, path) {
       const idx = parseInt(card.dataset.index);
       document.getElementById('node-detail-container').innerHTML = renderNodeDetail(nodes[idx], idx, nodes.length);
     });
+  });
+
+  // Story button
+  container.querySelector('#btn-story').addEventListener('click', () => {
+    setResultsView('story');
+    renderResults(container);
   });
 
   // Advice button
@@ -802,6 +813,65 @@ async function loadAdvice(container, feedback) {
     }
   } catch (e) {
     adviceContainer.innerHTML = `<div class="p-32 text-center text-error">Error: ${e.message}</div>`;
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// STORY VIEW
+// ═══════════════════════════════════════════════════════════════════
+
+async function renderStory(container, path) {
+  container.innerHTML = `
+    <div style="padding:48px 64px;">
+      <div class="mono-xs text-accent mb-8">[NARRATIVE_ENGINE]</div>
+      <div class="flex justify-between items-end mb-48">
+        <div>
+          <h1 style="font-size:48px;">${t('story_title')}</h1>
+          <p class="text-secondary mt-8">AI generated life story for "${path.name}"</p>
+        </div>
+        <div class="flex gap-8">
+          <button class="btn btn-ghost" id="btn-back-detail-from-story">[← ${t('btn_back')}]</button>
+        </div>
+      </div>
+
+      <div id="story-content">
+        <div class="p-48 text-center mono-xs pulse">${t('story_generating')}</div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('btn-back-detail-from-story').addEventListener('click', () => {
+    setResultsView('detail');
+    renderResults(container);
+  });
+
+  const storyContainer = document.getElementById('story-content');
+  try {
+    const res = await api.getStory(state.projectId, state.selectedPathId);
+    let storyText = res.story || res;
+    // Basic formatting for presentation
+    storyText = storyText.split('\\n').join('<br/>')
+                         .split('\\n\\n').join('<br/><br/>')
+                         .split('\\n').join('<br/>')
+                         .replace(/\\n/g, '<br/>')
+                         .replace(/\\r/g, '')
+                         .replace(/\\n/g, '<br/>');
+    
+    // Actually from json `story` might literally just be actual newlines
+    if (typeof storyText === 'string') {
+      // JSON replaces \n to actual newlines, so we replace them with <br/> for HTML
+      storyText = storyText.replace(/\\n/g, '<br/><br/>').replace(/\n/g, '<br/><br/>');
+    }
+    
+    storyContainer.innerHTML = `
+      <div class="fade-in card" style="padding: 48px; background: var(--white); box-shadow: 0 4px 24px rgba(0,0,0,0.02); max-width: 800px; margin: 0 auto;">
+        <p style="font-size:16px; line-height: 2; color: var(--on-surface); text-indent: 2em; letter-spacing: 0.5px; font-family: var(--font-headline);">
+          ${storyText}
+        </p>
+      </div>
+    `;
+  } catch (e) {
+    storyContainer.innerHTML = `<div class="p-32 text-center text-error">Failed to generate story: ${e.message}</div>`;
   }
 }
 

@@ -79,6 +79,10 @@ export const api = {
   getAdvice: (projectId, pathId, feedback = 'satisfied') =>
     request('POST', `/api/projects/${projectId}/paths/${pathId}/advice`, { feedback }),
 
+  // Story
+  getStory: (projectId, pathId) =>
+    request('POST', `/api/projects/${projectId}/paths/${pathId}/story`),
+
   // Graph & Agents
   getGraph: (projectId) => request('GET', `/api/projects/${projectId}/graph`),
   getAgents: (projectId) => request('GET', `/api/projects/${projectId}/agents`),
