@@ -28,19 +28,103 @@ export function renderLanding(container) {
       <div class="hero-right">
         <div class="bg-grid" style="position:absolute;inset:0;opacity:0.2;"></div>
         <div class="hero-viz">
-          <svg viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
-            <path d="M50 300 Q 200 300 400 150 T 750 100" stroke="black" stroke-width="1" stroke-dasharray="4 4"/>
-            <path d="M50 300 Q 200 300 400 450 T 750 500" stroke="black" stroke-width="1" stroke-dasharray="2 2" opacity="0.3"/>
-            <path d="M50 300 L 750 300" stroke="#0F766E" stroke-width="1.5"/>
-            <rect x="395" y="145" width="10" height="10" fill="white" stroke="black"/>
-            <rect x="395" y="295" width="10" height="10" fill="#0F766E"/>
-            <rect x="395" y="445" width="10" height="10" fill="white" stroke="black"/>
-            <text x="415" y="155" font-family="Space Grotesk" font-size="10" fill="black">BRANCH_A: OPTIMAL</text>
-            <text x="415" y="305" font-family="Space Grotesk" font-size="10" fill="#0F766E">CURRENT_PATH</text>
-            <text x="415" y="455" font-family="Space Grotesk" font-size="10" fill="black">BRANCH_B: DEGRADED</text>
-            <circle cx="50" cy="300" r="4" fill="black"/>
+          <svg viewBox="0 0 800 600" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:100%;">
+            <defs>
+              <filter id="glow-teal" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="4" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+              <filter id="glow-violet" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="4" result="blur" />
+                <feMerge>
+                  <feMergeNode in="blur" />
+                  <feMergeNode in="SourceGraphic" />
+                </feMerge>
+              </filter>
+              <linearGradient id="fade-line" x1="0%" y1="0%" x2="100%" y2="0%">
+                <stop offset="0%" stop-color="#0F766E" stop-opacity="0.1" />
+                <stop offset="50%" stop-color="#0F766E" stop-opacity="1" />
+                <stop offset="100%" stop-color="#0F766E" stop-opacity="0.1" />
+              </linearGradient>
+              <marker id="arrow-teal" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#0F766E" />
+              </marker>
+              <marker id="arrow-violet" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#7C3AED" />
+              </marker>
+              <marker id="arrow-red" viewBox="0 0 10 10" refX="5" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+                <path d="M 0 0 L 10 5 L 0 10 z" fill="#BA1A1A" />
+              </marker>
+            </defs>
+            
+            <!-- Grid Background -->
+            <g stroke="rgba(198, 198, 198, 0.15)" stroke-width="1">
+              <line x1="0" y1="150" x2="800" y2="150" />
+              <line x1="0" y1="300" x2="800" y2="300" />
+              <line x1="0" y1="450" x2="800" y2="450" />
+              <line x1="200" y1="0" x2="200" y2="600" />
+              <line x1="400" y1="0" x2="400" y2="600" />
+              <line x1="600" y1="0" x2="600" y2="600" />
+            </g>
+
+            <!-- Coordinate Crosshairs -->
+            <path d="M390 300 H410 M400 290 V310" stroke="rgba(198, 198, 198, 0.4)" stroke-width="1" />
+            <path d="M390 150 H410 M400 140 V160" stroke="rgba(198, 198, 198, 0.4)" stroke-width="1" />
+            <path d="M390 450 H410 M400 440 V460" stroke="rgba(198, 198, 198, 0.4)" stroke-width="1" />
+
+            <!-- Path BRANCH_A (Optimal) -->
+            <path id="pathA" d="M50 300 Q 200 300 400 150 T 750 80" fill="none" stroke="#7C3AED" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.7" marker-end="url(#arrow-violet)" />
+            <circle r="3" fill="#7C3AED" filter="url(#glow-violet)">
+              <animateMotion dur="4s" repeatCount="indefinite">
+                <mpath href="#pathA" />
+              </animateMotion>
+            </circle>
+
+            <!-- Path BRANCH_B (Degraded) -->
+            <path id="pathB" d="M50 300 Q 200 300 400 450 T 750 520" fill="none" stroke="#BA1A1A" stroke-width="1" stroke-dasharray="2 4" opacity="0.4" marker-end="url(#arrow-red)" />
+            <circle r="3" fill="#BA1A1A">
+              <animateMotion dur="5s" repeatCount="indefinite" keyPoints="0;1" keyTimes="0;1" calcMode="linear">
+                <mpath href="#pathB" />
+              </animateMotion>
+            </circle>
+
+            <!-- CURRENT_PATH -->
+            <path id="pathCurrent" d="M50 300 L 750 300" fill="none" stroke="#0F766E" stroke-width="2" marker-end="url(#arrow-teal)" />
+            <!-- Glowing current wave layer -->
+            <path d="M50 300 L 750 300" fill="none" stroke="#0F766E" stroke-width="4" opacity="0.4" filter="url(#glow-teal)">
+              <animate attributeName="opacity" values="0.2;0.8;0.2" dur="2s" repeatCount="indefinite" />
+            </path>
+            
+            <circle r="4" fill="#0F766E" filter="url(#glow-teal)">
+              <animateMotion dur="3s" repeatCount="indefinite">
+                <mpath href="#pathCurrent" />
+              </animateMotion>
+            </circle>
+
+            <!-- Nodes & Labels -->
+            <!-- Optimal Branch Label -->
+            <rect x="395" y="145" width="10" height="10" fill="white" stroke="#7C3AED"/>
+            <text x="415" y="142" font-family="var(--font-mono)" font-size="10" fill="#7C3AED" font-weight="bold">BRANCH_A: OPTIMAL / +0.44δ</text>
+            
+            <!-- Current Branch Label -->
+            <rect x="395" y="295" width="10" height="10" fill="#0F766E" filter="url(#glow-teal)"/>
+            <text x="415" y="285" font-family="var(--font-mono)" font-size="10" fill="#0F766E" font-weight="bold" letter-spacing="1">CURRENT_PATH / STATUS: LIVE</text>
+            
+            <!-- Degraded Branch Label -->
+            <rect x="395" y="445" width="10" height="10" fill="white" stroke="#BA1A1A" opacity="0.6"/>
+            <text x="415" y="465" font-family="var(--font-mono)" font-size="10" fill="#BA1A1A" opacity="0.8">BRANCH_B: DEGRADED / -0.21δ</text>
+
+            <!-- Start & End Anchors -->
+            <circle cx="50" cy="300" r="5" fill="var(--on-surface)"/>
+            <circle cx="50" cy="300" r="10" fill="none" stroke="var(--on-surface)" stroke-dasharray="2 2" stroke-width="1">
+              <animateTransform attributeName="transform" type="rotate" from="0 50 300" to="360 50 300" dur="10s" repeatCount="indefinite"/>
+            </circle>
+            
             <circle cx="400" cy="300" r="6" fill="#0F766E"/>
-            <circle cx="750" cy="300" r="4" fill="black"/>
+            <circle cx="750" cy="300" r="3" fill="var(--outline)"/>
           </svg>
           <div style="position:absolute;top:40px;left:40px;" class="mono-xs text-muted">NODE_ID: 0x4F2A<br/><span class="status-dot status-active" style="display:inline-block;margin-right:4px;"></span>LIVE</div>
           <div style="position:absolute;bottom:40px;right:40px;text-align:right;" class="mono-xs text-muted">

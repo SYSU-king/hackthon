@@ -13,8 +13,8 @@ const translations = {
 
     // Landing
     landing_tag: '[PROLOGUE_01]',
-    landing_title_1: '人生不是终点。',
-    landing_title_2: '它是一个变量。',
+    landing_title_1: 'Life is not a destination.',
+    landing_title_2: "It's a variable.",
     landing_desc: '通过多智能体仿真推演，量化人生轨迹中的关键节点。调一下参数，看看你的未来会走向哪里。',
     landing_cta: '[开始推演]',
     landing_history: '[历史记录]',
