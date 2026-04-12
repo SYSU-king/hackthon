@@ -20,6 +20,29 @@ let _selectedTreeNode = null;
 let _activeTab = 'tree'; // 'tree' or 'actions'
 let _unsubscribeTreeEvents = null;
 
+function getBaseTreeEvent() {
+  return {
+    type: 'add_node',
+    id: 'root',
+    parent: null,
+    label: 'BASE',
+    round: 0,
+    time_label: '起点',
+    node_type: 'decision',
+    description: '基础状态已载入，推演树准备开始。',
+    trigger_reason: '系统初始化',
+    state_snapshot: {},
+    state_summary: [],
+  };
+}
+
+function seedBaseTreeNode() {
+  if (_treeNodes.some(node => node.id === 'root')) return;
+  handleTreeEvent(getBaseTreeEvent());
+  updateTreeMetrics();
+  renderTreeSummaryPanel();
+}
+
 export function renderSimulation(container) {
   _activeTab = state.simulationTab || 'tree';
 
@@ -27,6 +50,10 @@ export function renderSimulation(container) {
   if (state.simComplete || state.project?.status === 'completed') {
     renderCompletedWithTabs(container);
     return;
+  }
+
+  if (state.project) {
+    state.project.status = 'simulating';
   }
 
   container.innerHTML = `
@@ -106,6 +133,7 @@ export function renderSimulation(container) {
   clearTreeSubscription();
   resetTreeEvents([]);
   ensureTreeSubscription();
+  seedBaseTreeNode();
   startSim(container);
 }
 
@@ -451,8 +479,8 @@ function handleSSEEvent(event, container) {
       // Mark simulation as complete
       state.simComplete = true;
       if (state.project) state.project.status = 'completed';
-      state.simulationTab = 'actions';
-      setTimeout(() => renderCompletedWithTabs(container), 1000);
+      state.simulationTab = 'tree';
+      setTimeout(() => renderCompletedWithTabs(container), 700);
     }
   }
 }

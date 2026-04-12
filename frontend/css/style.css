@@ -95,6 +95,12 @@ h3 { font-family: var(--font-body); font-weight: 700; font-size: 14px; text-tran
   color: var(--accent); font-weight: 700;
 }
 .nav-link.active { border-bottom: 2px solid var(--accent); }
+.nav-link.nav-disabled {
+  opacity: 0.32;
+  cursor: not-allowed;
+  pointer-events: none;
+  border-bottom-color: transparent;
+}
 
 /* Language toggle button */
 .btn-lang {

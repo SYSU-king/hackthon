@@ -14,6 +14,15 @@ const PRIORITY_OPTIONS = ['primary', 'secondary', 'constraint'];
 const PRIORITY_LABELS = { primary: '主参数', secondary: '次参数', constraint: '约束条件' };
 
 export function renderParameters(container) {
+  if (Array.isArray(state.project?.parameters) && state.project.parameters.length > 0) {
+    params = state.project.parameters.map(param => ({
+      name: param.name || '',
+      description: param.description || '',
+      priority: param.priority || 'primary',
+      weight: Number.isFinite(param.weight) ? param.weight : 1.0,
+    }));
+  }
+
   container.innerHTML = `
     <div style="padding:48px 64px;max-width:960px;margin:0 auto;">
       <div class="mono-xs text-muted mb-8">PROJECT_ID: ${state.projectId} // PHASE: PARAMETER_DEFINITION</div>
@@ -96,6 +105,10 @@ export function renderParameters(container) {
     }
     try {
       await api.submitParameters(state.projectId, validParams);
+      if (state.project) {
+        state.project.parameters = validParams;
+        state.project.status = 'configured';
+      }
       const rounds = parseInt(document.getElementById('rounds-slider').value);
       const timeUnit = document.getElementById('time-unit').value;
       const agentCount = parseInt(document.getElementById('agent-count-slider').value);
@@ -123,6 +136,16 @@ export function renderParameters(container) {
       params[idx].priority = e.target.value;
     });
   });
+
+  container.querySelectorAll('.param-weight-slider').forEach(slider => {
+    slider.addEventListener('input', (e) => {
+      const idx = parseInt(slider.dataset.index);
+      const value = parseFloat(e.target.value);
+      params[idx].weight = value;
+      const output = container.querySelector(`.param-weight-value[data-index="${idx}"]`);
+      if (output) output.textContent = value.toFixed(1);
+    });
+  });
 }
 
 function renderParamCard(p, i) {
@@ -141,7 +164,7 @@ function renderParamCard(p, i) {
       <div class="param-weight" style="width:180px;">
         <div class="slider-container">
           <input type="range" class="slider param-weight-slider" data-index="${i}" min="0" max="1" step="0.1" value="${p.weight}" />
-          <span class="mono-xs">${p.weight.toFixed(1)}</span>
+          <span class="mono-xs param-weight-value" data-index="${i}">${p.weight.toFixed(1)}</span>
         </div>
       </div>
       <button class="param-remove" data-index="${i}">×</button>

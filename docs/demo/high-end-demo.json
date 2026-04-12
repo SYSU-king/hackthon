@@ -1,0 +1,999 @@
+{
+  "id": "demo2026",
+  "title": "粤港双城跃迁推演档",
+  "status": "completed",
+  "created_at": "2026-04-10T09:30:00",
+  "updated_at": "2026-04-10T12:20:00",
+  "profile": {
+    "personality_type": "ENTJ",
+    "education_stage": "working_3_plus",
+    "school": "华南理工大学",
+    "major": "软件工程 / AI 产品",
+    "gpa_range": "",
+    "family_economy": "中等",
+    "family_expectation": "收入优先",
+    "city_preference": "一线城市",
+    "career_preference": "创业",
+    "risk_preference": "balanced",
+    "current_concern": "我是留在深圳冲刺 AI 产品总监，还是去香港加入新基金支持的智能硬件创业公司？如果失败，三年后还能不能回到高势能轨道？"
+  },
+  "parameters": [
+    {
+      "id": "p1",
+      "name": "深圳大厂晋升 vs 香港创业",
+      "description": "比较成熟平台晋升和高波动创业机会",
+      "priority": "primary",
+      "weight": 1.0
+    },
+    {
+      "id": "p2",
+      "name": "家庭现金流安全垫",
+      "description": "父母需要一定稳定支持",
+      "priority": "constraint",
+      "weight": 0.8
+    },
+    {
+      "id": "p3",
+      "name": "AI 赛道窗口期",
+      "description": "抓住 2026-2028 年行业爆发期",
+      "priority": "secondary",
+      "weight": 0.7
+    }
+  ],
+  "agents": [
+    {
+      "agent_id": "a_self",
+      "agent_type": "Self",
+      "name": "林澈",
+      "persona": "结果导向的产品负责人，擅长资源整合与复杂决策。",
+      "stance": "neutral",
+      "resources": "产品战略、跨团队协同、行业判断",
+      "influence": 1.0,
+      "active": true
+    },
+    {
+      "agent_id": "a_family",
+      "agent_type": "Family",
+      "name": "家庭董事会",
+      "persona": "希望收入稳健，同时愿意在关键时刻提供情感缓冲。",
+      "stance": "demanding",
+      "resources": "情感支持、短期缓冲资金",
+      "influence": 0.74,
+      "active": true
+    },
+    {
+      "agent_id": "a_mentor",
+      "agent_type": "Mentor",
+      "name": "周总",
+      "persona": "前超级独角兽业务负责人，倾向押注高势能赛道。",
+      "stance": "supportive",
+      "resources": "人脉、融资介绍、战略判断",
+      "influence": 0.81,
+      "active": true
+    },
+    {
+      "agent_id": "a_employer",
+      "agent_type": "Employer",
+      "name": "深曜科技",
+      "persona": "深圳头部 AI 平台，内部晋升激烈但资源密度高。",
+      "stance": "demanding",
+      "resources": "稳定现金流、大项目平台、品牌背书",
+      "influence": 0.77,
+      "active": true
+    },
+    {
+      "agent_id": "a_city",
+      "agent_type": "City",
+      "name": "香港 / 深圳双城系统",
+      "persona": "双城机会与生活成本同时抬升选择难度。",
+      "stance": "neutral",
+      "resources": "资本、国际市场、产业链协同",
+      "influence": 0.63,
+      "active": true
+    },
+    {
+      "agent_id": "a_industry",
+      "agent_type": "Industry",
+      "name": "生成式 AI 产业带",
+      "persona": "窗口期短，要求速度、资本效率和产品落地能力同步在线。",
+      "stance": "supportive",
+      "resources": "高速增长市场、跨境机会",
+      "influence": 0.86,
+      "active": true
+    },
+    {
+      "agent_id": "a_risk",
+      "agent_type": "Risk",
+      "name": "资金与签证风险",
+      "persona": "融资不确定、跨境合规与身份成本会放大波动。",
+      "stance": "restrictive",
+      "resources": "无",
+      "influence": 0.58,
+      "active": true
+    }
+  ],
+  "expanded_factors": {
+    "core_concern": "在高势能平台晋升与跨境创业之间寻找长期最优轨道",
+    "influence_factors": [
+      {
+        "name": "管理杠杆",
+        "category": "career",
+        "impact": "high",
+        "description": "是否能从个体贡献者跃迁为平台型管理者",
+        "sub_factors": [
+          "组织授权",
+          "招聘权限"
+        ]
+      },
+      {
+        "name": "跨境资本效率",
+        "category": "finance",
+        "impact": "high",
+        "description": "创业公司现金流与融资速度",
+        "sub_factors": [
+          "融资节奏",
+          "现金流 runway"
+        ]
+      },
+      {
+        "name": "家庭安全垫",
+        "category": "family",
+        "impact": "medium",
+        "description": "家庭对高波动阶段的承受能力",
+        "sub_factors": [
+          "固定支出",
+          "父母健康"
+        ]
+      },
+      {
+        "name": "行业窗口期",
+        "category": "career",
+        "impact": "high",
+        "description": "AI 硬件与代理系统的窗口是否还开着",
+        "sub_factors": [
+          "竞争强度",
+          "产品验证速度"
+        ]
+      },
+      {
+        "name": "跨城生活成本",
+        "category": "environment",
+        "impact": "medium",
+        "description": "香港与深圳的生活成本和身份成本",
+        "sub_factors": [
+          "租住成本",
+          "通勤摩擦"
+        ]
+      }
+    ],
+    "causal_chains": [
+      {
+        "from": "行业窗口期",
+        "to": "跨境资本效率",
+        "relation": "enables",
+        "description": "赛道热度决定融资效率"
+      },
+      {
+        "from": "跨境资本效率",
+        "to": "家庭安全垫",
+        "relation": "conflicts_with",
+        "description": "融资变慢会挤压家庭安全垫"
+      },
+      {
+        "from": "管理杠杆",
+        "to": "行业窗口期",
+        "relation": "enables",
+        "description": "高管理杠杆更容易抓住窗口"
+      }
+    ]
+  },
+  "graph_data": {
+    "nodes": [
+      {
+        "id": "self",
+        "name": "林澈",
+        "type": "Self",
+        "group": "self",
+        "size": 30,
+        "summary": "推演主角"
+      },
+      {
+        "id": "a_family",
+        "name": "家庭董事会",
+        "type": "Family",
+        "group": "agent",
+        "size": 18,
+        "persona": "收入稳定诉求强"
+      },
+      {
+        "id": "a_mentor",
+        "name": "周总",
+        "type": "Mentor",
+        "group": "agent",
+        "size": 18,
+        "persona": "推动激进跃迁"
+      },
+      {
+        "id": "a_employer",
+        "name": "深曜科技",
+        "type": "Employer",
+        "group": "agent",
+        "size": 18,
+        "persona": "头部平台资源"
+      },
+      {
+        "id": "a_city",
+        "name": "双城系统",
+        "type": "City",
+        "group": "agent",
+        "size": 18,
+        "persona": "跨境机会与摩擦并存"
+      },
+      {
+        "id": "factor_0",
+        "name": "管理杠杆",
+        "type": "Factor",
+        "group": "career",
+        "size": 14,
+        "impact": "high"
+      },
+      {
+        "id": "factor_1",
+        "name": "跨境资本效率",
+        "type": "Factor",
+        "group": "finance",
+        "size": 14,
+        "impact": "high"
+      },
+      {
+        "id": "factor_2",
+        "name": "家庭安全垫",
+        "type": "Factor",
+        "group": "family",
+        "size": 14,
+        "impact": "medium"
+      },
+      {
+        "id": "factor_3",
+        "name": "行业窗口期",
+        "type": "Factor",
+        "group": "career",
+        "size": 14,
+        "impact": "high"
+      }
+    ],
+    "edges": [
+      {
+        "source": "a_family",
+        "target": "self",
+        "relation": "INFLUENCES",
+        "name": "现金流压力",
+        "fact_type": "constraint",
+        "fact": "家庭希望稳定现金流"
+      },
+      {
+        "source": "a_mentor",
+        "target": "self",
+        "relation": "INFLUENCES",
+        "name": "激进建议",
+        "fact_type": "opportunity",
+        "fact": "建议抓住窗口创业"
+      },
+      {
+        "source": "a_employer",
+        "target": "self",
+        "relation": "INFLUENCES",
+        "name": "晋升平台",
+        "fact_type": "opportunity",
+        "fact": "留深可拿总监候选位"
+      },
+      {
+        "source": "factor_3",
+        "target": "factor_1",
+        "relation": "ENABLES",
+        "name": "窗口驱动融资",
+        "fact_type": "causal"
+      },
+      {
+        "source": "factor_1",
+        "target": "factor_2",
+        "relation": "CONFLICTS_WITH",
+        "name": "现金流冲突",
+        "fact_type": "causal"
+      }
+    ]
+  },
+  "paths": [
+    {
+      "id": "path_alpha",
+      "name": "Path Alpha: 最优路径 · 双城跃迁",
+      "path_type": "optimal",
+      "summary": "先留在深圳拿下平台级项目，再以更强资源切入香港创业，形成低风险跃迁。",
+      "risk_level": "low",
+      "satisfaction_score": 0.86,
+      "final_state": {
+        "education": 0.66,
+        "career": 0.91,
+        "finance": 0.82,
+        "health": 0.72,
+        "mental": 0.74,
+        "relationship": 0.61,
+        "family_support": 0.77,
+        "social_capital": 0.9,
+        "optionality": 0.94,
+        "goal_alignment": 0.9
+      },
+      "nodes": [
+        {
+          "node_id": "n1",
+          "tree_node_id": "root_r1",
+          "node_type": "decision",
+          "title": "接手平台级 AI 增长项目",
+          "description": "深圳总部给出更大权限，先在平台内做一轮能力跃迁。",
+          "time_label": "2026-Q1",
+          "trigger_reason": "内部窗口出现",
+          "state_snapshot": {
+            "education": 0.6,
+            "career": 0.74,
+            "finance": 0.58,
+            "health": 0.76,
+            "mental": 0.68,
+            "relationship": 0.54,
+            "family_support": 0.72,
+            "social_capital": 0.68,
+            "optionality": 0.78,
+            "goal_alignment": 0.72
+          },
+          "agent_actions": [
+            {
+              "agent_type": "Employer",
+              "action_type": "PROVIDE_OPPORTUNITY",
+              "narrative": "深曜科技将关键项目交给你负责。"
+            }
+          ]
+        },
+        {
+          "node_id": "n2",
+          "tree_node_id": "br_opt",
+          "node_type": "branch",
+          "title": "先稳平台再跨城",
+          "description": "不急着裸辞，先利用平台放大履历。",
+          "time_label": "2026-Q2",
+          "trigger_reason": "家庭与导师给出折中方案",
+          "state_snapshot": {
+            "education": 0.6,
+            "career": 0.79,
+            "finance": 0.66,
+            "health": 0.74,
+            "mental": 0.71,
+            "relationship": 0.56,
+            "family_support": 0.76,
+            "social_capital": 0.78,
+            "optionality": 0.84,
+            "goal_alignment": 0.79
+          },
+          "agent_actions": []
+        },
+        {
+          "node_id": "n3",
+          "tree_node_id": "br_opt_r3",
+          "node_type": "opportunity",
+          "title": "拿到香港创业团队核心席位",
+          "description": "凭借平台成绩与周总背书，拿到创始团队席位和期权。",
+          "time_label": "2026-Q4",
+          "trigger_reason": "导师推荐 + 项目成功",
+          "state_snapshot": {
+            "education": 0.62,
+            "career": 0.86,
+            "finance": 0.74,
+            "health": 0.73,
+            "mental": 0.73,
+            "relationship": 0.58,
+            "family_support": 0.78,
+            "social_capital": 0.88,
+            "optionality": 0.92,
+            "goal_alignment": 0.87
+          },
+          "agent_actions": [
+            {
+              "agent_type": "Mentor",
+              "action_type": "PROVIDE_OPPORTUNITY",
+              "narrative": "周总介绍你进入新基金项目组。"
+            }
+          ]
+        },
+        {
+          "node_id": "n4",
+          "tree_node_id": "br_opt_r5",
+          "node_type": "result",
+          "title": "形成双城资源闭环",
+          "description": "保住现金流的同时切入高增长赛道，三年后进入高势能轨道。",
+          "time_label": "2027-Q2",
+          "trigger_reason": "资源、团队与产品节奏形成正反馈",
+          "state_snapshot": {
+            "education": 0.66,
+            "career": 0.91,
+            "finance": 0.82,
+            "health": 0.72,
+            "mental": 0.74,
+            "relationship": 0.61,
+            "family_support": 0.77,
+            "social_capital": 0.9,
+            "optionality": 0.94,
+            "goal_alignment": 0.9
+          },
+          "agent_actions": [
+            {
+              "agent_type": "Industry",
+              "action_type": "PROVIDE_OPPORTUNITY",
+              "narrative": "行业窗口打开，产品获得头部客户验证。"
+            }
+          ]
+        }
+      ],
+      "rounds": [],
+      "advice": {}
+    },
+    {
+      "id": "path_beta",
+      "name": "Path Beta: 稳健路径 · 深圳深耕",
+      "path_type": "conservative",
+      "summary": "留在深圳平台内稳步晋升，牺牲部分窗口收益但维持高安全性。",
+      "risk_level": "low",
+      "satisfaction_score": 0.72,
+      "final_state": {
+        "education": 0.62,
+        "career": 0.8,
+        "finance": 0.78,
+        "health": 0.78,
+        "mental": 0.69,
+        "relationship": 0.64,
+        "family_support": 0.82,
+        "social_capital": 0.74,
+        "optionality": 0.71,
+        "goal_alignment": 0.73
+      },
+      "nodes": [
+        {
+          "node_id": "b1",
+          "tree_node_id": "root_r1",
+          "node_type": "decision",
+          "title": "接手平台级 AI 增长项目",
+          "description": "以内部晋升为主线。",
+          "time_label": "2026-Q1",
+          "trigger_reason": "内部窗口出现",
+          "state_snapshot": {
+            "education": 0.6,
+            "career": 0.74,
+            "finance": 0.58,
+            "health": 0.76,
+            "mental": 0.68,
+            "relationship": 0.54,
+            "family_support": 0.72,
+            "social_capital": 0.68,
+            "optionality": 0.78,
+            "goal_alignment": 0.72
+          },
+          "agent_actions": []
+        },
+        {
+          "node_id": "b2",
+          "tree_node_id": "br_safe",
+          "node_type": "branch",
+          "title": "留深冲刺总监候选",
+          "description": "继续深耕平台资源，暂不跨城。",
+          "time_label": "2026-Q2",
+          "trigger_reason": "家庭偏好稳定",
+          "state_snapshot": {
+            "education": 0.6,
+            "career": 0.78,
+            "finance": 0.68,
+            "health": 0.77,
+            "mental": 0.69,
+            "relationship": 0.59,
+            "family_support": 0.8,
+            "social_capital": 0.72,
+            "optionality": 0.73,
+            "goal_alignment": 0.74
+          },
+          "agent_actions": []
+        },
+        {
+          "node_id": "b3",
+          "tree_node_id": "br_safe_r4",
+          "node_type": "result",
+          "title": "进入平台管理层后备池",
+          "description": "薪资和稳定性都上升，但窗口收益略被延后。",
+          "time_label": "2027-Q1",
+          "trigger_reason": "组织授权增加",
+          "state_snapshot": {
+            "education": 0.62,
+            "career": 0.8,
+            "finance": 0.78,
+            "health": 0.78,
+            "mental": 0.69,
+            "relationship": 0.64,
+            "family_support": 0.82,
+            "social_capital": 0.74,
+            "optionality": 0.71,
+            "goal_alignment": 0.73
+          },
+          "agent_actions": [
+            {
+              "agent_type": "Employer",
+              "action_type": "MAKE_DECISION",
+              "narrative": "公司将你纳入总监后备名单。"
+            }
+          ]
+        }
+      ],
+      "rounds": [],
+      "advice": {}
+    },
+    {
+      "id": "path_cf1",
+      "name": "回溯路径: 香港创业融资加速",
+      "path_type": "counterfactual",
+      "summary": "从收到创业邀请的节点回溯，假设融资窗口更顺利，得到一条更激进但成功率提升的反事实路径。",
+      "risk_level": "medium",
+      "satisfaction_score": 0.8,
+      "final_state": {
+        "education": 0.64,
+        "career": 0.88,
+        "finance": 0.76,
+        "health": 0.67,
+        "mental": 0.71,
+        "relationship": 0.58,
+        "family_support": 0.7,
+        "social_capital": 0.93,
+        "optionality": 0.9,
+        "goal_alignment": 0.92
+      },
+      "nodes": [
+        {
+          "node_id": "c1",
+          "tree_node_id": "root_r1",
+          "node_type": "decision",
+          "title": "接手平台级 AI 增长项目",
+          "description": "共同起点。",
+          "time_label": "2026-Q1",
+          "trigger_reason": "内部窗口出现",
+          "state_snapshot": {
+            "education": 0.6,
+            "career": 0.74,
+            "finance": 0.58,
+            "health": 0.76,
+            "mental": 0.68,
+            "relationship": 0.54,
+            "family_support": 0.72,
+            "social_capital": 0.68,
+            "optionality": 0.78,
+            "goal_alignment": 0.72
+          },
+          "agent_actions": []
+        },
+        {
+          "node_id": "c2",
+          "tree_node_id": "br_opt_r3",
+          "node_type": "opportunity",
+          "title": "拿到香港创业团队核心席位",
+          "description": "回溯锚点。",
+          "time_label": "2026-Q4",
+          "trigger_reason": "导师推荐 + 项目成功",
+          "state_snapshot": {
+            "education": 0.62,
+            "career": 0.86,
+            "finance": 0.74,
+            "health": 0.73,
+            "mental": 0.73,
+            "relationship": 0.58,
+            "family_support": 0.78,
+            "social_capital": 0.88,
+            "optionality": 0.92,
+            "goal_alignment": 0.87
+          },
+          "agent_actions": []
+        },
+        {
+          "node_id": "c3",
+          "tree_node_id": "bt_demo",
+          "node_type": "branch",
+          "title": "假设融资窗口提前打开",
+          "description": "回溯后追加条件：首轮资金更快到位。",
+          "time_label": "2027-Q1",
+          "trigger_reason": "用户发起回溯推演",
+          "state_snapshot": {
+            "education": 0.63,
+            "career": 0.87,
+            "finance": 0.79,
+            "health": 0.7,
+            "mental": 0.72,
+            "relationship": 0.57,
+            "family_support": 0.71,
+            "social_capital": 0.91,
+            "optionality": 0.91,
+            "goal_alignment": 0.9
+          },
+          "agent_actions": []
+        },
+        {
+          "node_id": "c4",
+          "tree_node_id": "bt_demo_r2",
+          "node_type": "result",
+          "title": "创业团队完成 A 轮交割",
+          "description": "现金流压力显著下降，反事实路径表现优于原始激进路径。",
+          "time_label": "2027-Q2",
+          "trigger_reason": "资本效率显著改善",
+          "state_snapshot": {
+            "education": 0.64,
+            "career": 0.88,
+            "finance": 0.76,
+            "health": 0.67,
+            "mental": 0.71,
+            "relationship": 0.58,
+            "family_support": 0.7,
+            "social_capital": 0.93,
+            "optionality": 0.9,
+            "goal_alignment": 0.92
+          },
+          "agent_actions": [
+            {
+              "agent_type": "Mentor",
+              "action_type": "PROVIDE_OPPORTUNITY",
+              "narrative": "基金方提前放行资金，团队加速进入市场。"
+            }
+          ]
+        }
+      ],
+      "rounds": [],
+      "advice": {}
+    }
+  ],
+  "report": {
+    "title": "跨城跃迁决策（董事会演示版）",
+    "executive_summary": "最优策略不是简单留深或裸辞赴港，而是先在深圳平台内拿到更大授权，再带着资源和确定性进入创业轨道。这样既保住家庭安全垫，也能抓住 AI 窗口期。",
+    "path_comparison": [
+      {
+        "path_name": "Path Alpha: 最优路径 · 双城跃迁",
+        "strengths": [
+          "资源密度高",
+          "跨城切换更平滑"
+        ],
+        "risks": [
+          "执行节奏要求极高",
+          "双城精力消耗大"
+        ],
+        "key_turning_point": "2026-Q4 的创业核心席位邀请"
+      },
+      {
+        "path_name": "Path Beta: 稳健路径 · 深圳深耕",
+        "strengths": [
+          "现金流稳定",
+          "家庭支持更强"
+        ],
+        "risks": [
+          "错过行业爆发窗口",
+          "选择空间逐渐收缩"
+        ],
+        "key_turning_point": "是否继续等待组织内晋升"
+      },
+      {
+        "path_name": "回溯路径: 香港创业融资加速",
+        "strengths": [
+          "高上限依旧保留",
+          "资本压力显著缓和"
+        ],
+        "risks": [
+          "仍依赖外部融资",
+          "身心负荷更高"
+        ],
+        "key_turning_point": "回溯后融资窗口提前打开"
+      }
+    ],
+    "critical_nodes": [
+      {
+        "time_label": "2026-Q2",
+        "description": "是否先用平台项目放大履历，决定后续创业议价权。",
+        "recommendation": "优先拿可迁移成果，而不是只拿头衔。"
+      },
+      {
+        "time_label": "2026-Q4",
+        "description": "创业邀请出现时，决定你是裸跳还是带资源跃迁。",
+        "recommendation": "用资金 runway 和关键客户验证作为决策阈值。"
+      }
+    ],
+    "overall_recommendation": "先用深圳平台累积不可替代筹码，再以更高确定性切入香港创业，是当前最优主线。",
+    "next_steps": [
+      "用 90 天拿下一个可迁移的标志性项目成果。",
+      "提前和导师、基金、潜在联合创始人对齐融资与角色边界。",
+      "为家庭现金流准备至少 12 个月安全垫，再做跨境跃迁。"
+    ]
+  },
+  "_tree_events": [
+    {
+      "type": "add_node",
+      "id": "root",
+      "parent": null,
+      "label": "BASE",
+      "round": 0,
+      "time_label": "起点",
+      "is_active": true,
+      "node_type": "decision",
+      "description": "基础状态已载入，推演树从 BASE 节点开始生长。",
+      "trigger_reason": "系统初始化",
+      "state_snapshot": {
+        "education": 0.5,
+        "career": 0.5,
+        "finance": 0.5,
+        "health": 0.8,
+        "mental": 0.6,
+        "relationship": 0.5,
+        "family_support": 0.7,
+        "social_capital": 0.4,
+        "optionality": 0.8,
+        "goal_alignment": 0.5
+      },
+      "state_summary": [],
+      "agent_actions": [],
+      "source_path_id": "",
+      "source_node_index": null
+    },
+    {
+      "type": "add_node",
+      "id": "root_r1",
+      "parent": "root",
+      "label": "接手平台级 AI 增长项目",
+      "round": 1,
+      "time_label": "2026-Q1",
+      "is_active": true,
+      "node_type": "decision",
+      "description": "深圳总部给出更大权限，先在平台内做一轮能力跃迁。",
+      "trigger_reason": "内部窗口出现",
+      "state_snapshot": {
+        "education": 0.6,
+        "career": 0.74,
+        "finance": 0.58,
+        "health": 0.76,
+        "mental": 0.68,
+        "relationship": 0.54,
+        "family_support": 0.72,
+        "social_capital": 0.68,
+        "optionality": 0.78,
+        "goal_alignment": 0.72
+      },
+      "state_summary": [],
+      "agent_actions": [
+        {
+          "agent_type": "Employer",
+          "action_type": "PROVIDE_OPPORTUNITY",
+          "narrative": "深曜科技将关键项目交给你负责。"
+        }
+      ],
+      "source_path_id": "path_alpha",
+      "source_node_index": 0
+    },
+    {
+      "type": "branch",
+      "id": "br_opt",
+      "parent": "root_r1",
+      "label": "先稳平台再跨城",
+      "round": 2,
+      "time_label": "2026-Q2",
+      "is_active": true,
+      "node_type": "branch",
+      "tendency": "optimal",
+      "description": "家庭与导师共同建议先积累可迁移筹码。",
+      "trigger_reason": "关键决策",
+      "state_snapshot": {
+        "education": 0.6,
+        "career": 0.79,
+        "finance": 0.66,
+        "health": 0.74,
+        "mental": 0.71,
+        "relationship": 0.56,
+        "family_support": 0.76,
+        "social_capital": 0.78,
+        "optionality": 0.84,
+        "goal_alignment": 0.79
+      },
+      "state_summary": [],
+      "agent_actions": [],
+      "source_path_id": "path_alpha",
+      "source_node_index": 1
+    },
+    {
+      "type": "branch",
+      "id": "br_safe",
+      "parent": "root_r1",
+      "label": "留深冲刺总监候选",
+      "round": 2,
+      "time_label": "2026-Q2",
+      "is_active": true,
+      "node_type": "branch",
+      "tendency": "conservative",
+      "description": "家庭偏好稳定，暂不跨城。",
+      "trigger_reason": "关键决策",
+      "state_snapshot": {
+        "education": 0.6,
+        "career": 0.78,
+        "finance": 0.68,
+        "health": 0.77,
+        "mental": 0.69,
+        "relationship": 0.59,
+        "family_support": 0.8,
+        "social_capital": 0.72,
+        "optionality": 0.73,
+        "goal_alignment": 0.74
+      },
+      "state_summary": [],
+      "agent_actions": [],
+      "source_path_id": "path_beta",
+      "source_node_index": 1
+    },
+    {
+      "type": "add_node",
+      "id": "br_opt_r3",
+      "parent": "br_opt",
+      "label": "拿到香港创业团队核心席位",
+      "round": 3,
+      "time_label": "2026-Q4",
+      "is_active": true,
+      "node_type": "opportunity",
+      "description": "凭借平台成绩与周总背书，拿到创始团队席位和期权。",
+      "trigger_reason": "导师推荐 + 项目成功",
+      "state_snapshot": {
+        "education": 0.62,
+        "career": 0.86,
+        "finance": 0.74,
+        "health": 0.73,
+        "mental": 0.73,
+        "relationship": 0.58,
+        "family_support": 0.78,
+        "social_capital": 0.88,
+        "optionality": 0.92,
+        "goal_alignment": 0.87
+      },
+      "state_summary": [],
+      "agent_actions": [
+        {
+          "agent_type": "Mentor",
+          "action_type": "PROVIDE_OPPORTUNITY",
+          "narrative": "周总介绍你进入新基金项目组。"
+        }
+      ],
+      "source_path_id": "path_alpha",
+      "source_node_index": 2
+    },
+    {
+      "type": "add_node",
+      "id": "br_safe_r4",
+      "parent": "br_safe",
+      "label": "进入平台管理层后备池",
+      "round": 4,
+      "time_label": "2027-Q1",
+      "is_active": true,
+      "node_type": "result",
+      "description": "薪资和稳定性都上升，但窗口收益略被延后。",
+      "trigger_reason": "组织授权增加",
+      "state_snapshot": {
+        "education": 0.62,
+        "career": 0.8,
+        "finance": 0.78,
+        "health": 0.78,
+        "mental": 0.69,
+        "relationship": 0.64,
+        "family_support": 0.82,
+        "social_capital": 0.74,
+        "optionality": 0.71,
+        "goal_alignment": 0.73
+      },
+      "state_summary": [],
+      "agent_actions": [
+        {
+          "agent_type": "Employer",
+          "action_type": "MAKE_DECISION",
+          "narrative": "公司将你纳入总监后备名单。"
+        }
+      ],
+      "source_path_id": "path_beta",
+      "source_node_index": 2
+    },
+    {
+      "type": "add_node",
+      "id": "br_opt_r5",
+      "parent": "br_opt_r3",
+      "label": "形成双城资源闭环",
+      "round": 5,
+      "time_label": "2027-Q2",
+      "is_active": true,
+      "node_type": "result",
+      "description": "保住现金流的同时切入高增长赛道，三年后进入高势能轨道。",
+      "trigger_reason": "资源、团队与产品节奏形成正反馈",
+      "state_snapshot": {
+        "education": 0.66,
+        "career": 0.91,
+        "finance": 0.82,
+        "health": 0.72,
+        "mental": 0.74,
+        "relationship": 0.61,
+        "family_support": 0.77,
+        "social_capital": 0.9,
+        "optionality": 0.94,
+        "goal_alignment": 0.9
+      },
+      "state_summary": [],
+      "agent_actions": [
+        {
+          "agent_type": "Industry",
+          "action_type": "PROVIDE_OPPORTUNITY",
+          "narrative": "行业窗口打开，产品获得头部客户验证。"
+        }
+      ],
+      "source_path_id": "path_alpha",
+      "source_node_index": 3
+    },
+    {
+      "type": "branch",
+      "id": "bt_demo",
+      "parent": "br_opt_r3",
+      "label": "回溯: 假设融资窗口提前打开",
+      "round": 4,
+      "time_label": "2027-Q1",
+      "is_active": true,
+      "node_type": "branch",
+      "tendency": "counterfactual",
+      "description": "从创业邀请节点开始回溯，并提高资本效率。",
+      "trigger_reason": "用户发起回溯推演",
+      "state_snapshot": {
+        "education": 0.63,
+        "career": 0.87,
+        "finance": 0.79,
+        "health": 0.7,
+        "mental": 0.72,
+        "relationship": 0.57,
+        "family_support": 0.71,
+        "social_capital": 0.91,
+        "optionality": 0.91,
+        "goal_alignment": 0.9
+      },
+      "state_summary": [],
+      "agent_actions": [],
+      "source_path_id": "path_cf1",
+      "source_node_index": 2
+    },
+    {
+      "type": "add_node",
+      "id": "bt_demo_r2",
+      "parent": "bt_demo",
+      "label": "创业团队完成 A 轮交割",
+      "round": 5,
+      "time_label": "2027-Q2",
+      "is_active": true,
+      "node_type": "result",
+      "description": "现金流压力显著下降，反事实路径表现优于原始激进路径。",
+      "trigger_reason": "资本效率显著改善",
+      "state_snapshot": {
+        "education": 0.64,
+        "career": 0.88,
+        "finance": 0.76,
+        "health": 0.67,
+        "mental": 0.71,
+        "relationship": 0.58,
+        "family_support": 0.7,
+        "social_capital": 0.93,
+        "optionality": 0.9,
+        "goal_alignment": 0.92
+      },
+      "state_summary": [],
+      "agent_actions": [
+        {
+          "agent_type": "Mentor",
+          "action_type": "PROVIDE_OPPORTUNITY",
+          "narrative": "基金方提前放行资金，团队加速进入市场。"
+        }
+      ],
+      "source_path_id": "path_cf1",
+      "source_node_index": 3
+    }
+  ]
+}

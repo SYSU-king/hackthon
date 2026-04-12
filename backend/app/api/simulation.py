@@ -58,8 +58,8 @@ async def start_simulation(project_id: str, body: SimulationStart):
 
             progress_messages = []
 
-            def progress_callback(phase, progress, message):
-                progress_messages.append((phase, progress, message))
+            def progress_callback(phase, progress, message, tree_event=None):
+                progress_messages.append((phase, progress, message, tree_event))
 
             loop = asyncio.get_event_loop()
             with concurrent.futures.ThreadPoolExecutor() as pool:
@@ -78,7 +78,10 @@ async def start_simulation(project_id: str, body: SimulationStart):
                 while not future.done():
                     await asyncio.sleep(0.5)
                     while progress_messages:
-                        phase, progress, message = progress_messages.pop(0)
+                        phase, progress, message, tree_event = progress_messages.pop(0)
+                        if phase == 'tree_event' and tree_event:
+                            yield f"data: {json.dumps({'phase': 'tree_event', 'progress': progress, 'message': '', 'tree_event': tree_event, 'engine': 'llm'})}\n\n"
+                            continue
                         evt = {
                             'phase': phase,
                             'progress': progress,
@@ -92,19 +95,16 @@ async def start_simulation(project_id: str, body: SimulationStart):
 
                 # Flush remaining progress messages
                 while progress_messages:
-                    phase, progress, message = progress_messages.pop(0)
-                    yield f"data: {json.dumps({'phase': phase, 'progress': progress, 'message': message, 'engine': 'llm'})}\n\n"
+                    phase, progress, message, tree_event = progress_messages.pop(0)
+                    if phase == 'tree_event' and tree_event:
+                        yield f"data: {json.dumps({'phase': 'tree_event', 'progress': progress, 'message': '', 'tree_event': tree_event, 'engine': 'llm'})}\n\n"
+                    else:
+                        yield f"data: {json.dumps({'phase': phase, 'progress': progress, 'message': message, 'engine': 'llm'})}\n\n"
 
             # Validate: we must have actual paths
             if not paths:
                 yield f"data: {json.dumps({'phase': 'error', 'progress': 0, 'message': '❌ AI 推演未产生有效路径，请检查 LLM 配置或重试', 'engine': 'llm'})}\n\n"
                 return
-
-            # Send tree events for frontend tree visualization
-            tree_events = data.get("_tree_events", [])
-            for evt in tree_events:
-                yield f"data: {json.dumps({'phase': 'tree_event', 'progress': 92, 'message': '', 'tree_event': evt, 'engine': 'llm'})}\n\n"
-                await asyncio.sleep(0.05)
 
             # Save results
             data["paths"] = paths
@@ -210,8 +210,8 @@ async def backtrack_simulation(project_id: str, body: BacktrackRequest):
 
             progress_messages = []
 
-            def progress_callback(phase, progress, message):
-                progress_messages.append((phase, progress, message))
+            def progress_callback(phase, progress, message, tree_event=None):
+                progress_messages.append((phase, progress, message, tree_event))
 
             loop = asyncio.get_event_loop()
             with concurrent.futures.ThreadPoolExecutor() as pool:
@@ -227,23 +227,24 @@ async def backtrack_simulation(project_id: str, body: BacktrackRequest):
                 while not future.done():
                     await asyncio.sleep(0.5)
                     while progress_messages:
-                        phase, progress, message = progress_messages.pop(0)
-                        yield f"data: {json.dumps({'phase': phase, 'progress': progress, 'message': message, 'engine': 'llm'})}\n\n"
+                        phase, progress, message, tree_event = progress_messages.pop(0)
+                        if phase == 'tree_event' and tree_event:
+                            yield f"data: {json.dumps({'phase': 'tree_event', 'progress': progress, 'message': '', 'tree_event': tree_event, 'engine': 'llm'})}\n\n"
+                        else:
+                            yield f"data: {json.dumps({'phase': phase, 'progress': progress, 'message': message, 'engine': 'llm'})}\n\n"
 
                 new_path, tree_events = future.result()
 
                 while progress_messages:
-                    phase, progress, message = progress_messages.pop(0)
-                    yield f"data: {json.dumps({'phase': phase, 'progress': progress, 'message': message, 'engine': 'llm'})}\n\n"
+                    phase, progress, message, tree_event = progress_messages.pop(0)
+                    if phase == 'tree_event' and tree_event:
+                        yield f"data: {json.dumps({'phase': 'tree_event', 'progress': progress, 'message': '', 'tree_event': tree_event, 'engine': 'llm'})}\n\n"
+                    else:
+                        yield f"data: {json.dumps({'phase': phase, 'progress': progress, 'message': message, 'engine': 'llm'})}\n\n"
 
             if not new_path:
                 yield f"data: {json.dumps({'phase': 'error', 'progress': 0, 'message': '❌ 回溯推演未产生有效路径', 'engine': 'llm'})}\n\n"
                 return
-
-            # Send tree events
-            for evt in tree_events:
-                yield f"data: {json.dumps({'phase': 'tree_event', 'progress': 90, 'message': '', 'tree_event': evt, 'engine': 'llm'})}\n\n"
-                await asyncio.sleep(0.05)
 
             # Add new path to project
             data["paths"].append(new_path)

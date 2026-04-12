@@ -24,6 +24,7 @@ export const api = {
 
   // Projects
   createProject: (title) => request('POST', '/api/projects', { title }),
+  importProject: (projectData) => request('POST', '/api/projects/import', projectData),
   listProjects: () => request('GET', '/api/projects'),
   getProject: (id) => request('GET', `/api/projects/${id}`),
   deleteProject: (id) => request('DELETE', `/api/projects/${id}`),
