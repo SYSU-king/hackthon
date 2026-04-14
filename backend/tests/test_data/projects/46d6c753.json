@@ -1,0 +1,33 @@
+{
+  "id": "46d6c753",
+  "title": "Sim Test",
+  "status": "configured",
+  "created_at": "2026-04-13T17:40:05.258352",
+  "updated_at": "2026-04-13T17:40:05.288165",
+  "profile": {
+    "personality_type": "INTJ",
+    "education_stage": "undergraduate",
+    "school": "中山大学",
+    "major": "计算机科学",
+    "gpa_range": "",
+    "family_economy": "",
+    "family_expectation": "",
+    "city_preference": "",
+    "career_preference": "",
+    "risk_preference": "balanced",
+    "current_concern": "保研还是直接就业"
+  },
+  "parameters": [
+    {
+      "id": "1c018837",
+      "name": "保研 vs 就业",
+      "description": "",
+      "priority": "primary",
+      "weight": 1.0
+    }
+  ],
+  "agents": [],
+  "graph_data": null,
+  "expanded_factors": null,
+  "paths": []
+}

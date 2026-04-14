@@ -208,6 +208,18 @@ SYSU-King · 中山大学
 
 ---
 
-## License
+## 界面展示
 
-MIT
+| [首页 (Landing Page)](static/image/Screenshot/01_landing.png) | [用户画像 (Onboarding)](static/image/Screenshot/02_onboarding.png) |
+| :---: | :---: |
+| ![Landing Page](static/image/Screenshot/01_landing.png) | ![Onboarding](static/image/Screenshot/02_onboarding.png) |
+| **参数配置 (Parameters)** | **推演树 (Simulation Tree)** |
+| ![Parameters](static/image/Screenshot/03_parameters.png) | ![Simulation Tree](static/image/Screenshot/04_simulation_tree.png) |
+| **实时推演 (Real-time Simulation)** | **知识图谱 (Knowledge Graph)** |
+| ![Simulation Event](static/image/Screenshot/05_simulation_event.png) | ![Knowledge Graph](static/image/Screenshot/06_graph.png) |
+| **路径报告 (Path Report)** | **人生故事 (Life Story)** |
+| ![Results Report](static/image/Screenshot/07_results_report.png) | ![Life Story](static/image/Screenshot/08_results_story.png) |
+
+---
+
+## 社会价值
